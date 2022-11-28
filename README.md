@@ -54,12 +54,12 @@ Builds the app for production to the `dist` folder.
 
 ## :teacher: Learn More
 
-To learn **Azure Static Web Apps**, check out the [Static Web Apps!](https://www.azurestaticwebapps.dev/) web app, the [Azure Static Web Apps learning path](https://learn.microsoft.com/en-us/training/paths/azure-static-web-apps/) and the [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/overview).
-
-To learn **React**, check out the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started) and the [React documentation](https://reactjs.org/).
-
-To learn **D3**, check out the [Amelia Wattenberger](https://wattenberger.com/) website.
-
 This web app was built from scratch, without using <code>create-react-app</code> and by configuring **Webpack** and **Babel** manually. For more info on how to set it up, check out [this article](https://medium.com/age-of-awareness/setup-react-with-webpack-and-babel-5114a14a47e9) from [Prateek Srivastava](https://medium.com/@prateeksrt).
 
+To learn how to make the **line chart in D3**, check out [this video](https://youtu.be/S3LNbBg_B2A) by [Amelia Wattenberger](https://wattenberger.com/).
 
+To learn **Azure Static Web Apps**, check out [Static Web Apps!](https://www.azurestaticwebapps.dev/), the [Azure Static Web Apps learning path](https://learn.microsoft.com/en-us/training/paths/azure-static-web-apps/) and the [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/overview).
+
+For more on **React**, check out the [React official website](https://reactjs.org/).
+
+For more on **D3**, check out the [D3 official website](https://d3js.org/).
