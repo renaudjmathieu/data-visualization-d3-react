@@ -12,15 +12,15 @@ In the project directory, you can run:
 
 Install the necessary packages by following these steps:
 
-In the Terminal, go to the `www` folder:
+In the Terminal, go to the project folder:
 ```	
-cd www
+cd fullstack-d3-and-data-visualization
 ```	
 Option 1 : Install the necessary packages using `package-json`:
 ```	
 npm install
 ```	
-Option 2 : Install the necessary packages using manually:
+Option 2 : Install the necessary packages manually:
 ```
 npm init
 npm install react react-dom
@@ -36,9 +36,9 @@ npm install style-loader css-loader --save-dev
 
 Runs the app in development mode by following these steps:
 
-In the Terminal, go to the `www` folder:
+In the Terminal, go to the project folder:
 ```	
-cd www
+cd fullstack-d3-and-data-visualization
 ```	
 Run the app in the development mode: 
 ```	
