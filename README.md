@@ -1,8 +1,6 @@
-#  Fullstack D3 and Data Visualization
+#  D3 and Data Visualization
 
-Web app to try some stuff in D3 + React.
-
-https://www.newline.co/fullstack-d3
+Web app to try some data vizualization stuff in D3 + React.
 
 ## :technologist: Available Script Commands
 
@@ -14,7 +12,7 @@ Install the necessary packages by following these steps:
 
 In the Terminal, go to the project folder:
 ```	
-cd fullstack-d3-and-data-visualization
+cd data-visualization-d3-react
 ```	
 Option 1 : Install the necessary packages using `package-json`:
 ```	
@@ -38,7 +36,7 @@ Runs the app in development mode by following these steps:
 
 In the Terminal, go to the project folder:
 ```	
-cd fullstack-d3-and-data-visualization
+cd data-visualization-d3-react
 ```	
 Run the app in the development mode: 
 ```	
@@ -56,12 +54,12 @@ Builds the app for production to the `dist` folder.
 
 ## :teacher: Learn More
 
-To learn **Azure Static Web Apps**, check out the [Static Web Apps!](https://www.azurestaticwebapps.dev/) web app, the [Azure Static Web Apps learning path](https://learn.microsoft.com/en-us/training/paths/azure-static-web-apps/) and the [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/overview).
-
-To learn **React**, check out the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started) and the [React documentation](https://reactjs.org/).
-
-To learn **D3**, check out the [Amelia Wattenberger](https://wattenberger.com/) website.
-
 This web app was built from scratch, without using <code>create-react-app</code> and by configuring **Webpack** and **Babel** manually. For more info on how to set it up, check out [this article](https://medium.com/age-of-awareness/setup-react-with-webpack-and-babel-5114a14a47e9) from [Prateek Srivastava](https://medium.com/@prateeksrt).
 
+To learn how to make the **line chart in D3**, check out [this video](https://youtu.be/S3LNbBg_B2A) by [Amelia Wattenberger](https://wattenberger.com/).
 
+To learn **Azure Static Web Apps**, check out [Static Web Apps!](https://www.azurestaticwebapps.dev/), the [Azure Static Web Apps learning path](https://learn.microsoft.com/en-us/training/paths/azure-static-web-apps/) and the [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/overview).
+
+For more on **React**, check out the [React official website](https://reactjs.org/).
+
+For more on **D3**, check out the [D3 official website](https://d3js.org/).

@@ -1,5 +1,5 @@
 {
-  "name": "fullstack-d3-and-data-visualization",
+  "name": "data-visualization-d3-react",
   "version": "1.0.0",
   "description": "",
   "main": "index.jsx",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/renaudjmathieu/fullstack-d3-and-data-visualization.git"
+    "url": "git+ssh://git@github.com/renaudjmathieu/data-visualization-d3-react.git"
   },
   "author": "Renaud Mathieu",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/renaudjmathieu/fullstack-d3-and-data-visualization/issues"
+    "url": "https://github.com/renaudjmathieu/data-visualization-d3-react/issues"
   },
-  "homepage": "https://github.com/renaudjmathieu/fullstack-d3-and-data-visualization#readme",
+  "homepage": "https://github.com/renaudjmathieu/data-visualization-d3-react#readme",
   "dependencies": {
     "d3": "^7.6.1",
     "react": "^18.2.0",
