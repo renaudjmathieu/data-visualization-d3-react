@@ -9,32 +9,31 @@ const Chart1 = (props) => {
     const yAccessor = (d) => d.temperatureMax;
     const parseDate = d3.timeParse("%Y-%m-%d");
     const xAccessor = (d) => parseDate(d.date);
-    console.log(yAccessor(props.Data[0]));
-    console.log(xAccessor(props.Data[0]));
 
     // Dimensions
     let dimensions = {
-      width: 1000,
-      height: 500,
-      margins: 50,
-    };
+      width: window.innerWidth * 0.9,
+      height: 400,
+      margins: {
+        top: 15,
+        right: 15,
+        bottom: 40,
+        left: 60,
+      }
+    }
+    dimensions.boundedWidth = dimensions.width
+      - dimensions.margins.left
+      - dimensions.margins.right;
+    dimensions.boundedHeight = dimensions.height
+      - dimensions.margins.top
+      - dimensions.margins.bottom;
+    
+    console.log(dimensions);
 
-    dimensions.containerWidth = dimensions.width - dimensions.margins * 2;
-    dimensions.containerHeight = dimensions.height - dimensions.margins * 2;
-
-    // SELECTIONS
-    const svg = d3
-      .select(svgRef.current)
-      .classed("line-chart", true)
+    // Draw canvas
+    const wrapper = d3.select(svgRef.current)
       .attr("width", dimensions.width)
-      .attr("height", dimensions.height);
-    const container = svg
-      .append("g")
-      .classed("container", true)
-      .attr("transform", `translate(${dimensions.margins}, ${dimensions.margins})`);
 
-    // Draw Circle
-    container.append("circle").attr("r", 25);
   }, [props.Data, svgRef.current]); // redraw chart if data changes
 
   return <svg ref={svgRef} />;

@@ -1,8 +1,6 @@
-#  Fullstack D3 and Data Visualization
+#  D3 and Data Visualization
 
-Web app to try some stuff in D3 + React.
-
-https://www.newline.co/fullstack-d3
+Web app to try some data vizualization stuff in D3 + React.
 
 ## :technologist: Available Script Commands
 
@@ -14,7 +12,7 @@ Install the necessary packages by following these steps:
 
 In the Terminal, go to the project folder:
 ```	
-cd fullstack-d3-and-data-visualization
+cd data-visualization-d3-react
 ```	
 Option 1 : Install the necessary packages using `package-json`:
 ```	
@@ -38,7 +36,7 @@ Runs the app in development mode by following these steps:
 
 In the Terminal, go to the project folder:
 ```	
-cd fullstack-d3-and-data-visualization
+cd data-visualization-d3-react
 ```	
 Run the app in the development mode: 
 ```	
