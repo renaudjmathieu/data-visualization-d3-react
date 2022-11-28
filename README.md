@@ -20,7 +20,7 @@ Option 1 : Install the necessary packages using `package-json`:
 ```	
 npm install
 ```	
-Option 2 : Install the necessary packages using manually:
+Option 2 : Install the necessary packages manually:
 ```
 npm init
 npm install react react-dom
