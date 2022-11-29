@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import * as d3 from "d3"
 
-const BoxViz = (props) => {
+const BoxViz = () => {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const BoxViz = (props) => {
         .classed("svg-content", true)
         .style("border", "2px solid #af9358")
 
-  }, [props.Data, props.Width, props.Height, ref.current])
+  }, [ref.current])
 
   return <div id="container" class="svg-container" ref={ref}></div>
 }

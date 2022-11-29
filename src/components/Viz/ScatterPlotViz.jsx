@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as d3 from "d3"
 
 const ScatterPlotViz = (props) => {
   const ref = useRef(null)
 
   useEffect(() => {
-    // Accessors
-    const xAccessor = (d) => d.dewPoint
-    const yAccessor = (d) => d.humidity
-
     // Dimensions
     const width =  d3.max([d3.min([
-      props.Width * 0.9,
-      props.Height,
+      props.width * 0.9,
+      props.height,
     ]), 400])
     let dimensions = {
       width,
@@ -52,23 +48,22 @@ const ScatterPlotViz = (props) => {
 
     // Create scales
     const xScale = d3.scaleLinear()
-      .domain(d3.extent(props.Data, xAccessor))
+      .domain(d3.extent(props.data, props.xAccessor))
       .range([0, dimensions.boundedWidth])
       .nice()
 
     const yScale = d3.scaleLinear()
-      .domain(d3.extent(props.Data, yAccessor))
+      .domain(d3.extent(props.data, props.yAccessor))
       .range([dimensions.boundedHeight, 0])
       .nice()
 
     // Draw data
     const dots = bounds
       .selectAll("circle")
-      .data(props.Data)
-      .enter()
-      .append("circle")
-        .attr("cx", d => xScale(xAccessor(d)))
-        .attr("cy", d => yScale(yAccessor(d)))
+      .data(props.data)
+      .join("circle")
+        .attr("cx", d => xScale(props.xAccessor(d)))
+        .attr("cy", d => yScale(props.yAccessor(d)))
         .attr("r", 5)
         .attr("fill", "cornflowerblue")
 
@@ -89,7 +84,7 @@ const ScatterPlotViz = (props) => {
         .attr("y", dimensions.margins.bottom - 10)
         .attr("fill", "black")
         .style("font-size", "1.4em")
-        .html("Dew point (&deg;F)")
+        .html(props.xAxisLabel)
 
     const yAxisGenerator = d3.axisLeft()
       .scale(yScale)
@@ -105,11 +100,11 @@ const ScatterPlotViz = (props) => {
         .attr("y", -dimensions.margins.left + 10)
         .attr("fill", "black")
         .style("font-size", "1.4em")
-        .html("Relative humidity")
+        .html(props.yAxisLabel)
         .style("transform", "rotate(-90deg)")
         .style("text-anchor", "middle")
 
-  }, [props.Data, props.Width, props.Height, ref.current])
+  }, [props.data, props.xAccessor, props.yAccessor, props.xAxisLabel, props.yAxisLabel, props.width, props.height, ref.current])
 
   return <div ref={ref}></div>
 };

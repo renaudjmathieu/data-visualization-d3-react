@@ -1,22 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import * as d3 from "d3"
 
 const LineChartViz = (props) => {
   const ref = useRef(null)
 
   useEffect(() => {
-    // Accessors
-    const parseDate = d3.timeParse("%Y-%m-%d")
-    const xAccessor = (d) => parseDate(d.date)
-    const yAccessor = (d) => d.temperatureMax
-
     // Dimensions
     const width = d3.max([
-      props.Width,
+      props.width,
       800,
     ])
     const height = d3.max([
-      props.Height > 600 ? 600 : props.Height,
+      props.height > 600 ? 600 : props.height,
       400,
     ])
     
@@ -58,12 +53,12 @@ const LineChartViz = (props) => {
 
     // Create scales
     const xScale = d3.scaleTime()
-      .domain(d3.extent(props.Data, xAccessor))
+      .domain(d3.extent(props.data, props.xAccessor))
       .range([0, dimensions.boundedWidth])
       .nice()
 
     const yScale = d3.scaleLinear()
-      .domain(d3.extent(props.Data, yAccessor))
+      .domain(d3.extent(props.data, props.yAccessor))
       .range([dimensions.boundedHeight, 0])
       .nice()
       
@@ -78,12 +73,12 @@ const LineChartViz = (props) => {
 
     // Draw data
     const lineGenerator = d3.line()
-      .x(d => xScale(xAccessor(d)))
-      .y(d => yScale(yAccessor(d)))
+      .x(d => xScale(props.xAccessor(d)))
+      .y(d => yScale(props.yAccessor(d)))
       
     const line = bounds
       .append("path")
-        .attr("d", lineGenerator(props.Data))
+        .attr("d", lineGenerator(props.data))
         .attr("fill", "none")
         .attr("stroke", "#af9358")
         .attr("stroke-width", 2)
@@ -100,6 +95,14 @@ const LineChartViz = (props) => {
               dimensions.boundedHeight
             }px)`)
 
+    const xAxisLabel = xAxis
+      .append("text")
+        .attr("x", dimensions.boundedWidth / 2)
+        .attr("y", dimensions.margins.bottom - 10)
+        .attr("fill", "black")
+        .style("font-size", "1.4em")
+        .html(props.xAxisLabel)
+
     const yAxisGenerator = d3.axisLeft()
       .scale(yScale)
       
@@ -107,7 +110,17 @@ const LineChartViz = (props) => {
       .append("g")
         .call(yAxisGenerator)
 
-  }, [props.Data, props.Width, props.Height, ref.current])
+    const yAxisLabel = yAxis
+    .append("text")
+      .attr("x", -dimensions.boundedHeight / 2)
+      .attr("y", -dimensions.margins.left + 10)
+      .attr("fill", "black")
+      .style("font-size", "1.4em")
+      .html(props.yAxisLabel)
+      .style("transform", "rotate(-90deg)")
+      .style("text-anchor", "middle")
+
+  }, [props.data, props.xAccessor, props.yAccessor, props.xAxisLabel, props.yAxisLabel, props.width, props.height, ref.current])
 
   return <div ref={ref}></div>
 }
