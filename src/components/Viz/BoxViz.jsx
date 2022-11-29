@@ -7,8 +7,8 @@ const BoxViz = (props) => {
   useEffect(() => {
     // Dimensions
     const width = d3.min([
-      (window.innerWidth - 280) * 0.9,
-      (window.innerHeight - 130),
+      (props.Width - 280) * 0.9,
+      props.Height - 130,
     ])
     let dimensions = {
       width,
@@ -22,10 +22,13 @@ const BoxViz = (props) => {
     }
     dimensions.boundedWidth = dimensions.width
       - dimensions.margins.left
-      - dimensions.margins.right;
+      - dimensions.margins.right
     dimensions.boundedHeight = dimensions.height
       - dimensions.margins.top
-      - dimensions.margins.bottom;
+      - dimensions.margins.bottom
+
+    // Clear canvas
+    d3.select(ref.current).selectAll("*").remove()
 
     // Draw canvas
     const wrapper = d3.select(ref.current)
@@ -34,9 +37,9 @@ const BoxViz = (props) => {
         .attr("height", dimensions.height)
         .style("border", "2px solid #af9358")
 
-  }, [props.Data, ref.current]) // redraw chart if data changes
+  }, [props.Data, props.Width, props.Height, ref.current])
 
   return <div ref={ref}></div>
-};
+}
 
-export default BoxViz;
+export default BoxViz

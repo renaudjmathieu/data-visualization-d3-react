@@ -1,12 +1,12 @@
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LineChart from './pages/LineChart';
-import ScatterPlot from './pages/ScatterPlot';
-import Box from './pages/Box';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import LineChart from './pages/LineChart'
+import ScatterPlot from './pages/ScatterPlot'
+import Box from './pages/Box'
 
 ReactDOM.render(
   <React.StrictMode>

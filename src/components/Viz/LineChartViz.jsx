@@ -11,22 +11,33 @@ const LineChartViz = (props) => {
     const yAccessor = (d) => d.temperatureMax
 
     // Dimensions
+    const width = d3.max([
+      (props.Width - 280) * 0.9,
+      800,
+    ])
+    const height = d3.max([
+      props.Height - 330,
+      400
+    ])
     let dimensions = {
-      width: (window.innerWidth - 280) * 0.9,
-      height: window.innerHeight * 0.6,
+      width,
+      height,
       margins: {
-        top: 15,
-        right: 15,
-        bottom: 40,
-        left: 60,
+        top: 10,
+        right: 10,
+        bottom: 50,
+        left: 50,
       }
     }
     dimensions.boundedWidth = dimensions.width
       - dimensions.margins.left
-      - dimensions.margins.right;
+      - dimensions.margins.right
     dimensions.boundedHeight = dimensions.height
       - dimensions.margins.top
-      - dimensions.margins.bottom;
+      - dimensions.margins.bottom
+
+    // Clear canvas
+    d3.select(ref.current).selectAll("*").remove()
 
     // Draw canvas
     const wrapper = d3.select(ref.current)
@@ -95,9 +106,9 @@ const LineChartViz = (props) => {
       .append("g")
         .call(yAxisGenerator)
 
-  }, [props.Data, ref.current]) // redraw chart if data changes
+  }, [props.Data, props.Width, props.Height, ref.current])
 
   return <div ref={ref}></div>
-};
+}
 
-export default LineChartViz;
+export default LineChartViz

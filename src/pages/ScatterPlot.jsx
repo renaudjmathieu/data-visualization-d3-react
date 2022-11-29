@@ -1,15 +1,17 @@
-import React from "react";
-import './styles.css';
-import ScatterPlotViz from "../components/Viz/ScatterPlotViz";
-import data from '../data/my_weather_data.json';
+import React from "react"
+import './styles.css'
+import useWindowSize from "../components/Hooks/useWindowSize"
+import ScatterPlotViz from "../components/Viz/ScatterPlotViz"
+import data from '../data/my_weather_data.json'
 
 const ScatterPlot = () => {
+    const [width, height] = useWindowSize()
     return (
         <div className="pages">
             <h1>Scatter Plot</h1>
-            <ScatterPlotViz Data={data} />
+            <ScatterPlotViz Data={data} Width={width} Height={height} />
         </div>
     );
 }
 
-export default ScatterPlot;
+export default ScatterPlot

@@ -1,7 +1,7 @@
-import React from "react";
-import ShowChartIcon from '@mui/icons-material/ShowChart';
-import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import React from "react"
+import ShowChartIcon from '@mui/icons-material/ShowChart'
+import ScatterPlotIcon from '@mui/icons-material/ScatterPlot'
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
 
 export const mainNavbarListItems = [
     {
@@ -22,4 +22,4 @@ export const mainNavbarListItems = [
         title: 'A Box',
         link: '/box'
     }
-];
+]

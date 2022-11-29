@@ -1,19 +1,19 @@
-import * as React from 'react';
-import Drawer from '@mui/material/Drawer';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { mainNavbarListItems } from './consts/navbarListItems';
-import { useNavigate } from 'react-router-dom';
+import * as React from 'react'
+import Drawer from '@mui/material/Drawer'
+import Toolbar from '@mui/material/Toolbar'
+import List from '@mui/material/List'
+import Divider from '@mui/material/Divider'
+import ListItem from '@mui/material/ListItem'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import { mainNavbarListItems } from './consts/navbarListItems'
+import { useNavigate } from 'react-router-dom'
 
 const drawerWidth = 240;
 
 const Navbar = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <Drawer
       sx={{
@@ -47,7 +47,7 @@ const Navbar = () => {
         ))}
       </List>
     </Drawer>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar

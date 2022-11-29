@@ -10,10 +10,10 @@ const ScatterPlotViz = (props) => {
     const yAccessor = (d) => d.humidity
 
     // Dimensions
-    const width = d3.min([
-      (window.innerWidth - 280) * 0.9,
-      (window.innerHeight - 130),
-    ])
+    const width =  d3.max([d3.min([
+      (props.Width - 280) * 0.9,
+      props.Height - 130,
+    ]), 400])
     let dimensions = {
       width,
       height: width,
@@ -26,10 +26,13 @@ const ScatterPlotViz = (props) => {
     }
     dimensions.boundedWidth = dimensions.width
       - dimensions.margins.left
-      - dimensions.margins.right;
+      - dimensions.margins.right
     dimensions.boundedHeight = dimensions.height
       - dimensions.margins.top
-      - dimensions.margins.bottom;
+      - dimensions.margins.bottom
+
+    // Clear canvas
+    d3.select(ref.current).selectAll("*").remove()
 
     // Draw canvas
     const wrapper = d3.select(ref.current)
@@ -106,9 +109,9 @@ const ScatterPlotViz = (props) => {
         .style("transform", "rotate(-90deg)")
         .style("text-anchor", "middle")
 
-  }, [props.Data, ref.current]) // redraw chart if data changes
+  }, [props.Data, props.Width, props.Height, ref.current])
 
   return <div ref={ref}></div>
 };
 
-export default ScatterPlotViz;
+export default ScatterPlotViz
