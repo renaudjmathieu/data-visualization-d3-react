@@ -5,8 +5,8 @@ import './index.css';
 import App from './App';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LineChart from './pages/LineChart';
-import ScatterChart from './pages/ScatterChart';
-import BarChart from './pages/BarChart';
+import ScatterPlot from './pages/ScatterPlot';
+import Box from './pages/Box';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,8 +14,8 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="line-chart" element={<LineChart />} />
-          <Route path="scatter-chart" element={<ScatterChart />} />
-          <Route path="bar-chart" element={<BarChart />} />
+          <Route path="scatter-plot" element={<ScatterPlot />} />
+          <Route path="box" element={<Box />} />
           <Route path="*" element={<h1>404: Not Found</h1>} />
         </Route>
       </Routes>
