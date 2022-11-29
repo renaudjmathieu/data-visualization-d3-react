@@ -1,11 +1,12 @@
 import React from "react";
-import LineChart from "./components/LineChart";
-import data from './data/my_weather_data.json';
+import Navbar from "./components/Navbar/Navbar";
+import { Outlet } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <LineChart Data={data} />
+      <Navbar />
+      <Outlet />
     </div>
   );
 }

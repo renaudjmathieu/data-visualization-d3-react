@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as d3 from "d3"
 
-const LineChart = (props) => {
+const LineChartViz = (props) => {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const LineChart = (props) => {
 
     // Dimensions
     let dimensions = {
-      width: window.innerWidth * 0.9,
+      width: (window.innerWidth - 280) * 0.9,
       height: window.innerHeight * 0.6,
       margins: {
         top: 15,
@@ -100,4 +100,4 @@ const LineChart = (props) => {
   return <div ref={ref}></div>
 };
 
-export default LineChart;
+export default LineChartViz;
