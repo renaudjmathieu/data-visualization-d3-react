@@ -34,6 +34,7 @@ const Navbar = () => {
           <ListItem
             key={item.id}
             onClick={() => navigate(item.link)}
+            selected={item.link === location.pathname}
             disablePadding
           >
             <ListItemButton>

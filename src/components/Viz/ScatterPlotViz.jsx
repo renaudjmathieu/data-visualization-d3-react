@@ -1,24 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as d3 from "d3"
 
-const LineChartViz = (props) => {
+const ScatterPlotViz = (props) => {
   const ref = useRef(null)
 
   useEffect(() => {
     // Accessors
-    const parseDate = d3.timeParse("%Y-%m-%d")
-    const xAccessor = (d) => parseDate(d.date)
-    const yAccessor = (d) => d.temperatureMax
+    const xAccessor = (d) => d.dewPoint
+    const yAccessor = (d) => d.humidity
 
     // Dimensions
+    const width = d3.min([
+      (window.innerWidth - 280) * 0.9,
+      (window.innerHeight - 130),
+    ])
     let dimensions = {
-      width: (window.innerWidth - 280) * 0.9,
-      height: window.innerHeight * 0.6,
+      width,
+      height: width,
       margins: {
-        top: 15,
-        right: 15,
-        bottom: 40,
-        left: 60,
+        top: 10,
+        right: 10,
+        bottom: 50,
+        left: 50,
       }
     }
     dimensions.boundedWidth = dimensions.width
@@ -45,7 +48,7 @@ const LineChartViz = (props) => {
         )
 
     // Create scales
-    const xScale = d3.scaleTime()
+    const xScale = d3.scaleLinear()
       .domain(d3.extent(props.Data, xAccessor))
       .range([0, dimensions.boundedWidth])
       .nice()
@@ -54,50 +57,58 @@ const LineChartViz = (props) => {
       .domain(d3.extent(props.Data, yAccessor))
       .range([dimensions.boundedHeight, 0])
       .nice()
-      
-    const freezingTemperaturePlacement = yScale(32)
-    const freezingTemperatures = bounds
-      .append("rect")
-        .attr("x", 0)
-        .attr("width", dimensions.boundedWidth)
-        .attr("y", freezingTemperaturePlacement)
-        .attr("height", dimensions.boundedHeight - freezingTemperaturePlacement)
-        .attr("fill", "#e0f3f3")
 
     // Draw data
-    const lineGenerator = d3.line()
-      .x(d => xScale(xAccessor(d)))
-      .y(d => yScale(yAccessor(d)))
-      
-    const line = bounds
-      .append("path")
-        .attr("d", lineGenerator(props.Data))
-        .attr("fill", "none")
-        .attr("stroke", "#af9358")
-        .attr("stroke-width", 2)
+    const dots = bounds
+      .selectAll("circle")
+      .data(props.Data)
+      .enter()
+      .append("circle")
+        .attr("cx", d => xScale(xAccessor(d)))
+        .attr("cy", d => yScale(yAccessor(d)))
+        .attr("r", 5)
+        .attr("fill", "cornflowerblue")
 
     // Draw peripherals
     const xAxisGenerator = d3.axisBottom()
-      .scale(xScale)  
+      .scale(xScale)
 
     const xAxis = bounds
       .append("g")
         .call(xAxisGenerator)
-          .style(
-            "transform", `translateY(${
-              dimensions.boundedHeight
-            }px)`)
+        .style("transform", `translateY(${
+          dimensions.boundedHeight
+        }px)`)
+
+    const xAxisLabel = xAxis
+      .append("text")
+        .attr("x", dimensions.boundedWidth / 2)
+        .attr("y", dimensions.margins.bottom - 10)
+        .attr("fill", "black")
+        .style("font-size", "1.4em")
+        .html("Dew point (&deg;F)")
 
     const yAxisGenerator = d3.axisLeft()
       .scale(yScale)
-      
+      .ticks(4)
+
     const yAxis = bounds
       .append("g")
         .call(yAxisGenerator)
+
+    const yAxisLabel = yAxis
+      .append("text")
+        .attr("x", -dimensions.boundedHeight / 2)
+        .attr("y", -dimensions.margins.left + 10)
+        .attr("fill", "black")
+        .style("font-size", "1.4em")
+        .html("Relative humidity")
+        .style("transform", "rotate(-90deg)")
+        .style("text-anchor", "middle")
 
   }, [props.Data, ref.current]) // redraw chart if data changes
 
   return <div ref={ref}></div>
 };
 
-export default LineChartViz;
+export default ScatterPlotViz;
