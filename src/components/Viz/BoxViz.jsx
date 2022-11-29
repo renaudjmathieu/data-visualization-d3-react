@@ -7,8 +7,8 @@ const BoxViz = (props) => {
   useEffect(() => {
     // Dimensions
     const width = d3.min([
-      (props.Width - 280) * 0.9,
-      props.Height - 130,
+      props.Width * 0.9,
+      props.Height,
     ])
     let dimensions = {
       width,

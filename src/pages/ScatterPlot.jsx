@@ -9,7 +9,7 @@ const ScatterPlot = () => {
     return (
         <div className="pages">
             <h1>Scatter Plot</h1>
-            <ScatterPlotViz Data={data} Width={width} Height={height} />
+            <ScatterPlotViz Data={data} Width={width - 280} Height={height - 130} />
         </div>
     );
 }

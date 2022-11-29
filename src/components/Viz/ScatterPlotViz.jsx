@@ -11,8 +11,8 @@ const ScatterPlotViz = (props) => {
 
     // Dimensions
     const width =  d3.max([d3.min([
-      (props.Width - 280) * 0.9,
-      props.Height - 130,
+      props.Width * 0.9,
+      props.Height,
     ]), 400])
     let dimensions = {
       width,

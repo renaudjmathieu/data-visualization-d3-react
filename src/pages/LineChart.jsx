@@ -9,7 +9,7 @@ const LineChart = () => {
     return (
         <div className="pages">
             <h1>Line Chart</h1>
-            <LineChartViz Data={data} Width={width} Height={height} />
+            <LineChartViz Data={data} Width={width - 280} Height={height - 130} />
         </div>
     );
 }

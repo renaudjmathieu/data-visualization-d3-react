@@ -9,7 +9,7 @@ const Box = () => {
     return (
         <div className="pages">
             <h1>A Box</h1>
-            <BoxViz Data={data} Width={width} Height={height} />
+            <BoxViz Data={data} Width={width - 280} Height={height - 130} />
         </div>
     );
 }

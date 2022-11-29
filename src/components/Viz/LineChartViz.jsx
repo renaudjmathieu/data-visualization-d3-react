@@ -12,19 +12,20 @@ const LineChartViz = (props) => {
 
     // Dimensions
     const width = d3.max([
-      (props.Width - 280) * 0.9,
+      props.Width,
       800,
     ])
     const height = d3.max([
-      props.Height - 330,
-      400
+      props.Height > 600 ? 600 : props.Height,
+      400,
     ])
+    
     let dimensions = {
       width,
       height,
       margins: {
         top: 10,
-        right: 10,
+        right: 80,
         bottom: 50,
         left: 50,
       }
