@@ -5,7 +5,7 @@ import BoxViz from "../components/Viz/BoxViz"
 import data from '../data/my_weather_data.json'
 
 const Box = () => {
-    const [width, height] = useWindowSize()
+    const [width, height] = [window.innerWidth, window.innerHeight]
     return (
         <div className="pages">
             <h1>A Box</h1>
