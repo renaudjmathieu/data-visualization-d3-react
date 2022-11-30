@@ -43,9 +43,6 @@ const HistogramViz = (props) => {
       .attr("class", "bounds")
       .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
 
-    bounds.append("g")
-      .attr("class", "bins")
-
     // Create scales
     const xScale = d3.scaleLinear()
       .domain(d3.extent(props.data, props.xAccessor))
@@ -75,15 +72,11 @@ const HistogramViz = (props) => {
       .duration(1000)
       .ease(d3.easeCubicInOut)
 
-
-    const barRects = bounds.select(".bins")
-      .selectAll(".bin")
+    bounds.selectAll("rect.bar")
       .data(bins)
       .join(
         enter => (
-          enter.append("g")
-                .attr("class", "bin")
-              .append("rect")
+          enter.append("rect")
                 .attr("class", "bar")
                 .attr("x", d => xScale(d.x0) + barPadding)
                 .attr("y", d => dimensions.boundedHeight)
@@ -101,17 +94,15 @@ const HistogramViz = (props) => {
               ))
         ),
         update => (
-          update.select(".bar")
-                  .transition(updateTransition)
+          update.transition(updateTransition)
                     .attr("x", d => xScale(d.x0) + barPadding)
                     .attr("y", d => yScale(props.yAccessor(d)))
                     .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
                     .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
-                    .style("fill", "cornflowerblue")
+                    .style("fill", "orange")
         ),
         exit => (
-          exit.select(".bar")
-                .transition(exitTransition)
+          exit.style("fill", "red").transition(exitTransition)
                   .attr("height", 0)
                   .attr("y", d => dimensions.boundedHeight)
                   .remove()
