@@ -14,7 +14,6 @@ const LineChartViz = (props) => {
       props.height > 600 ? 600 : props.height,
       400,
     ])
-    
     let dimensions = {
       width,
       height,
@@ -38,18 +37,12 @@ const LineChartViz = (props) => {
     // Draw canvas
     const wrapper = d3.select(ref.current)
       .append("svg")
-        .attr("width", dimensions.width)
-        .attr("height", dimensions.height)
+      .attr("width", dimensions.width)
+      .attr("height", dimensions.height)
 
     const bounds = wrapper
       .append("g")
-        .style(
-          "transform", `translate(${
-            dimensions.margins.left
-          }px, ${ 
-            dimensions.margins.top
-          }px)`
-        )
+      .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
 
     // Create scales
     const xScale = d3.scaleTime()
@@ -61,57 +54,50 @@ const LineChartViz = (props) => {
       .domain(d3.extent(props.data, props.yAccessor))
       .range([dimensions.boundedHeight, 0])
       .nice()
-      
+
     const freezingTemperaturePlacement = yScale(32)
     const freezingTemperatures = bounds
       .append("rect")
-        .attr("x", 0)
-        .attr("width", dimensions.boundedWidth)
-        .attr("y", freezingTemperaturePlacement)
-        .attr("height", dimensions.boundedHeight - freezingTemperaturePlacement)
-        .attr("fill", "#e0f3f3")
+      .attr("x", 0)
+      .attr("width", dimensions.boundedWidth)
+      .attr("y", freezingTemperaturePlacement)
+      .attr("height", dimensions.boundedHeight - freezingTemperaturePlacement)
+      .attr("fill", "#e0f3f3")
 
     // Draw data
     const lineGenerator = d3.line()
       .x(d => xScale(props.xAccessor(d)))
       .y(d => yScale(props.yAccessor(d)))
-      
+
     const line = bounds
       .append("path")
-        .attr("d", lineGenerator(props.data))
-        .attr("fill", "none")
-        .attr("stroke", "#af9358")
-        .attr("stroke-width", 2)
+      .attr("d", lineGenerator(props.data))
+      .attr("fill", "none")
+      .attr("stroke", "#af9358")
+      .attr("stroke-width", 2)
 
     // Draw peripherals
     const xAxisGenerator = d3.axisBottom()
-      .scale(xScale)  
+      .scale(xScale)
 
-    const xAxis = bounds
-      .append("g")
-        .call(xAxisGenerator)
-          .style(
-            "transform", `translateY(${
-              dimensions.boundedHeight
-            }px)`)
+    const xAxis = bounds.append("g")
+      .call(xAxisGenerator)
+      .style("transform", `translateY(${dimensions.boundedHeight}px)`)
 
-    const xAxisLabel = xAxis
-      .append("text")
-        .attr("x", dimensions.boundedWidth / 2)
-        .attr("y", dimensions.margins.bottom - 10)
-        .attr("fill", "black")
-        .style("font-size", "1.4em")
-        .html(props.xAxisLabel)
+    const xAxisLabel = xAxis.append("text")
+      .attr("x", dimensions.boundedWidth / 2)
+      .attr("y", dimensions.margins.bottom - 10)
+      .attr("fill", "black")
+      .style("font-size", "1.4em")
+      .html(props.xAxisLabel)
 
     const yAxisGenerator = d3.axisLeft()
       .scale(yScale)
-      
-    const yAxis = bounds
-      .append("g")
-        .call(yAxisGenerator)
 
-    const yAxisLabel = yAxis
-    .append("text")
+    const yAxis = bounds.append("g")
+      .call(yAxisGenerator)
+
+    const yAxisLabel = yAxis.append("text")
       .attr("x", -dimensions.boundedHeight / 2)
       .attr("y", -dimensions.margins.left + 10)
       .attr("fill", "black")
@@ -120,7 +106,7 @@ const LineChartViz = (props) => {
       .style("transform", "rotate(-90deg)")
       .style("text-anchor", "middle")
 
-  }, [props.data, props.xAccessor, props.yAccessor, props.xAxisLabel, props.yAxisLabel, props.width, props.height, ref.current])
+  }, [props, ref.current])
 
   return <div ref={ref}></div>
 }

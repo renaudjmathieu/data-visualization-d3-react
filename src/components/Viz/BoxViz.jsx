@@ -8,10 +8,10 @@ const BoxViz = () => {
     // Draw canvas
     const wrapper = d3.select(ref.current)
       .append("svg")
-        .attr("preserveAspectRatio", "xMinYMin meet")
-        .attr("viewBox", "0 0 100 100")
-        .classed("svg-content", true)
-        .style("border", "2px solid #af9358")
+      .attr("preserveAspectRatio", "xMinYMin meet")
+      .attr("viewBox", "0 0 100 100")
+      .classed("svg-content", true)
+      .style("border", "2px solid #af9358")
 
   }, [ref.current])
 
