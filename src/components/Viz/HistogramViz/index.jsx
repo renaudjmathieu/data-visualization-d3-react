@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import * as d3 from "d3"
 import './styles.css'
 
-const ScatterPlotViz = (props) => {
-  const ref = useRef(null)
+const HistogramViz = (props) => {
+  const ref = useRef()
 
   useEffect(() => {
     // Dimensions
@@ -32,16 +32,15 @@ const ScatterPlotViz = (props) => {
       - dimensions.margins.top
       - dimensions.margins.bottom
 
-    // Clear canvas
-    d3.select(ref.current).selectAll("*").remove()
-
     // Draw canvas
     const wrapper = d3.select(ref.current)
-      .append("svg")
       .attr("width", dimensions.width)
       .attr("height", dimensions.height)
 
-    const bounds = wrapper.append("g")
+    const bounds = wrapper.selectAll("g.bounds")
+      .data([null])
+      .join("g")
+      .attr("class", "bounds")
       .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
 
     // Create scales
@@ -63,63 +62,106 @@ const ScatterPlotViz = (props) => {
       .nice()
 
     // Draw data
-    const binGroup = bounds.append("g")
-    const binGroups = binGroup.selectAll("g")
-      .data(bins)
-      .join("g")
-      .attr("class", "bin")
-
     const barPadding = 1
-    const barRects = binGroups.append("rect")
-      .attr("x", d => xScale(d.x0) + barPadding / 2)
-      .attr("y", d => yScale(props.yAccessor(d)))
-      .attr("width", d => d3.max([
-        0,
-        xScale(d.x1) - xScale(d.x0) - barPadding
-      ]))
-      .attr("height", d => dimensions.boundedHeight
-        - yScale(props.yAccessor(d))
-      )
 
-    const barText = binGroups.filter(props.yAccessor)
-      .append("text")
-      .attr("x", d => xScale(d.x0)
-        + (xScale(d.x1) - xScale(d.x0)) / 2
+    const updateTransition = d3.transition()
+      .duration(1000)
+      .delay(1000)
+      .ease(d3.easeCubicInOut)
+    const exitTransition = d3.transition()
+      .duration(1000)
+      .ease(d3.easeCubicInOut)
+
+    const binGroup = bounds.selectAll("g.bin-group")
+      .data([null])
+      .join("g")
+      .attr("class", "bin-group")
+
+    let binGroups = binGroup.selectAll("g.bin-groups")
+      .data([null])
+      .join("g")
+      .attr("class", "bin-groups")
+
+    const barRects = binGroups.selectAll("rect.bar")
+      .data(bins, d => [d])
+      .join(
+        enter => (
+          enter.append("rect")
+              .attr("class", "bar")
+              .attr("x", d => xScale(d.x0) + barPadding)
+              .attr("y", d => dimensions.boundedHeight)
+              .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
+              .attr("height", 0)
+              .style("fill", "yellowgreen")
+            .call(enter => (
+              enter.transition(updateTransition)
+                .attr("x", d => xScale(d.x0) + barPadding)
+                .attr("y", d => yScale(props.yAccessor(d)))
+                .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
+                .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
+                .transition()
+                  .style("fill", "cornflowerblue")
+              ))
+        ),
+        update => (
+          update.transition(updateTransition)
+              .attr("x", d => xScale(d.x0) + barPadding)
+              .attr("y", d => yScale(props.yAccessor(d)))
+              .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
+              .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
+              .style("fill", "orange")
+        ),
+        exit => (
+          exit
+            .call(exit => (
+              exit.transition(exitTransition)
+                .attr("height", 0)
+                .attr("y", d => dimensions.boundedHeight)
+                .remove()
+            ))
+        ),
       )
-      .attr("y", d => yScale(props.yAccessor(d)) - 5)
-      .text(props.yAccessor)
 
     // Draw peripherals
     const mean = d3.mean(props.data, props.xAccessor)
-    const meanLine = bounds.append("line")
+    const meanLine = bounds.selectAll("line.mean")
+      .data([null])
+      .join("line")
+      .attr("class", "mean")
       .attr("x1", xScale(mean))
       .attr("x2", xScale(mean))
       .attr("y1", -15)
       .attr("y2", dimensions.boundedHeight)
-      .attr("class", "mean")
 
-    const meanLabel = bounds.append("text")
+    const meanLabel = bounds.selectAll("text.mean-label")
+      .data([null])
+      .join("text")
+      .attr("class", "mean-label")
       .attr("x", xScale(mean))
       .attr("y", -20)
       .text("mean")
-      .attr("class", "mean-label")
 
     const xAxisGenerator = d3.axisBottom()
       .scale(xScale)
 
-    const xAxis = bounds.append("g")
+    const xAxis = bounds.selectAll("g.x-axis")
+      .data([null])
+      .join("g")
+      .attr("class", "x-axis")
       .call(xAxisGenerator)
       .style("transform", `translateY(${dimensions.boundedHeight}px)`)
 
-    const xAxisLabel = xAxis.append("text")
+    const xAxisLabel = xAxis.selectAll("text.x-axis-label")
+      .data([null])
+      .join("text")
+      .attr("class", "x-axis-label")
       .attr("x", dimensions.boundedWidth / 2)
       .attr("y", dimensions.margins.bottom - 10)
-      .attr("class", "x-axis-label")
       .text(props.xAxisLabel)
 
-  }, [props, ref.current])
+  }, [props])
 
-  return <div ref={ref}></div>
+  return <svg ref={ref} />
 };
 
-export default ScatterPlotViz
+export default HistogramViz

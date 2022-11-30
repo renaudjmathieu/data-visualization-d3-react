@@ -1,8 +1,4 @@
-.bin rect {
-    fill: cornflowerblue;
-}
-
-.bin text {
+.bar-text {
     text-anchor: middle;
     fill: darkgrey;
     font-size: 12px;
