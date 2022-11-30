@@ -77,35 +77,35 @@ const HistogramViz = (props) => {
       .join(
         enter => (
           enter.append("rect")
-                .attr("class", "bar")
-                .attr("x", d => xScale(d.x0) + barPadding)
-                .attr("y", d => dimensions.boundedHeight)
-                .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
-                .attr("height", 0)
-                .style("fill", "yellowgreen")
+            .attr("class", "bar")
+            .attr("x", d => xScale(d.x0) + barPadding)
+            .attr("y", d => dimensions.boundedHeight)
+            .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
+            .attr("height", 0)
+            .style("fill", "yellowgreen")
             .call(enter => (
               enter.transition(updateTransition)
                 .attr("x", d => xScale(d.x0) + barPadding)
                 .attr("y", d => yScale(props.yAccessor(d)))
-                .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
+                .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
                 .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
                 .transition()
-                  .style("fill", "cornflowerblue")
-              ))
+                .style("fill", "cornflowerblue")
+            ))
         ),
         update => (
           update.transition(updateTransition)
-                    .attr("x", d => xScale(d.x0) + barPadding)
-                    .attr("y", d => yScale(props.yAccessor(d)))
-                    .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
-                    .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
-                    .style("fill", "orange")
+            .attr("x", d => xScale(d.x0) + barPadding)
+            .attr("y", d => yScale(props.yAccessor(d)))
+            .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
+            .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
+            .style("fill", "orange")
         ),
         exit => (
           exit.style("fill", "red").transition(exitTransition)
-                  .attr("height", 0)
-                  .attr("y", d => dimensions.boundedHeight)
-                  .remove()
+            .attr("height", 0)
+            .attr("y", d => dimensions.boundedHeight)
+            .remove()
         ),
       )
 
