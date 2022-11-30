@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import * as d3 from "d3"
+import './styles.css'
 
 const ScatterPlotViz = (props) => {
   const ref = useRef(null)
@@ -21,7 +22,7 @@ const ScatterPlotViz = (props) => {
         top: 30,
         right: 100,
         bottom: 50,
-        left: 50,
+        left: 10,
       }
     }
     dimensions.boundedWidth = dimensions.width
@@ -66,6 +67,7 @@ const ScatterPlotViz = (props) => {
     const binGroups = binGroup.selectAll("g")
       .data(bins)
       .join("g")
+      .attr("class", "bin")
 
     const barPadding = 1
     const barRects = binGroups.append("rect")
@@ -78,7 +80,6 @@ const ScatterPlotViz = (props) => {
       .attr("height", d => dimensions.boundedHeight
         - yScale(props.yAccessor(d))
       )
-      .attr("fill", "cornflowerblue")
 
     const barText = binGroups.filter(props.yAccessor)
       .append("text")
@@ -87,10 +88,6 @@ const ScatterPlotViz = (props) => {
       )
       .attr("y", d => yScale(props.yAccessor(d)) - 5)
       .text(props.yAccessor)
-      .style("text-anchor", "middle")
-      .style("fill", "darkgrey")
-      .style("font-size", "12px")
-      .style("font-family", "sans-serif")
 
     // Draw peripherals
     const mean = d3.mean(props.data, props.xAccessor)
@@ -99,18 +96,13 @@ const ScatterPlotViz = (props) => {
       .attr("x2", xScale(mean))
       .attr("y1", -15)
       .attr("y2", dimensions.boundedHeight)
-      .attr("stroke", "maroon")
-      .attr("stroke-dasharray", "2px 4px")
+      .attr("class", "mean")
 
     const meanLabel = bounds.append("text")
       .attr("x", xScale(mean))
       .attr("y", -20)
       .text("mean")
-      .attr("fill", "maroon")
-      .style("text-anchor", "middle")
-      .style("font-family", "sans-serif")
-      .style("font-size", "12px")
-      .style("text-transform", "capitalize")
+      .attr("class", "mean-label")
 
     const xAxisGenerator = d3.axisBottom()
       .scale(xScale)
@@ -122,10 +114,8 @@ const ScatterPlotViz = (props) => {
     const xAxisLabel = xAxis.append("text")
       .attr("x", dimensions.boundedWidth / 2)
       .attr("y", dimensions.margins.bottom - 10)
-      .attr("fill", "black")
-      .style("font-size", "1.4em")
-      .text(props.xLabel)
-      .style("text-transform", "capitalize")
+      .attr("class", "x-axis-label")
+      .text(props.xAxisLabel)
 
   }, [props, ref.current])
 

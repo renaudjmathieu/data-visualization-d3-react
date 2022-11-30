@@ -1,12 +1,16 @@
 import React from "react"
-import './styles.css'
+import '../index.css'
 import BoxViz from "../components/Viz/BoxViz"
+import Grid from '@mui/material/Unstable_Grid2';
 
 const Box = () => {
     return (
-        <div className="pages">
-            <h1>A Box</h1>
-            <BoxViz />
+        <div className="page">
+            <Grid container spacing={2}>
+                <Grid xs={12}>
+                    <BoxViz />
+                </Grid>
+            </Grid>
         </div>
     );
 }
