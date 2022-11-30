@@ -43,6 +43,9 @@ const HistogramViz = (props) => {
       .attr("class", "bounds")
       .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
 
+    bounds.append("g")
+      .attr("class", "bins")
+
     // Create scales
     const xScale = d3.scaleLinear()
       .domain(d3.extent(props.data, props.xAccessor))
@@ -72,27 +75,21 @@ const HistogramViz = (props) => {
       .duration(1000)
       .ease(d3.easeCubicInOut)
 
-    const binGroup = bounds.selectAll("g.bin-group")
-      .data([null])
-      .join("g")
-      .attr("class", "bin-group")
 
-    let binGroups = binGroup.selectAll("g.bin-groups")
-      .data([null])
-      .join("g")
-      .attr("class", "bin-groups")
-
-    const barRects = binGroups.selectAll("rect.bar")
-      .data(bins, d => [d])
+    const barRects = bounds.select(".bins")
+      .selectAll(".bin")
+      .data(bins)
       .join(
         enter => (
-          enter.append("rect")
-              .attr("class", "bar")
-              .attr("x", d => xScale(d.x0) + barPadding)
-              .attr("y", d => dimensions.boundedHeight)
-              .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
-              .attr("height", 0)
-              .style("fill", "yellowgreen")
+          enter.append("g")
+                .attr("class", "bin")
+              .append("rect")
+                .attr("class", "bar")
+                .attr("x", d => xScale(d.x0) + barPadding)
+                .attr("y", d => dimensions.boundedHeight)
+                .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
+                .attr("height", 0)
+                .style("fill", "yellowgreen")
             .call(enter => (
               enter.transition(updateTransition)
                 .attr("x", d => xScale(d.x0) + barPadding)
@@ -104,21 +101,20 @@ const HistogramViz = (props) => {
               ))
         ),
         update => (
-          update.transition(updateTransition)
-              .attr("x", d => xScale(d.x0) + barPadding)
-              .attr("y", d => yScale(props.yAccessor(d)))
-              .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
-              .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
-              .style("fill", "orange")
+          update.select(".bar")
+                  .transition(updateTransition)
+                    .attr("x", d => xScale(d.x0) + barPadding)
+                    .attr("y", d => yScale(props.yAccessor(d)))
+                    .attr("width", d => d3.max([0,xScale(d.x1) - xScale(d.x0) - barPadding]))
+                    .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
+                    .style("fill", "cornflowerblue")
         ),
         exit => (
-          exit
-            .call(exit => (
-              exit.transition(exitTransition)
-                .attr("height", 0)
-                .attr("y", d => dimensions.boundedHeight)
-                .remove()
-            ))
+          exit.select(".bar")
+                .transition(exitTransition)
+                  .attr("height", 0)
+                  .attr("y", d => dimensions.boundedHeight)
+                  .remove()
         ),
       )
 
