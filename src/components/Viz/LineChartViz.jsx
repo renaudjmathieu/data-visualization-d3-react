@@ -19,7 +19,7 @@ const LineChartViz = (props) => {
       height,
       margins: {
         top: 10,
-        right: 80,
+        right: 100,
         bottom: 50,
         left: 50,
       }

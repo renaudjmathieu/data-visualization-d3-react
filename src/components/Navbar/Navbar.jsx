@@ -33,8 +33,8 @@ const Navbar = () => {
         {mainNavbarListItems.map((item, index) => (
           <ListItem
             key={item.id}
-            onClick={() => navigate(item.link)}
-            selected={item.link === location.pathname}
+            onClick={() => navigate(item.path)}
+            selected={item.path === location.pathname}
             disablePadding
           >
             <ListItemButton>

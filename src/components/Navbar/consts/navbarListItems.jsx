@@ -4,30 +4,38 @@ import ScatterPlotIcon from '@mui/icons-material/ScatterPlot'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
+import LineChart from '../../../pages/LineChart'
+import ScatterPlot from '../../../pages/ScatterPlot'
+import Histogram from '../../../pages/Histogram'
+import Box from '../../../pages/Box'
 
 export const mainNavbarListItems = [
     {
         id: 1,
         icon: <ShowChartIcon />,
+        element: <LineChart />,
         title: 'Line Chart',
-        link: '/line-chart',
+        path: '/line-chart',
     },
     {
         id: 2,
-        icon: <ScatterPlotIcon />,
-        title: 'Scatter Plot',
-        link: '/scatter-plot',
+        icon: <BarChartIcon />,
+        element: <Histogram />,
+        title: 'Histogram',
+        path: '/histogram'
     },
     {
         id: 3,
-        icon: <BarChartIcon />,
-        title: 'Histogram',
-        link: '/histogram'
+        icon: <ScatterPlotIcon />,
+        element: <ScatterPlot />,
+        title: 'Scatter Plot',
+        path: '/scatter-plot',
     },
     {
         id: 4,
         icon: <CheckBoxOutlineBlankIcon />,
+        element: <Box />,
         title: 'A Box',
-        link: '/box'
+        path: '/box'
     }
 ]
