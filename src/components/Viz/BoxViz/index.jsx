@@ -4,11 +4,6 @@ import './styles.css'
 const BoxViz = () => {
   const ref = useRef(null)
 
-  useEffect(() => {
-    // Draw canvas
-
-  }, [ref.current])
-
   return <div class="box" ref={ref}></div>
 }
 

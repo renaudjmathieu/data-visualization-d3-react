@@ -19,23 +19,23 @@ export const mainNavbarListItems = [
     },
     {
         id: 2,
-        icon: <BarChartIcon />,
-        element: <Histogram />,
-        title: 'Histogram',
-        path: '/histogram'
-    },
-    {
-        id: 3,
         icon: <ScatterPlotIcon />,
         element: <ScatterPlot />,
         title: 'Scatter Plot',
         path: '/scatter-plot',
     },
     {
-        id: 4,
+        id: 3,
         icon: <CheckBoxOutlineBlankIcon />,
         element: <Box />,
         title: 'A Box',
         path: '/box'
+    },
+    {
+        id: 4,
+        icon: <BarChartIcon />,
+        element: <Histogram />,
+        title: 'Histogram',
+        path: '/histogram'
     }
 ]

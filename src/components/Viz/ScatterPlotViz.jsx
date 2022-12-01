@@ -95,38 +95,6 @@ const ScatterPlotViz = (props) => {
       .style("transform", "rotate(-90deg)")
       .style("text-anchor", "middle")
 
-    const legend = wrapper.append("g")
-      .style("transform", `translate(${dimensions.width - 150}px, ${dimensions.height - 150}px)`)
-
-    const legendTitle = legend.append("text")
-      .attr("x", 0)
-      .attr("y", -10)
-      .attr("fill", "black")
-      .style("font-size", "1.4em")
-      .html(props.colorLegendLabel)
-
-    const legendScale = d3.scaleLinear()
-      .domain(colorScale.domain())
-      .range([0, 100])
-
-    const legendAxisGenerator = d3.axisRight()
-      .scale(legendScale)
-      .tickSize(13)
-      .ticks(3)
-      .tickFormat(d3.format(".2s"))
-
-    const legendAxis = legend.append("g")
-      .call(legendAxisGenerator)
-      .style("transform", `translateX(100px)`)
-
-    const legendRect = legend.append("rect")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("width", 100)
-      .attr("height", 80)
-      .attr("fill", "none")
-      .attr("stroke", "black")
-
   }, [props, ref.current])
 
   return <div ref={ref}></div>

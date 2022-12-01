@@ -18,7 +18,6 @@ const ScatterPlot = () => {
                         colorAccessor={(d) => d.cloudCover}
                         xAxisLabel="Dew point (&deg;F)"
                         yAxisLabel="Relative humidity"
-                        colorLegendLabel="Cloud cover"
                         width={width - 240}
                         height={height - 130} />
                 </Grid>

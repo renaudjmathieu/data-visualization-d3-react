@@ -4,63 +4,66 @@ import './styles.css'
 
 const HistogramViz = (props) => {
   const ref = useRef()
+  const data = props.data
+  const xAccessor = props.xAccessor
+  const yAccessor = props.yAccessor
+
+  // Dimensions
+  const width = d3.max([
+    props.width,
+    800,
+  ])
+  const height = d3.max([
+    props.height > 600 ? 600 : props.height,
+    400,
+  ])
+  let dimensions = {
+    width,
+    height,
+    margins: {
+      top: 30,
+      right: 100,
+      bottom: 50,
+      left: 10,
+    }
+  }
+  dimensions.boundedWidth = dimensions.width
+    - dimensions.margins.left
+    - dimensions.margins.right
+  dimensions.boundedHeight = dimensions.height
+    - dimensions.margins.top
+    - dimensions.margins.bottom
+
+  // Draw canvas
+  const wrapper = d3.select(ref.current)
+    .attr("width", dimensions.width)
+    .attr("height", dimensions.height)
+
+  const bounds = wrapper.selectAll("g.bounds")
+    .data([null])
+    .join("g")
+    .attr("class", "bounds")
+    .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
+
+  bounds.append("g")
+    .attr("class", "bins") // init static elements
 
   useEffect(() => {
-    // Dimensions
-    const width = d3.max([
-      props.width,
-      800,
-    ])
-    const height = d3.max([
-      props.height > 600 ? 600 : props.height,
-      400,
-    ])
-    let dimensions = {
-      width,
-      height,
-      margins: {
-        top: 30,
-        right: 100,
-        bottom: 50,
-        left: 10,
-      }
-    }
-    dimensions.boundedWidth = dimensions.width
-      - dimensions.margins.left
-      - dimensions.margins.right
-    dimensions.boundedHeight = dimensions.height
-      - dimensions.margins.top
-      - dimensions.margins.bottom
-
-    // Draw canvas
-    const wrapper = d3.select(ref.current)
-      .attr("width", dimensions.width)
-      .attr("height", dimensions.height)
-
-    const bounds = wrapper.selectAll("g.bounds")
-      .data([null])
-      .join("g")
-      .attr("class", "bounds")
-      .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
-
-    bounds.append("g")
-      .attr("class", "bins") // init static elements
-
     // Create scales
     const xScale = d3.scaleLinear()
-      .domain(d3.extent(props.data, props.xAccessor))
+      .domain(d3.extent(data, xAccessor))
       .range([0, dimensions.boundedWidth])
       .nice()
 
     const binsGenerator = d3.bin()
       .domain(xScale.domain())
-      .value(props.xAccessor)
+      .value(xAccessor)
       .thresholds(12)
 
-    const bins = binsGenerator(props.data)
+    const bins = binsGenerator(data)
 
     const yScale = d3.scaleLinear()
-      .domain([0, d3.max(bins, props.yAccessor)])
+      .domain([0, d3.max(bins, yAccessor)])
       .range([dimensions.boundedHeight, 0])
       .nice()
 
@@ -104,26 +107,26 @@ const HistogramViz = (props) => {
       .attr("x", d => xScale(d.x0) + (xScale(d.x1) - xScale(d.x0)) / 2)
       .attr("y", dimensions.boundedHeight)
 
-    // update binGroups to include new points
-    binGroups = newBinGroups.merge(binGroups)
+    
+    binGroups = newBinGroups.merge(binGroups) // update binGroups to include new points
 
     const barRects = binGroups.select("rect")
       .transition(updateTransition)
       .attr("x", d => xScale(d.x0) + barPadding)
-      .attr("y", d => yScale(props.yAccessor(d)))
+      .attr("y", d => yScale(yAccessor(d)))
       .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
-      .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
+      .attr("height", d => dimensions.boundedHeight - yScale(yAccessor(d)))
       .transition()
       .style("fill", "cornflowerblue")
 
     const barText = binGroups.select("text")
       .transition(updateTransition)
-        .attr("x", d => xScale(d.x0) + (xScale(d.x1) - xScale(d.x0)) / 2)
-        .attr("y", d => yScale(props.yAccessor(d)) - 5)
-        .text(props.yAccessor)
+      .attr("x", d => xScale(d.x0) + (xScale(d.x1) - xScale(d.x0)) / 2)
+      .attr("y", d => yScale(yAccessor(d)) - 5)
+      .text(yAccessor)
 
     // Draw peripherals
-    const mean = d3.mean(props.data, props.xAccessor)
+    const mean = d3.mean(data, xAccessor)
     const meanLine = bounds.selectAll("line.mean")
       .data([null])
       .join("line")
