@@ -1,15 +1,18 @@
-import React from "react";
-import './styles.css';
-import BoxViz from "../components/Viz/BoxViz";
-import data from '../data/my_weather_data.json';
+import React from "react"
+import '../index.css'
+import BoxViz from "../components/Viz/BoxViz"
+import Grid from '@mui/material/Unstable_Grid2';
 
 const Box = () => {
     return (
-        <div className="pages">
-            <h1>A Box</h1>
-            <BoxViz Data={data} />
+        <div className="page">
+            <Grid container spacing={2}>
+                <Grid xs={12}>
+                    <BoxViz />
+                </Grid>
+            </Grid>
         </div>
     );
 }
 
-export default Box;
+export default Box
