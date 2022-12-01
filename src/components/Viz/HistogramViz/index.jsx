@@ -43,6 +43,9 @@ const HistogramViz = (props) => {
       .attr("class", "bounds")
       .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
 
+    bounds.append("g")
+      .attr("class", "bins") // init static elements
+
     // Create scales
     const xScale = d3.scaleLinear()
       .domain(d3.extent(props.data, props.xAccessor))
@@ -72,42 +75,52 @@ const HistogramViz = (props) => {
       .duration(1000)
       .ease(d3.easeCubicInOut)
 
-    bounds.selectAll("rect.bar")
+    let binGroups = bounds.select(".bins")
+      .selectAll(".bin")
       .data(bins)
-      .join(
-        enter => (
-          enter.append("rect")
-            .attr("class", "bar")
-            .attr("x", d => xScale(d.x0) + barPadding)
-            .attr("y", d => dimensions.boundedHeight)
-            .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
-            .attr("height", 0)
-            .style("fill", "yellowgreen")
-            .call(enter => (
-              enter.transition(updateTransition)
-                .attr("x", d => xScale(d.x0) + barPadding)
-                .attr("y", d => yScale(props.yAccessor(d)))
-                .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
-                .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
-                .transition()
-                .style("fill", "cornflowerblue")
-            ))
-        ),
-        update => (
-          update.transition(updateTransition)
-            .attr("x", d => xScale(d.x0) + barPadding)
-            .attr("y", d => yScale(props.yAccessor(d)))
-            .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
-            .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
-            .style("fill", "orange")
-        ),
-        exit => (
-          exit.style("fill", "red").transition(exitTransition)
-            .attr("height", 0)
-            .attr("y", d => dimensions.boundedHeight)
-            .remove()
-        ),
-      )
+
+    const oldBinGroups = binGroups.exit()
+    oldBinGroups.selectAll("rect")
+      .style("fill", "red")
+      .transition(exitTransition)
+      .attr("height", 0)
+      .attr("y", d => dimensions.boundedHeight)
+    oldBinGroups.selectAll("text")
+      .transition(exitTransition)
+      .attr("y", dimensions.boundedHeight)
+    oldBinGroups.transition(exitTransition)
+      .remove()
+
+    const newBinGroups = binGroups.enter().append("g")
+      .attr("class", "bin")
+
+    newBinGroups.append("rect")
+      .attr("x", d => xScale(d.x0) + barPadding)
+      .attr("y", d => dimensions.boundedHeight)
+      .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
+      .attr("height", 0)
+      .style("fill", "yellowgreen")
+    newBinGroups.append("text")
+      .attr("x", d => xScale(d.x0) + (xScale(d.x1) - xScale(d.x0)) / 2)
+      .attr("y", dimensions.boundedHeight)
+
+    // update binGroups to include new points
+    binGroups = newBinGroups.merge(binGroups)
+
+    const barRects = binGroups.select("rect")
+      .transition(updateTransition)
+      .attr("x", d => xScale(d.x0) + barPadding)
+      .attr("y", d => yScale(props.yAccessor(d)))
+      .attr("width", d => d3.max([0, xScale(d.x1) - xScale(d.x0) - barPadding]))
+      .attr("height", d => dimensions.boundedHeight - yScale(props.yAccessor(d)))
+      .transition()
+      .style("fill", "cornflowerblue")
+
+    const barText = binGroups.select("text")
+      .transition(updateTransition)
+        .attr("x", d => xScale(d.x0) + (xScale(d.x1) - xScale(d.x0)) / 2)
+        .attr("y", d => yScale(props.yAccessor(d)) - 5)
+        .text(props.yAccessor)
 
     // Draw peripherals
     const mean = d3.mean(props.data, props.xAccessor)
@@ -115,6 +128,7 @@ const HistogramViz = (props) => {
       .data([null])
       .join("line")
       .attr("class", "mean")
+      .transition(updateTransition)
       .attr("x1", xScale(mean))
       .attr("x2", xScale(mean))
       .attr("y1", -15)
@@ -124,6 +138,7 @@ const HistogramViz = (props) => {
       .data([null])
       .join("text")
       .attr("class", "mean-label")
+      .transition(updateTransition)
       .attr("x", xScale(mean))
       .attr("y", -20)
       .text("mean")
