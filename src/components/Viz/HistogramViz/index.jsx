@@ -45,8 +45,11 @@ const HistogramViz = (props) => {
     .attr("class", "bounds")
     .style("transform", `translate(${dimensions.margins.left}px, ${dimensions.margins.top}px)`)
 
+  // Init static elements
   bounds.append("g")
-    .attr("class", "bins") // init static elements
+    .attr("class", "bins")
+  bounds.append("line")
+    .attr("class", "mean")
 
   useEffect(() => {
     // Create scales
@@ -107,7 +110,7 @@ const HistogramViz = (props) => {
       .attr("x", d => xScale(d.x0) + (xScale(d.x1) - xScale(d.x0)) / 2)
       .attr("y", dimensions.boundedHeight)
 
-    
+
     binGroups = newBinGroups.merge(binGroups) // update binGroups to include new points
 
     const barRects = binGroups.select("rect")
@@ -125,7 +128,6 @@ const HistogramViz = (props) => {
       .attr("y", d => yScale(yAccessor(d)) - 5)
       .text(yAccessor)
 
-    // Draw peripherals
     const mean = d3.mean(data, xAccessor)
     const meanLine = bounds.selectAll("line.mean")
       .data([null])
@@ -146,6 +148,7 @@ const HistogramViz = (props) => {
       .attr("y", -20)
       .text("mean")
 
+    // Draw peripherals
     const xAxisGenerator = d3.axisBottom()
       .scale(xScale)
 
