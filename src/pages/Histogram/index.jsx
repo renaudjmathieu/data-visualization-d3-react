@@ -34,8 +34,8 @@ const Histogram = () => {
             xAccessor={(d) => d[metrics[selectedMetricIndex]]}
             yAccessor={(d) => d.length}
             xAxisLabel={metrics[selectedMetricIndex]}
-            width={width - 240}
-            height={height - 130} />
+            width={window.innerWidth - 240}
+            height={window.innerHeight - 130} />
         </Grid>
       </Grid>
     </div>

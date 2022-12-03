@@ -6,7 +6,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { mainNavbarListItems } from './components/Navbar/consts/navbarListItems'
 
 ReactDOM.render(
-  <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
@@ -18,7 +17,6 @@ ReactDOM.render(
           <Route path="*" element={<h1>404: Not Found</h1>} />
         </Route>
       </Routes>
-    </BrowserRouter>
-  </React.StrictMode>,
+    </BrowserRouter>,
   document.getElementById('root')
 );
