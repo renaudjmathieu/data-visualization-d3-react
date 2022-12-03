@@ -60,3 +60,7 @@
 .tick line {
     stroke: #dadada;
 }
+
+.resize-animation-stopper .Chart * {
+    transition: none !important;
+}
