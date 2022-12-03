@@ -7,12 +7,14 @@ import Line from "./chart/Line"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient";
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
+import { useTheme } from '@mui/material/styles';
 
 const formatDate = d3.timeFormat("%-b %-d")
-const gradientColors = ["rgb(226, 222, 243)", "#f8f9fa"]
 
 const Timeline = ({ data, xAccessor, yAccessor, label }) => {
   const [ref, dimensions] = useChartDimensions()
+  const theme = useTheme();
+  const gradientColors = [theme.palette.primary.light, "#f8f9fa"]
   const gradientId = useUniqueId("Timeline-gradient")
 
   const xScale = d3.scaleTime()

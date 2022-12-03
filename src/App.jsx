@@ -87,6 +87,21 @@ const App = () => {
     // Whenever dark mode changes, update the localStorage DARK_MODE item
     React.useEffect(() => {
         localStorage.setItem("DARK_MODE", mode);
+
+        let resizeTimer;
+        document.body.classList.add("resize-animation-stopper");
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            document.body.classList.remove("resize-animation-stopper");
+        }, 300);
+        if (mode !== "light") {
+            document.body.classList.add("dark")
+            document.body.classList.remove("light")
+        }
+        else {
+            document.body.classList.add("light")
+            document.body.classList.remove("dark")
+        }
     }, [mode]);
 
     // Whenever the mode changes, change the theme 
@@ -98,15 +113,15 @@ const App = () => {
                     primary: {
                         ...(mode !== "light"
                             ? {
-                                light: "#455a64",
-                                main: "#464B50",
-                                dark: "#263238",
+                                light: "#f3df61",
+                                main: "#edd018",
+                                dark: "#a9940d",
                                 contrastText: "#eceff1",
                             }
                             : {
-                                light: "#455a64",
-                                main: "#161C24",
-                                dark: "black",
+                                light: "#ff34ac",
+                                main: "#ec008c",
+                                dark: "#a50062",
                                 contrastText: "#eceff1",
                             }),
                     },
@@ -135,7 +150,6 @@ const App = () => {
                     background: {
                         ...(mode === "light"
                             ? {
-                                paper: "#161C24",
                                 default: "#eceff1",
                                 neutral: "#161C24",
                             }
@@ -160,82 +174,82 @@ const App = () => {
     };
 
     return (
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <div className="App">
-                    <AppBar position="fixed" open={open}>
-                        <Toolbar>
-                            <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-                                Weather Dashboard
-                            </Typography>
-                            <IconButton
-                                sx={{ ml: 1 }}
-                                onClick={colorMode.toggleColorMode}
-                                color="inherit"
-                            >
-                                {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
-                            </IconButton>
-                            <IconButton
-                                color="inherit"
-                                aria-label="open drawer"
-                                edge="end"
-                                onClick={handleDrawerOpen}
-                                sx={{ ...(open && { display: 'none' }) }}
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                        </Toolbar>
-                    </AppBar>
-                    <Main open={open}>
-                        <DrawerHeader />
-                        <Dashboard />
-                    </Main>
-                    <Drawer
-                        sx={{
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <div className="App">
+                <AppBar position="fixed" open={open}>
+                    <Toolbar>
+                        <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
+                            Weather Dashboard
+                        </Typography>
+                        <IconButton
+                            sx={{ ml: 1 }}
+                            onClick={colorMode.toggleColorMode}
+                            color="inherit"
+                        >
+                            {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </IconButton>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="end"
+                            onClick={handleDrawerOpen}
+                            sx={{ ...(open && { display: 'none' }) }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+                <Main open={open}>
+                    <DrawerHeader />
+                    <Dashboard />
+                </Main>
+                <Drawer
+                    sx={{
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
                             width: drawerWidth,
-                            flexShrink: 0,
-                            '& .MuiDrawer-paper': {
-                                width: drawerWidth,
-                            },
-                        }}
-                        variant="persistent"
-                        anchor="right"
-                        open={open}
-                    >
-                        <DrawerHeader>
-                            <IconButton onClick={handleDrawerClose}>
-                                {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                            </IconButton>
-                        </DrawerHeader>
-                        <Divider />
-                        <List>
-                            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                                <ListItem key={text} disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                        </ListItemIcon>
-                                        <ListItemText primary={text} />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Divider />
-                        <List>
-                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                                <ListItem key={text} disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                        </ListItemIcon>
-                                        <ListItemText primary={text} />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Drawer>
-                </div>
-            </ThemeProvider>
+                        },
+                    }}
+                    variant="persistent"
+                    anchor="right"
+                    open={open}
+                >
+                    <DrawerHeader>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        </IconButton>
+                    </DrawerHeader>
+                    <Divider />
+                    <List>
+                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                            <ListItem key={text} disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                    <List>
+                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                            <ListItem key={text} disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
+            </div>
+        </ThemeProvider>
     );
 }
 

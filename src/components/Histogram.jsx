@@ -7,14 +7,16 @@ import Bars from "./chart/Bars"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
+import { useTheme } from '@mui/material/styles';
 
-const gradientColors = ["#9980FA", "rgb(226, 222, 243)"]
 const Histogram = ({ data, xAccessor, label }) => {
-  const gradientId = useUniqueId("Histogram-gradient")
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
-
+  const theme = useTheme();
+  const gradientColors = [theme.palette.primary.main, "#f8f9fa"]
+  const gradientId = useUniqueId("Histogram-gradient")
+  
   const numberOfThresholds = 9
 
   const xScale = d3.scaleLinear()

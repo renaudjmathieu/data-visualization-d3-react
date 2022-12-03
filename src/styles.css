@@ -3,6 +3,27 @@
     src: url('./Inter.var.woff2');
 }
 
+:root {
+    --theme-light-color-primary: #ec008c;
+    --theme-light-color-primary-dark: #d4007e;
+    --theme-light-color-primary-darker: #c90077;
+    --theme-light-color-primary-darkest: #a50062;
+    --theme-light-color-primary-light: #ff0599;
+    --theme-light-color-primary-lighter: #ff109e;
+    --theme-light-color-primary-lightest: #ff34ac;
+
+    --theme-dark-color-primary: #edd018;
+    --theme-dark-color-primary-dark: #dabf11;
+    --theme-dark-color-primary-darker: #ceb410;
+    --theme-dark-color-primary-darkest: #a9940d;
+    --theme-dark-color-primary-light: #efd530;
+    --theme-dark-color-primary-lighter: #f0d73c;
+    --theme-dark-color-primary-lightest: #f3df61;
+
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+}
+
 body {
     letter-spacing: -0.011em;
     font-family: 'Inter var', sans-serif;
@@ -28,21 +49,21 @@ h1 {
 
 .Timeline {
     height: 300px;
-    min-width: 500px;
+    min-width: 450px;
     width: calc(100% + 1em);
     margin-bottom: 2em;
 }
 
 .Histogram {
-    height: 500px;
+    height: 450px;
     flex: 1;
-    min-width: 500px;
+    min-width: 450px;
     overflow: hidden;
 }
 
 .ScatterPlot {
-    height: 500px;
-    width: 500px;
+    height: 450px;
+    width: 450px;
     margin-right: 2em;
 }
 
@@ -56,7 +77,86 @@ h1 {
 .Timeline,
 .ScatterPlot,
 .Histogram {
-    background: white;
     padding: 0.6em 1em;
     margin: 0.5em;
+}
+
+
+
+
+.dark .Timeline,
+.dark .ScatterPlot,
+.dark .Histogram {
+    background: black;
+}
+
+.light .Timeline,
+.light .ScatterPlot,
+.light .Histogram {
+    background: white;
+}
+
+
+.dark .Circles__circle {
+    fill: var(--theme-dark-color-primary);
+}
+
+.light .Circles__circle {
+    fill: var(--theme-light-color-primary);
+}
+
+.dark .Bars__rect {
+    fill: var(--theme-dark-color-primary);
+}
+
+.light .Bars__rect {
+    fill: var(--theme-light-color-primary);
+}
+
+.dark .Line--type-line {
+    stroke: var(--theme-dark-color-primary);
+}
+
+.light .Line--type-line {
+    stroke: var(--theme-light-color-primary);
+}
+
+.dark .Line--type-area {
+    fill: var(--theme-dark-color-primary);
+}
+
+.light .Line--type-area {
+    fill: var(--theme-light-color-primary);
+}
+
+.dark .Axis__line {
+    stroke: #bdc3c7;
+}
+
+.light .Axis__line {
+    stroke: #bdc3c7;
+}
+
+.dark .Chart text {
+    fill: #95a5a6;
+}
+
+.light .Chart text {
+    fill: #95a5a6;
+}
+
+.dark .domain line {
+    stroke: #dadada;
+}
+
+.light .domain line {
+    stroke: #dadada;
+}
+
+.dark .tick line {
+    stroke: #dadada;
+}
+
+.light .tick line {
+    stroke: #dadada;
 }
