@@ -86,21 +86,28 @@ h1 {
     transition: none !important;
 }
 
+@media screen and (min-width: 601px) {
+    .open main {
+        margin-left: 0 !important;
+    }
+}
+
 @media screen and (max-width: 600px) {
+
     .Timeline {
         min-width: calc(100vw - 48px);
         max-height: 300px;
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
-    
+
     .Histogram {
         min-width: calc(100vw - 48px);
         max-height: 450px;
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
-    
+
     .ScatterPlot {
         max-height: 450px;
         width: calc(100vw - 48px);
@@ -111,7 +118,7 @@ h1 {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
-    
+
     .Histogram .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);

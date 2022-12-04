@@ -35,13 +35,12 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: `-${drawerWidth}px`,
+        marginLeft: -drawerWidth,
         ...(open && {
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.easeOut,
                 duration: theme.transitions.duration.enteringScreen,
             }),
-            marginLeft: `-${drawerWidth}px`,
         }),
     }),
 );
@@ -150,16 +149,17 @@ const App = (props) => {
         [mode]
     );
     const [open, setOpen] = React.useState(false);
-    const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
-        setMobileOpen(!mobileOpen);
+        document.body.classList.add("open")
+        document.body.classList.remove("closed")
     };
 
     const handleDrawerClose = () => {
         setOpen(false);
-        setMobileOpen(!mobileOpen);
+        document.body.classList.add("closed")
+        document.body.classList.remove("open")
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -200,7 +200,7 @@ const App = (props) => {
                 <Drawer
                     container={container}
                     variant="temporary"
-                    open={mobileOpen}
+                    open={open}
                     onClose={handleDrawerClose}
                     ModalProps={{
                         keepMounted: true, // Better open performance on mobile.
