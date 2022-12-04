@@ -18,8 +18,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { grey } from '@mui/material/colors';
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import LightMode from "@mui/icons-material/LightMode";
+import DarkMode from "@mui/icons-material/DarkMode";
 
 import Dashboard from "./components/Dashboard"
 
@@ -111,52 +111,37 @@ const App = () => {
                 palette: {
                     mode,
                     primary: {
-                        ...(mode !== "light"
+                        ...(mode === "light"
                             ? {
-                                light: "#f3df61",
-                                main: "#edd018",
-                                dark: "#a9940d",
-                                contrastText: "#eceff1",
-                            }
-                            : {
                                 light: "#ff34ac",
                                 main: "#ec008c",
                                 dark: "#a50062",
-                                contrastText: "#eceff1",
-                            }),
-                    },
-                    secondary: {
-                        ...(mode === "light"
-                            ? {
-                                main: '#161C24',
+                                contrastText: "#f8f9fa",
                             }
                             : {
-                                main: '#29434e',
-                            })
+                                light: "#f3df61",
+                                main: "#edd018",
+                                dark: "#a9940d",
+                                contrastText: "#212529",
+                            }),
                     },
                     text: {
                         ...(mode === "light"
                             ? {
-                                primary: grey[800],
-                                secondary: grey[300],
-                                disabled: grey[500],
+                                primary: "#212529",
                             }
                             : {
-                                primary: grey[200],
-                                secondary: grey[300],
-                                disabled: grey[500],
+                                primary: "#f8f9fa",
                             }),
                     },
                     background: {
                         ...(mode === "light"
                             ? {
                                 default: "#eceff1",
-                                neutral: "#161C24",
                             }
                             : {
-                                paper: "#161C24",
+                                paper: "#1b1a19",
                                 default: "#161C24",
-                                neutral: "black",
                             }),
                     },
                 },
@@ -187,7 +172,7 @@ const App = () => {
                             onClick={colorMode.toggleColorMode}
                             color="inherit"
                         >
-                            {mode === "dark" ? <Brightness7Icon /> : <Brightness4Icon />}
+                            {mode === "dark" ? <LightMode /> : <DarkMode />}
                         </IconButton>
                         <IconButton
                             color="inherit"

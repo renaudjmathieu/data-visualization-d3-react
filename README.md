@@ -1,6 +1,6 @@
-#  Data Visualization with D3 and React
+#  Data Visualization with D3 + React
 
-A simple web app for Data Vizualization built with D3, React, Webpack and Azure Static Web Apps
+A web app for Data Vizualization with D3 + React
 
 ## :technologist: Available Script Commands
 
@@ -14,11 +14,11 @@ In the Terminal, go to the project folder:
 ```	
 cd data-visualization-d3-react
 ```	
-Option 1 : Install the necessary packages using `package-json`:
+*Option 1 :* Install the necessary packages using `package-json`:
 ```	
 npm install
 ```	
-Option 2 : Install the necessary packages manually:
+*Option 2 :* Install the necessary packages manually:
 ```
 npm init
 npm install react react-dom
@@ -33,7 +33,6 @@ npm install @mui/icons-material
 npm install d3
 npm install prop-types
 npm install resize-observer-polyfill
-
 ```	
 
 
@@ -49,25 +48,26 @@ Run the app in the development mode:
 ```	
 npm run dev
 ```	
-Open [http://localhost:8080](http://localhost:8080) to view it in the browser.\
+*Open [http://localhost:8080](http://localhost:8080) to view it in the browser.\
 The page will reload when there are changes.\
-You may also see any lint errors in the console.
+You may also see any lint errors in the console.*
 
 ### `npm run build`
 
-Builds the app for production to the `dist` folder.
+Builds the app for production to the `dist` folder by following these steps:
 
-*See the [Webpack](https://webpack.js.org/guides/getting-started/) and the [Babel](https://babeljs.io/docs/en/) documentations for more information.*
+In the Terminal, go to the project folder:
+```	
+cd data-visualization-d3-react
+```	
+Run the app in the development mode: 
+```	
+npm run build
+```	
 
 ## :teacher: Learn More
 
-This web app was built from scratch, without using <code>create-react-app</code> and by configuring **Webpack** and **Babel** manually. For more info on how to set it up, check out [this article](https://medium.com/age-of-awareness/setup-react-with-webpack-and-babel-5114a14a47e9) from [Prateek Srivastava](https://medium.com/@prateeksrt).
 
-To learn how to make the **line chart in D3**, check out [this video](https://youtu.be/S3LNbBg_B2A) by [Amelia Wattenberger](https://wattenberger.com/).
-
-To learn **Azure Static Web Apps**, check out [Static Web Apps!](https://www.azurestaticwebapps.dev/), the [Azure Static Web Apps learning path](https://learn.microsoft.com/en-us/training/paths/azure-static-web-apps/) and the [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/overview).
-
-## :judge: Attributions
 
 This web app was built using these products :
 
@@ -82,3 +82,14 @@ This web app was built using these products :
 [react]: https://reactjs.org
 [mui]: https://mui.com/
 [d3]: https://d3js.org/
+
+To learn all about **D3**, including how to get start on **D3 using React**, check out the [Fullstack D3 course](https://www.newline.co/fullstack-d3) by [Amelia Wattenberger](https://wattenberger.com/).
+
+To learn how to implement **light and dark modes** in React, check out [this article](https://levelup.gitconnected.com/dark-mode-in-react-533faaee3c6e) from [FAM](https://famzil.medium.com).
+
+For some help on setting up a React app using **Webpack**, check out [this article](https://medium.com/age-of-awareness/setup-react-with-webpack-and-babel-5114a14a47e9) from [Prateek Srivastava](https://medium.com/@prateeksrt).
+
+For information on **Azure Static Web Apps**, check out [Static Web Apps!](https://www.azurestaticwebapps.dev/), the [Azure Static Web Apps learning path](https://learn.microsoft.com/en-us/training/paths/azure-static-web-apps/) and the [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/overview).
+
+
+

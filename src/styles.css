@@ -119,13 +119,13 @@ h1 {
 .dark .Timeline,
 .dark .ScatterPlot,
 .dark .Histogram {
-    background: black;
+    background: #252423;
 }
 
 .light .Timeline,
 .light .ScatterPlot,
 .light .Histogram {
-    background: white;
+    background: #fff
 }
 
 
@@ -162,7 +162,7 @@ h1 {
 }
 
 .dark .Axis__line {
-    stroke: #bdc3c7;
+    stroke: var(--light-color)
 }
 
 .light .Axis__line {
@@ -170,7 +170,7 @@ h1 {
 }
 
 .dark .Chart text {
-    fill: #95a5a6;
+    fill: var(--light-color)
 }
 
 .light .Chart text {

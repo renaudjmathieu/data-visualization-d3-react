@@ -14,7 +14,7 @@ const formatDate = d3.timeFormat("%-b %-d")
 const Timeline = ({ data, xAccessor, yAccessor, label }) => {
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.light, "#f8f9fa"]
+  const gradientColors = [theme.palette.primary.light, theme.palette.primary.contrastText]
   const gradientId = useUniqueId("Timeline-gradient")
 
   const xScale = d3.scaleTime()

@@ -14,7 +14,7 @@ const Histogram = ({ data, xAccessor, label }) => {
     marginBottom: 77,
   })
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.main, "#f8f9fa"]
+  const gradientColors = [theme.palette.primary.main, theme.palette.primary.contrastText]
   const gradientId = useUniqueId("Histogram-gradient")
   
   const numberOfThresholds = 9
