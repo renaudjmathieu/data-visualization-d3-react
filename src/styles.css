@@ -55,17 +55,17 @@ h1 {
     margin-bottom: 2em;
 }
 
-.Histogram {
-    height: 450px;
-    flex: 1;
-    min-width: 450px;
-    overflow: hidden;
-}
-
 .ScatterPlot {
     height: 450px;
     width: 450px;
     margin-right: 2em;
+}
+
+.Histogram {
+    height: 450px;
+    flex: 1;
+    min-width: 250px;
+    overflow: hidden;
 }
 
 .App__charts {
@@ -86,9 +86,15 @@ h1 {
     transition: none !important;
 }
 
-@media screen and (min-width: 601px) {
-    .open main {
-        margin-left: 0 !important;
+@media screen and (min-width: 601px) and (max-width: 765px) {
+    .ScatterPlot {
+        max-height: 717;
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+    .ScatterPlot .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
     }
 }
 
@@ -101,14 +107,14 @@ h1 {
         height: calc(100vw - 48px);
     }
 
-    .Histogram {
-        min-width: calc(100vw - 48px);
+    .ScatterPlot {
         max-height: 450px;
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
 
-    .ScatterPlot {
+    .Histogram {
+        min-width: calc(100vw - 48px);
         max-height: 450px;
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
@@ -119,12 +125,12 @@ h1 {
         height: calc(100vw - 48px);
     }
 
-    .Histogram .Chart {
+    .ScatterPlot .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
 
-    .ScatterPlot .Chart {
+    .Histogram .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
