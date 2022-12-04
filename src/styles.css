@@ -81,7 +81,39 @@ h1 {
     margin: 0.5em;
 }
 
+@media screen and (max-width: 991px) {
+    .Timeline {
+        min-width: 0;
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+    
+    .Histogram {
+        min-width: 0;
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+    
+    .ScatterPlot {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
 
+    .Timeline .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+    
+    .Histogram .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+
+    .ScatterPlot .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+}
 
 
 .dark .Timeline,
