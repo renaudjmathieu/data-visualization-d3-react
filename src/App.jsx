@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
+import Box from "@mui/material/Box";
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
 import List from '@mui/material/List';
@@ -17,7 +18,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { grey } from '@mui/material/colors';
 import LightMode from "@mui/icons-material/LightMode";
 import DarkMode from "@mui/icons-material/DarkMode";
 
@@ -35,13 +35,13 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        marginRight: -drawerWidth,
+        marginLeft: `-${drawerWidth}px`,
         ...(open && {
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.easeOut,
                 duration: theme.transitions.duration.enteringScreen,
             }),
-            marginRight: 0,
+            marginLeft: `-${drawerWidth}px`,
         }),
     }),
 );
@@ -55,11 +55,11 @@ const AppBar = styled(MuiAppBar, {
     }),
     ...(open && {
         width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`,
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        marginRight: drawerWidth,
     }),
 }));
 
@@ -72,7 +72,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-start',
 }));
 
-const App = () => {
+const App = (props) => {
+    const { window } = props;
     const storedDarkMode = localStorage.getItem("DARK_MODE");
     const [mode, setMode] = React.useState(storedDarkMode ?? "light");
     const colorMode = React.useMemo(
@@ -149,14 +150,19 @@ const App = () => {
         [mode]
     );
     const [open, setOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
+        setMobileOpen(!mobileOpen);
     };
 
     const handleDrawerClose = () => {
         setOpen(false);
+        setMobileOpen(!mobileOpen);
     };
+
+    const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
         <ThemeProvider theme={theme}>
@@ -164,25 +170,27 @@ const App = () => {
             <div className="App">
                 <AppBar position="fixed" open={open}>
                     <Toolbar>
-                        <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-                            Weather Dashboard
-                        </Typography>
-                        <IconButton
-                            sx={{ ml: 1 }}
-                            onClick={colorMode.toggleColorMode}
-                            color="inherit"
-                        >
-                            {mode === "dark" ? <LightMode /> : <DarkMode />}
-                        </IconButton>
                         <IconButton
                             color="inherit"
                             aria-label="open drawer"
-                            edge="end"
                             onClick={handleDrawerOpen}
-                            sx={{ ...(open && { display: 'none' }) }}
+                            edge="start"
+                            sx={{ mr: 2, ...(open) }}
                         >
                             <MenuIcon />
                         </IconButton>
+                        <Typography variant="h6" noWrap component="div">
+                            D3 Dashboard
+                        </Typography>
+                        <Box sx={{ flexGrow: 1 }} />
+                        <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
+                            <IconButton
+                                color="inherit"
+                                onClick={colorMode.toggleColorMode}
+                            >
+                                {mode === "dark" ? <LightMode /> : <DarkMode />}
+                            </IconButton>
+                        </Box>
                     </Toolbar>
                 </AppBar>
                 <Main open={open}>
@@ -190,20 +198,73 @@ const App = () => {
                     <Dashboard />
                 </Main>
                 <Drawer
+                    container={container}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerClose}
+                    ModalProps={{
+                        keepMounted: true, // Better open performance on mobile.
+                    }}
+                    sx={{
+                        display: { xs: 'block', sm: 'none' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                >
+                    <Toolbar />
+                    <Divider />
+                    <List>
+                        <ListItem disablePadding>
+                            <ListItemButton onClick={colorMode.toggleColorMode}>
+                                <ListItemIcon>
+                                    {mode === "dark" ? <LightMode /> : <DarkMode />}
+                                </ListItemIcon>
+                                <ListItemText primary={mode === "dark" ? "Turn on the lights" : "Turn off the lights"} />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                    <Divider />
+                    <List>
+                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                            <ListItem key={text} disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                    <List>
+                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                            <ListItem key={text} disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                </Drawer>
+                <Drawer
                     sx={{
                         width: drawerWidth,
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: drawerWidth,
+                            boxSizing: 'border-box',
                         },
                     }}
                     variant="persistent"
-                    anchor="right"
+                    anchor="left"
                     open={open}
                 >
                     <DrawerHeader>
                         <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>
                     </DrawerHeader>
                     <Divider />

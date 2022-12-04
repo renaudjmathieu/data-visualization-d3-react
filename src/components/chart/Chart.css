@@ -43,7 +43,3 @@
 .Bars__rect {
     transition: all 0.3s ease-out;
 }
-
-.resize-animation-stopper .Chart * {
-    transition: none !important;
-}
