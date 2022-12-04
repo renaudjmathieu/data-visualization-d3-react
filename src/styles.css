@@ -1,0 +1,194 @@
+@font-face {
+    font-family: 'Inter var';
+    src: url('./Inter.var.woff2');
+}
+
+:root {
+    --theme-light-color-primary: #ec008c;
+    --theme-light-color-primary-dark: #d4007e;
+    --theme-light-color-primary-darker: #c90077;
+    --theme-light-color-primary-darkest: #a50062;
+    --theme-light-color-primary-light: #ff0599;
+    --theme-light-color-primary-lighter: #ff109e;
+    --theme-light-color-primary-lightest: #ff34ac;
+
+    --theme-dark-color-primary: #edd018;
+    --theme-dark-color-primary-dark: #dabf11;
+    --theme-dark-color-primary-darker: #ceb410;
+    --theme-dark-color-primary-darkest: #a9940d;
+    --theme-dark-color-primary-light: #efd530;
+    --theme-dark-color-primary-lighter: #f0d73c;
+    --theme-dark-color-primary-lightest: #f3df61;
+
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+}
+
+body {
+    letter-spacing: -0.011em;
+    font-family: 'Inter var', sans-serif;
+    font-size: 16px;
+    color: #34495e;
+    background: #f1f3f5;
+}
+
+#root,
+.App {
+    margin-right: 7.5em
+}
+
+h1 {
+    font-weight: 900;
+    margin: 0.4em 0 0.6em;
+}
+
+/* placeholders */
+.placeholder {
+    background: #ecf0f1;
+}
+
+.Timeline {
+    height: 300px;
+    min-width: 450px;
+    width: calc(100% + 1em);
+    margin-bottom: 2em;
+}
+
+.Histogram {
+    height: 450px;
+    flex: 1;
+    min-width: 450px;
+    overflow: hidden;
+}
+
+.ScatterPlot {
+    height: 450px;
+    width: 450px;
+    margin-right: 2em;
+}
+
+.App__charts {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: -0.5em;
+}
+
+.Timeline,
+.ScatterPlot,
+.Histogram {
+    padding: 0.6em 1em;
+    margin: 0.5em;
+}
+
+@media screen and (max-width: 991px) {
+    .Timeline {
+        min-width: calc(100vw - 48px);
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+    
+    .Histogram {
+        min-width: calc(100vw - 48px);
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+    
+    .ScatterPlot {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+
+    .Timeline .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+    
+    .Histogram .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+
+    .ScatterPlot .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+}
+
+
+.dark .Timeline,
+.dark .ScatterPlot,
+.dark .Histogram {
+    background: #252423;
+}
+
+.light .Timeline,
+.light .ScatterPlot,
+.light .Histogram {
+    background: #fff
+}
+
+
+.dark .Circles__circle {
+    fill: var(--theme-dark-color-primary);
+}
+
+.light .Circles__circle {
+    fill: var(--theme-light-color-primary);
+}
+
+.dark .Bars__rect {
+    fill: var(--theme-dark-color-primary);
+}
+
+.light .Bars__rect {
+    fill: var(--theme-light-color-primary);
+}
+
+.dark .Line--type-line {
+    stroke: var(--theme-dark-color-primary);
+}
+
+.light .Line--type-line {
+    stroke: var(--theme-light-color-primary);
+}
+
+.dark .Line--type-area {
+    fill: var(--theme-dark-color-primary);
+}
+
+.light .Line--type-area {
+    fill: var(--theme-light-color-primary);
+}
+
+.dark .Axis__line {
+    stroke: var(--light-color)
+}
+
+.light .Axis__line {
+    stroke: #bdc3c7;
+}
+
+.dark .Chart text {
+    fill: var(--light-color)
+}
+
+.light .Chart text {
+    fill: #95a5a6;
+}
+
+.dark .domain line {
+    stroke: #dadada;
+}
+
+.light .domain line {
+    stroke: #dadada;
+}
+
+.dark .tick line {
+    stroke: #dadada;
+}
+
+.light .tick line {
+    stroke: #dadada;
+}
