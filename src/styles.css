@@ -86,6 +86,12 @@ h1 {
     transition: none !important;
 }
 
+@media screen and (min-width: 1004px) {
+    .open main {
+        margin-left: 0 !important;
+    }
+}
+
 @media screen and (min-width: 601px) and (max-width: 765px) {
     .ScatterPlot {
         max-height: 717;
