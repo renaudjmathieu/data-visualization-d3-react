@@ -15,19 +15,28 @@ const temperatureAccessor = d => d.temperature
 const humidityAccessor = d => d.humidity
 const numberAccessor = d => d.number
 
+const chartsAvailable = [
+    'Timeline',
+    'ScatterPlot',
+    'Histogram',
+    'Treemap',
+];
+
 const getData = () => ({
     timeline: getTimelineData(),
     scatter: getScatterData(),
 })
+
 const Dashboard = (props) => {
     const [data, setData] = useState(getData())
 
-    const selectedCharts = props.selectedCharts;
-    const [charts, setCharts] = useState(selectedCharts);
+    const selectedCharts = props.selectedCharts
+    const [charts, setCharts] = useState(selectedCharts)
 
     useEffect(() => {
-        setCharts(selectedCharts);
-    }, [selectedCharts]);
+        const reorderedCharts = chartsAvailable.filter(chart => selectedCharts.includes(chart))
+        setCharts(reorderedCharts)
+    }, [selectedCharts])
 
     useInterval(() => {
         setData(getData())
@@ -65,7 +74,7 @@ const Dashboard = (props) => {
                         />
                         default: return null
                     }
-                })
+                }) 
             }
         </div>
     )
@@ -74,21 +83,21 @@ const Dashboard = (props) => {
 export default Dashboard
 
 function useInterval(callback, delay) {
-    const savedCallback = useRef();
+    const savedCallback = useRef()
 
     // Remember the latest callback.
     useEffect(() => {
-        savedCallback.current = callback;
-    });
+        savedCallback.current = callback
+    })
 
     // Set up the interval.
     useEffect(() => {
         function tick() {
-            savedCallback.current();
+            savedCallback.current()
         }
         if (delay !== null) {
-            let id = setInterval(tick, delay);
-            return () => clearInterval(id);
+            let id = setInterval(tick, delay)
+            return () => clearInterval(id)
         }
-    }, [delay]);
+    }, [delay])
 }
