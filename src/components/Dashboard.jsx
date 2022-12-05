@@ -5,9 +5,12 @@ import { getTimelineData, getScatterData } from "./../utils/dummyData"
 import Timeline from "./Timeline"
 import ScatterPlot from "./ScatterPlot"
 import Histogram from "./Histogram"
+import Treemap from "./Treemap"
 
 const parseDate = d3.timeParse("%m/%d/%Y")
+const formatMonth = d3.timeFormat("%B")
 const dateAccessor = d => parseDate(d.date)
+const monthAccessor = d => formatMonth(parseDate(d.date))
 const temperatureAccessor = d => d.temperature
 const humidityAccessor = d => d.humidity
 
@@ -40,7 +43,14 @@ const Dashboard = () => {
             <Histogram
                 data={data.scatter}
                 xAccessor={humidityAccessor}
-                label="Humidity"
+                xLabel="Humidity"
+            />
+            <Treemap
+                data={data.timeline}
+                valueAccessor={temperatureAccessor}
+                entityAccessor={monthAccessor}
+                valueLabel="Temperature"
+                entityLabel="Month"
             />
         </div>
     )
