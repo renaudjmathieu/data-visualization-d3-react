@@ -20,6 +20,12 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import LightMode from "@mui/icons-material/LightMode";
 import DarkMode from "@mui/icons-material/DarkMode";
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Checkbox from '@mui/material/Checkbox';
 
 import Dashboard from "./components/Dashboard"
 
@@ -70,6 +76,24 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
+const chartsAvailable = [
+    'Timeline',
+    'ScatterPlot',
+    'Histogram',
+    'Treemap',
+];
 
 const App = (props) => {
     const { window } = props;
@@ -164,6 +188,18 @@ const App = (props) => {
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
+    const [charts, setCharts] = React.useState(['Timeline', 'ScatterPlot', 'Histogram']);
+
+    const handleChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setCharts(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -195,7 +231,7 @@ const App = (props) => {
                 </AppBar>
                 <Main open={open}>
                     <DrawerHeader />
-                    <Dashboard />
+                    <Dashboard selectedCharts={charts} />
                 </Main>
                 <Drawer
                     container={container}
@@ -223,31 +259,26 @@ const App = (props) => {
                         </ListItem>
                     </List>
                     <Divider />
-                    <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
+                    <FormControl sx={{ m: 1, width: 220 }}>
+                        <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
+                        <Select
+                            labelId="demo-multiple-checkbox-label"
+                            id="demo-multiple-checkbox"
+                            multiple
+                            value={charts}
+                            onChange={handleChange}
+                            input={<OutlinedInput label="Charts" />}
+                            renderValue={(selected) => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                            {chartsAvailable.map((chart) => (
+                                <MenuItem key={chart} value={chart}>
+                                    <Checkbox checked={charts.indexOf(chart) > -1} />
+                                    <ListItemText primary={chart} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Drawer>
                 <Drawer
                     sx={{
@@ -268,31 +299,26 @@ const App = (props) => {
                         </IconButton>
                     </DrawerHeader>
                     <Divider />
-                    <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
+                    <FormControl sx={{ m: 1, width: 220 }}>
+                        <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
+                        <Select
+                            labelId="demo-multiple-checkbox-label"
+                            id="demo-multiple-checkbox"
+                            multiple
+                            value={charts}
+                            onChange={handleChange}
+                            input={<OutlinedInput label="Charts" />}
+                            renderValue={(selected) => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                            {chartsAvailable.map((chart) => (
+                                <MenuItem key={chart} value={chart}>
+                                    <Checkbox checked={charts.indexOf(chart) > -1} />
+                                    <ListItemText primary={chart} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Drawer>
             </div>
         </ThemeProvider>

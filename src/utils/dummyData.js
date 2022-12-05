@@ -1,6 +1,7 @@
 import * as d3 from "d3"
 
 const randomAroundMean = (mean, deviation) => mean + boxMullerRandom() * deviation
+const randomNumber = (min, max) => Math.floor(Math.random() * max) + min
 const boxMullerRandom = () => (
   Math.sqrt(-2.0 * Math.log(Math.random())) *
   Math.cos(2.0 * Math.PI * Math.random())
@@ -17,6 +18,7 @@ export const getTimelineData = (length = 100) => {
     return {
       date: formatDate(d3.timeDay.offset(firstTemperature, i)),
       temperature: lastTemperature,
+      number: randomNumber(0, 100),
     }
   })
 }
