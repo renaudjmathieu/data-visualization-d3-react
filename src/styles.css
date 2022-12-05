@@ -68,6 +68,13 @@ h1 {
     overflow: hidden;
 }
 
+.Treemap {
+    height: 300px;
+    min-width: 450px;
+    width: calc(100% + 1em);
+    margin-bottom: 2em;
+}
+
 .App__charts {
     display: flex;
     align-items: center;
@@ -77,7 +84,8 @@ h1 {
 
 .Timeline,
 .ScatterPlot,
-.Histogram {
+.Histogram,
+.Treemap {
     padding: 0.6em 1em;
     margin: 0.5em;
 }
@@ -126,6 +134,13 @@ h1 {
         height: calc(100vw - 48px);
     }
 
+    .Treemap {
+        min-width: calc(100vw - 48px);
+        max-height: 300px;
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
+
     .Timeline .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
@@ -140,17 +155,24 @@ h1 {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
+
+    .Treemap .Chart {
+        width: calc(100vw - 48px);
+        height: calc(100vw - 48px);
+    }
 }
 
 .dark .Timeline,
 .dark .ScatterPlot,
-.dark .Histogram {
+.dark .Histogram,
+.dark .Treemap {
     background: #252423;
 }
 
 .light .Timeline,
 .light .ScatterPlot,
-.light .Histogram {
+.light .Histogram,
+.light .Treemap {
     background: #fff
 }
 
@@ -163,11 +185,11 @@ h1 {
     fill: var(--theme-light-color-primary);
 }
 
-.dark .Bars__rect {
+.dark .Rectangles__rect {
     fill: var(--theme-dark-color-primary);
 }
 
-.light .Bars__rect {
+.light .Rectangles__rect {
     fill: var(--theme-light-color-primary);
 }
 

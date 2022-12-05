@@ -3,13 +3,13 @@ import PropTypes from "prop-types"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import Bars from "./chart/Bars"
+import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ data, xAccessor, label }) => {
+const Histogram = ({ data, xAccessor, xLabel }) => {
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
@@ -24,7 +24,7 @@ const Histogram = ({ data, xAccessor, label }) => {
     .range([0, dimensions.boundedWidth])
     .nice(numberOfThresholds)
 
-  const binsGenerator = d3.histogram()
+  const binsGenerator = d3.bin()
     .domain(xScale.domain())
     .value(xAccessor)
     .thresholds(xScale.ticks(numberOfThresholds))
@@ -60,7 +60,7 @@ const Histogram = ({ data, xAccessor, label }) => {
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={label}
+          label={xLabel}
         />
         <Axis
           dimensions={dimensions}
@@ -68,7 +68,7 @@ const Histogram = ({ data, xAccessor, label }) => {
           scale={yScale}
           label="Count"
         />
-        <Bars
+        <Rectangles
           data={bins}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
@@ -84,13 +84,10 @@ const Histogram = ({ data, xAccessor, label }) => {
 
 Histogram.propTypes = {
   xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
   xLabel: PropTypes.string,
-  yLabel: PropTypes.string,
 }
 
 Histogram.defaultProps = {
   xAccessor: d => d.x,
-  yAccessor: d => d.y,
 }
 export default Histogram
