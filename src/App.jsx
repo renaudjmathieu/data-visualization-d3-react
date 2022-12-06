@@ -231,6 +231,26 @@ const App = (props) => {
                 </AppBar>
                 <Main open={open}>
                     <DrawerHeader />
+                    <FormControl sx={{ m: 1, width: 300 }} className='formOnDesktop'>
+                        <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
+                        <Select
+                            labelId="demo-multiple-checkbox-label"
+                            id="demo-multiple-checkbox"
+                            multiple
+                            value={charts}
+                            onChange={handleChange}
+                            input={<OutlinedInput label="Charts" />}
+                            renderValue={(selected) => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                            {chartsAvailable.map((chart) => (
+                                <MenuItem className='menuItemOnDesktop' key={chart} value={chart}>
+                                    <Checkbox checked={charts.indexOf(chart) > -1} />
+                                    <ListItemText primary={chart} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                     <Dashboard selectedCharts={charts} />
                 </Main>
                 <Drawer
@@ -259,7 +279,7 @@ const App = (props) => {
                         </ListItem>
                     </List>
                     <Divider />
-                    <FormControl sx={{ m: 1, width: 220 }}>
+                    <FormControl sx={{ m: 1, width: 220 }} className='formOnMobile'>
                         <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
                         <Select
                             labelId="demo-multiple-checkbox-label"
@@ -298,27 +318,6 @@ const App = (props) => {
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>
                     </DrawerHeader>
-                    <Divider />
-                    <FormControl sx={{ m: 1, width: 220 }}>
-                        <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
-                        <Select
-                            labelId="demo-multiple-checkbox-label"
-                            id="demo-multiple-checkbox"
-                            multiple
-                            value={charts}
-                            onChange={handleChange}
-                            input={<OutlinedInput label="Charts" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
-                        >
-                            {chartsAvailable.map((chart) => (
-                                <MenuItem key={chart} value={chart}>
-                                    <Checkbox checked={charts.indexOf(chart) > -1} />
-                                    <ListItemText primary={chart} />
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
                 </Drawer>
             </div>
         </ThemeProvider>
