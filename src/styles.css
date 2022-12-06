@@ -110,19 +110,16 @@ h1 {
 
 @media screen and (max-width: 600px) {
 
-    .formOnDesktop {
+    .containerOnDesktop {
         display: none;
         visibility: hidden;
     }
 
-    .formOnDesktop * {
+    .containerOnDesktop * {
         display: none;
         visibility: hidden;
     }
 
-    main {
-        margin-top: -75px;
-    }
 
     .Timeline {
         min-width: calc(100vw - 48px);
@@ -258,4 +255,21 @@ h1 {
 
 .formOnMobile {
     margin-top: 30px !important;
+}
+
+.gridOnDesktop__left,
+.gridOnDesktop__right {
+    padding-bottom: 0 !important;
+}
+
+.gridOnDesktop__right {
+    padding-top: 30px !important;
+}
+
+
+.gridOnDesktop__right .RemoveIcon {
+   
+}
+.gridOnDesktop__right .AddIcon {
+    margin-right: 15px;
 }
