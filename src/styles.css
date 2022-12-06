@@ -45,27 +45,27 @@ h1 {
 
 .Timeline {
     height: 300px;
-    min-width: 450px;
+    min-width: 400px;
     width: calc(100% + 1em);
     margin-bottom: 2em;
 }
 
 .ScatterPlot {
-    height: 450px;
-    width: 450px;
+    height: 400px;
+    width: 400px;
     margin-right: 2em;
 }
 
 .Histogram {
-    height: 450px;
+    height: 400px;
     flex: 1;
     min-width: 250px;
     overflow: hidden;
 }
 
 .Treemap {
-    height: 450px;
-    min-width: 450px;
+    height: 400px;
+    min-width: 400px;
     width: calc(100% + 1em);
     margin-bottom: 2em;
 }
@@ -101,6 +101,7 @@ h1 {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
+
     .ScatterPlot .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
@@ -108,6 +109,20 @@ h1 {
 }
 
 @media screen and (max-width: 600px) {
+
+    .formOnDesktop {
+        display: none;
+        visibility: hidden;
+    }
+
+    .formOnDesktop * {
+        display: none;
+        visibility: hidden;
+    }
+
+    main {
+        margin-top: -75px;
+    }
 
     .Timeline {
         min-width: calc(100vw - 48px);
@@ -234,4 +249,13 @@ h1 {
 
 .light .tick line {
     stroke: #dadada;
+}
+
+.formOnDesktop {
+    margin-top: 5px !important;
+    margin-bottom: 15px !important;
+}
+
+.formOnMobile {
+    margin-top: 30px !important;
 }
