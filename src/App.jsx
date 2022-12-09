@@ -206,6 +206,12 @@ const App = (props) => {
         );
     };
 
+    const [animate, setAnimate] = React.useState(true);
+
+    const handleAnimate = (event) => {
+        setAnimate(event.target.checked);
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -262,25 +268,31 @@ const App = (props) => {
                                 </FormControl>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right">
-                                    <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                                        <RemoveIcon className="RemoveIcon" />
-                                        <Slider className="sliderOnDesktop"
-                                            defaultValue={30}
-                                            valueLabelDisplay="auto"
-                                            step={10}
-                                            marks
-                                            min={10}
-                                            max={110}
-                                        />
-                                        <AddIcon className="AddIcon" />
-                                        <FormGroup>
-                                    <FormControlLabel control={<Switch defaultChecked />} label="Animate" />
-                                </FormGroup>
-                                    </Stack>
+                                <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+                                    <RemoveIcon className="RemoveIcon" />
+                                    <Slider className="sliderOnDesktop"
+                                        defaultValue={30}
+                                        valueLabelDisplay="auto"
+                                        step={10}
+                                        marks
+                                        min={10}
+                                        max={110}
+                                    />
+                                    <AddIcon className="AddIcon" />
+                                    <FormGroup>
+                                        <FormControlLabel control={
+                                            <Switch
+                                                checked={animate}
+                                                onChange={handleAnimate}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                            />
+                                        } label="Animate" />
+                                    </FormGroup>
+                                </Stack>
                             </Grid>
                         </Grid>
                     </Box>
-                    <Dashboard selectedCharts={charts} />
+                    <Dashboard selectedCharts={charts} checkedAnimate={animate} />
                 </Main>
                 <Drawer
                     container={container}

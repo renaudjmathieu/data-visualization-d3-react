@@ -29,9 +29,16 @@ const Dashboard = (props) => {
         setCharts(selectedCharts);
     }, [selectedCharts]);
 
+    const checkedAnimate = props.checkedAnimate;
+    const [animate, setAnimate] = useState(checkedAnimate);
+
+    useEffect(() => {
+        setAnimate(checkedAnimate);
+    }, [checkedAnimate]);
+
     useInterval(() => {
         setData(getData())
-    }, 4000)
+    }, animate ? 4000 : null)
 
     return (
         <div className="App__charts">
