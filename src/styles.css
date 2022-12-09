@@ -43,7 +43,8 @@ h1 {
     background: #ecf0f1;
 }
 
-.Chart__rectangle {
+.Chart__rectangle, 
+.Chart__rectangle__large {
     height: 350px;
     min-width: 350px;
     width: calc(100% + 1em);
@@ -63,6 +64,7 @@ h1 {
 }
 
 .Chart__rectangle,
+.Chart__rectangle__large,
 .Chart__square {
     padding: 0.6em 1em;
     margin: 0.5em;
@@ -78,7 +80,11 @@ h1 {
     }
 
     .Chart__rectangle {
-        min-width: 700px !important;
+        min-width: 550px;
+    }
+    
+    .Chart__rectangle__large {
+        min-width: 750px;
     }
 }
 
@@ -95,13 +101,15 @@ h1 {
     }
 
     .Chart__rectangle,
+    .Chart__rectangle__large,
     .Chart__square {
         min-width: calc(100vw - 48px);
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
 
-    .Chart__rectangle .Chart
+    .Chart__rectangle .Chart,
+    .Chart__rectangle__large .Chart,
     .Chart__square .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
@@ -109,11 +117,13 @@ h1 {
 }
 
 .dark .Chart__rectangle,
+.dark .Chart__rectangle__large,
 .dark .Chart__square {
     background: #252423;
 }
 
 .light .Chart__rectangle,
+.light .Chart__rectangle__large,
 .light .Chart__square {
     background: #fff
 }
