@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react"
 import * as d3 from "d3"
 import { getTimelineData, getScatterData } from "./../utils/dummyData"
 
-import Timeline from "./Timeline"
 import ScatterPlot from "./ScatterPlot"
 import Histogram from "./Histogram"
+import Timeline from "./Timeline"
 import Treemap from "./Treemap"
 
 const parseDate = d3.timeParse("%m/%d/%Y")
@@ -15,28 +15,19 @@ const temperatureAccessor = d => d.temperature
 const humidityAccessor = d => d.humidity
 const numberAccessor = d => d.number
 
-const chartsAvailable = [
-    'Timeline',
-    'ScatterPlot',
-    'Histogram',
-    'Treemap',
-];
-
 const getData = () => ({
     timeline: getTimelineData(),
     scatter: getScatterData(),
 })
-
 const Dashboard = (props) => {
     const [data, setData] = useState(getData())
 
-    const selectedCharts = props.selectedCharts
-    const [charts, setCharts] = useState(selectedCharts)
+    const selectedCharts = props.selectedCharts;
+    const [charts, setCharts] = useState(selectedCharts);
 
     useEffect(() => {
-        const reorderedCharts = chartsAvailable.filter(chart => selectedCharts.includes(chart))
-        setCharts(reorderedCharts)
-    }, [selectedCharts])
+        setCharts(selectedCharts);
+    }, [selectedCharts]);
 
     useInterval(() => {
         setData(getData())
@@ -47,12 +38,6 @@ const Dashboard = (props) => {
             {charts
                 .map(chart => {
                     switch (chart) {
-                        case "Timeline": return <Timeline
-                            data={data.timeline}
-                            xAccessor={dateAccessor}
-                            yAccessor={temperatureAccessor}
-                            label="Temperature"
-                        />
                         case "ScatterPlot": return <ScatterPlot
                             data={data.scatter}
                             xAccessor={humidityAccessor}
@@ -64,6 +49,12 @@ const Dashboard = (props) => {
                             data={data.scatter}
                             xAccessor={humidityAccessor}
                             xLabel="Humidity"
+                        />
+                        case "Timeline": return <Timeline
+                            data={data.timeline}
+                            xAccessor={dateAccessor}
+                            yAccessor={temperatureAccessor}
+                            label="Temperature"
                         />
                         case "Treemap": return <Treemap
                             data={data.timeline}

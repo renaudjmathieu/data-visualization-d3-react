@@ -43,31 +43,16 @@ h1 {
     background: #ecf0f1;
 }
 
-.Timeline {
-    height: 300px;
-    min-width: 400px;
+.Chart__rectangle {
+    height: 350px;
+    min-width: 350px;
     width: calc(100% + 1em);
-    margin-bottom: 2em;
-}
-
-.ScatterPlot {
-    height: 400px;
-    width: 400px;
-    margin-right: 2em;
-}
-
-.Histogram {
-    height: 400px;
     flex: 1;
-    min-width: 250px;
-    overflow: hidden;
 }
 
-.Treemap {
-    height: 400px;
-    min-width: 400px;
-    width: calc(100% + 1em);
-    margin-bottom: 2em;
+.Chart__square {
+    height: 350px;
+    width: 350px;
 }
 
 .App__charts {
@@ -77,10 +62,8 @@ h1 {
     margin: -0.5em;
 }
 
-.Timeline,
-.ScatterPlot,
-.Histogram,
-.Treemap {
+.Chart__rectangle,
+.Chart__square {
     padding: 0.6em 1em;
     margin: 0.5em;
 }
@@ -93,18 +76,9 @@ h1 {
     .open main {
         margin-left: 0 !important;
     }
-}
 
-@media screen and (min-width: 601px) and (max-width: 765px) {
-    .ScatterPlot {
-        max-height: 717;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .ScatterPlot .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
+    .Chart__rectangle {
+        min-width: 700px !important;
     }
 }
 
@@ -120,69 +94,29 @@ h1 {
         visibility: hidden;
     }
 
-
-    .Timeline {
+    .Chart__rectangle,
+    .Chart__square {
         min-width: calc(100vw - 48px);
-        max-height: 300px;
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
 
-    .ScatterPlot {
-        max-height: 450px;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Histogram {
-        min-width: calc(100vw - 48px);
-        max-height: 450px;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Treemap {
-        min-width: calc(100vw - 48px);
-        max-height: 300px;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Timeline .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .ScatterPlot .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Histogram .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Treemap .Chart {
+    .Chart__rectangle .Chart
+    .Chart__square .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
 }
 
-.dark .Timeline,
-.dark .ScatterPlot,
-.dark .Histogram,
-.dark .Treemap {
+.dark .Chart__rectangle,
+.dark .Chart__square {
     background: #252423;
 }
 
-.light .Timeline,
-.light .ScatterPlot,
-.light .Histogram,
-.light .Treemap {
+.light .Chart__rectangle,
+.light .Chart__square {
     background: #fff
 }
-
 
 .dark .Circles__circle {
     fill: var(--theme-dark-color-primary);

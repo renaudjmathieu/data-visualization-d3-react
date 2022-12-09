@@ -53,7 +53,7 @@ const Treemap = ({ data, valueAccessor, entityAccessor, valueLabel, entityLabel 
   const keyAccessor = (d, i) => i
 
   return (
-    <div className="Treemap" ref={ref}>
+    <div className="Chart__rectangle" ref={ref}>
       <Chart dimensions={dimensions}>
         <Rectangles
           data={root.leaves()}

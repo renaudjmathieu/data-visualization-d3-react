@@ -46,7 +46,7 @@ const Histogram = ({ data, xAccessor, xLabel }) => {
   const keyAccessor = (d, i) => i
 
   return (
-    <div className="Histogram" ref={ref}>
+    <div className="Chart__rectangle" ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient

@@ -95,9 +95,9 @@ const MenuProps = {
 };
 
 const chartsAvailable = [
-    'Timeline',
     'ScatterPlot',
     'Histogram',
+    'Timeline',
     'Treemap',
 ];
 
@@ -194,7 +194,7 @@ const App = (props) => {
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
-    const [charts, setCharts] = React.useState(['Timeline', 'ScatterPlot', 'Histogram']);
+    const [charts, setCharts] = React.useState(['ScatterPlot', 'Histogram', 'Timeline']);
 
     const handleChange = (event) => {
         const {

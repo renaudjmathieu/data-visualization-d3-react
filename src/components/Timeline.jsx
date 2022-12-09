@@ -31,7 +31,7 @@ const Timeline = ({ data, xAccessor, yAccessor, label }) => {
   const y0AccessorScaled = yScale(yScale.domain()[0])
 
   return (
-    <div className="Timeline" ref={ref}>
+    <div className="Chart__rectangle" ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
