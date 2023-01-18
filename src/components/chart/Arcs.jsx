@@ -22,18 +22,17 @@ const Arcs = ({ type, data, keyAccessor, radius, radiusAdjust, ...props }) => {
       {data.map((d, i) => (
         <path {...props}
           key={keyAccessor(d, i)}
-          className={`Arc Arc--type-${type}`}
+          className={`Arcs Arc--type-${type}`}
           d={arc(d)}
         />
       ))}
       <Texts
-        anchor="center"
         data={data}
         keyAccessor={keyAccessor}
         xAccessor={d => (arc.centroid(d)[0])}
         yAccessor={d => (arc.centroid(d)[1])}
         textAccessor={d => d.data[1].length}
-        style={{fill: theme.palette.background.secondary}}
+        style={{fill: theme.palette.background.secondary, textAnchor: "middle", alignmentBaseline: "middle"}}
       />
     </React.Fragment>
   )

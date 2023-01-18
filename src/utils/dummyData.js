@@ -9,6 +9,9 @@ const randomCategory = () => {
     "Category C",
     "Category D",
     "Category E",
+    "Category F",
+    "Category G",
+    "Category H",
   ]
   return categories[Math.floor(Math.random() * categories.length)]
 }

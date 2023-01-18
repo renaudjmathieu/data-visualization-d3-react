@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import Line from "./chart/Line"
+import Polyline from "./chart/Polyline"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient";
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
@@ -51,7 +51,7 @@ const Timeline = ({ data, xAccessor, yAccessor, label }) => {
           scale={yScale}
           label={label}
         />
-        <Line
+        <Polyline
           type="area"
           data={data}
           xAccessor={xAccessorScaled}
@@ -59,7 +59,7 @@ const Timeline = ({ data, xAccessor, yAccessor, label }) => {
           y0Accessor={y0AccessorScaled}
           style={{fill: `url(#${gradientId})`}}
         />
-        <Line
+        <Polyline
           data={data}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}

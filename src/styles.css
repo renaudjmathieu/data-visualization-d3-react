@@ -128,11 +128,11 @@ h1 {
     background: #fff
 }
 
-.dark .Circles__circle {
+.dark .Circle--type-circle {
     fill: var(--theme-dark-color-primary);
 }
 
-.light .Circles__circle {
+.light .Circle--type-circle {
     fill: var(--theme-light-color-primary);
 }
 
@@ -144,19 +144,19 @@ h1 {
     fill: var(--theme-light-color-primary);
 }
 
-.dark .Line--type-line {
+.dark .Polyline--type-line {
     stroke: var(--theme-dark-color-primary);
 }
 
-.light .Line--type-line {
+.light .Polyline--type-line {
     stroke: var(--theme-light-color-primary);
 }
 
-.dark .Line--type-area {
+.dark .Polyline--type-area {
     fill: var(--theme-dark-color-primary);
 }
 
-.light .Line--type-area {
+.light .Polyline--type-area {
     fill: var(--theme-light-color-primary);
 }
 

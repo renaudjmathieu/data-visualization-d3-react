@@ -2,17 +2,17 @@
     overflow: visible;
 }
 
-.Line {
+.Polyline {
     transition: all 0.3s ease-out;
 }
 
-.Line--type-line {
+.Polyline--type-line {
     fill: none;
     stroke-width: 3px;
     stroke-linecap: round;
 }
 
-.Line--type-area {
+.Polyline--type-area {
     stroke-width: 0;
 }
 
@@ -36,8 +36,22 @@
     text-anchor: end;
 }
 
-.Circles__circle {
+.Circles {
     transition: all 0.3s ease-out;
+}
+
+.Circle--type-circle {
+    fill: lightgray;
+}
+
+.Circle--type-ring {
+    fill: none;
+    stroke: lightgray;
+}
+
+.Lines__line {
+    fill: none;
+    stroke: lightgray;
 }
 
 .Rectangles__rect {
