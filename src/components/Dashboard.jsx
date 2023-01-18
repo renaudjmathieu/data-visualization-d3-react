@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react"
 import * as d3 from "d3"
-import { getTimelineData, getScatterData } from "./../utils/dummyData"
+import { getTimelineData, getScatterData, getRandomData } from "./../utils/dummyData"
 
 import ScatterPlot from "./ScatterPlot"
+import Pie from "./Pie"
+import Radar from "./Radar"
 import Histogram from "./Histogram"
 import Timeline from "./Timeline"
 import Treemap from "./Treemap"
@@ -14,10 +16,12 @@ const monthAccessor = d => formatMonth(parseDate(d.date))
 const temperatureAccessor = d => d.temperature
 const humidityAccessor = d => d.humidity
 const numberAccessor = d => d.number
+const categoryAccessor = d => d.category
 
 const getData = () => ({
     timeline: getTimelineData(),
     scatter: getScatterData(),
+    random: getRandomData(),
 })
 const Dashboard = (props) => {
     const [data, setData] = useState(getData())
@@ -52,6 +56,16 @@ const Dashboard = (props) => {
                             xLabel="Humidity"
                             yLabel="Temperature"
                         />
+                        case "Pie": return <Pie
+                            data={data.random}
+                            valueAccessor={numberAccessor}
+                            entityAccessor={categoryAccessor}
+                        />
+                        case "Radar": return <Radar
+                            data={data.random}
+                            valueAccessor={numberAccessor}
+                            entityAccessor={categoryAccessor}
+                        />
                         case "Histogram": return <Histogram
                             data={data.scatter}
                             xAccessor={humidityAccessor}
@@ -64,11 +78,11 @@ const Dashboard = (props) => {
                             label="Temperature"
                         />
                         case "Treemap": return <Treemap
-                            data={data.timeline}
+                            data={data.random}
                             valueAccessor={numberAccessor}
-                            entityAccessor={monthAccessor}
+                            entityAccessor={categoryAccessor}
                             valueLabel="Number"
-                            entityLabel="Month"
+                            entityLabel="Category"
                         />
                         default: return null
                     }

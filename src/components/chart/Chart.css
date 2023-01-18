@@ -43,3 +43,7 @@
 .Rectangles__rect {
     transition: all 0.3s ease-out;
 }
+
+.Text__text {
+    transition: all 0.3s ease-out;
+}

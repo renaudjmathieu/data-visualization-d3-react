@@ -96,6 +96,8 @@ const MenuProps = {
 
 const chartsAvailable = [
     'ScatterPlot',
+    'Pie',
+    'Radar',
     'Histogram',
     'Timeline',
     'Treemap',
@@ -168,10 +170,14 @@ const App = (props) => {
                         ...(mode === "light"
                             ? {
                                 default: "#eceff1",
+                                primary: "#eceff1",
+                                secondary: "#fff",
                             }
                             : {
                                 paper: "#1b1a19",
                                 default: "#161C24",
+                                primary: "#161C24",
+                                secondary: "#252423",
                             }),
                     },
                 },
