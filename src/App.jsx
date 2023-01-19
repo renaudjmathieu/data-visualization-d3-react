@@ -95,15 +95,6 @@ const MenuProps = {
     },
 };
 
-const chartsAvailable = [
-    'ScatterPlot',
-    'Pie',
-    'Radar',
-    'Histogram',
-    'Timeline',
-    'Treemap',
-];
-
 const App = (props) => {
     const { window } = props;
     const storedDarkMode = localStorage.getItem("DARK_MODE");
@@ -201,29 +192,20 @@ const App = (props) => {
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
-    const [charts, setCharts] = React.useState(['ScatterPlot', 'Histogram', 'Timeline']);
-
-    const handleChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setCharts(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
-
     const [animate, setAnimate] = React.useState(true);
 
     const handleAnimate = (event) => {
         setAnimate(event.target.checked);
     };
 
+    const [triggerAddChart, setTriggerAddChart] = React.useState(0);
+    const [triggerRemoveChart, setTriggerRemoveChart] = React.useState(0);
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <div className="App">
-                <AppBar position="fixed" open={open}>
+                <AppBar position="fixed" open={open} style={{ background: open ? mode === "light" ? '#EAA2D0' : '#242323' : '' }}>
                     <Toolbar className="close_me">
                         <Typography className="close_me" variant="h6" noWrap component="div">
                             D3 Dashboard
@@ -245,14 +227,18 @@ const App = (props) => {
                         <Grid container spacing={2} className="containerOnDesktop">
                             <Grid xs={8} className="gridOnDesktop__left close_me">
                                 <ButtonGroup variant="contained" aria-label="outlined primary button group" className="close_me">
-                                    <Button disabled = {open}>Add new chart</Button>
-                                    <Button disabled = {open}>Remove last chart</Button>
+                                    <Button disabled={open} onClick={() => {
+                                        setTriggerAddChart((triggerAddChart) => triggerAddChart + 1);
+                                    }}>Add new chart</Button>
+                                    <Button disabled={open} onClick={() => {
+                                        setTriggerRemoveChart((triggerRemoveChart) => triggerRemoveChart + 1);
+                                    }}>Remove last chart</Button>
                                 </ButtonGroup>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me">
                                 <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
                                     <FormGroup className="close_me">
-                                        <FormControlLabel disabled = {open} control={
+                                        <FormControlLabel disabled={open} control={
                                             <Switch
                                                 checked={animate}
                                                 onChange={handleAnimate}
@@ -260,8 +246,8 @@ const App = (props) => {
                                             />
                                         } label="Monochrome" />
                                     </FormGroup>
-                                    <FormGroup className="  ">
-                                        <FormControlLabel disabled = {open} control={
+                                    <FormGroup className="close_me">
+                                        <FormControlLabel disabled={open} control={
                                             <Switch
                                                 checked={animate}
                                                 onChange={handleAnimate}
@@ -273,7 +259,12 @@ const App = (props) => {
                             </Grid>
                         </Grid>
                     </Box>
-                    <Dashboard selectedCharts={charts} checkedAnimate={animate} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+                    <Dashboard
+                        checkedAnimate={animate}
+                        handleDrawerOpen={handleDrawerOpen}
+                        handleDrawerClose={handleDrawerClose}
+                        triggerAddChart={triggerAddChart}
+                        triggerRemoveChart={triggerRemoveChart} />
                 </Main>
                 <Drawer
                     sx={{
@@ -301,26 +292,7 @@ const App = (props) => {
                         </ListItem>
                     </List>
                     <Divider />
-                    <FormControl sx={{ m: 1, width: 220 }} className='formOnMobile'>
-                        <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
-                        <Select
-                            labelId="demo-multiple-checkbox-label"
-                            id="demo-multiple-checkbox"
-                            multiple
-                            value={charts}
-                            onChange={handleChange}
-                            input={<OutlinedInput label="Charts" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
-                        >
-                            {chartsAvailable.map((chart) => (
-                                <MenuItem key={chart} value={chart}>
-                                    <Checkbox checked={charts.indexOf(chart) > -1} />
-                                    <ListItemText primary={chart} />
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
+                    
                 </Drawer>
                 <Drawer
                     sx={{
@@ -341,26 +313,6 @@ const App = (props) => {
                         </IconButton>
                     </DrawerHeader>
 
-                    <FormControl sx={{ m: 1, width: 220 }} className='formOnMobile'>
-                        <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
-                        <Select
-                            labelId="demo-multiple-checkbox-label"
-                            id="demo-multiple-checkbox"
-                            multiple
-                            value={charts}
-                            onChange={handleChange}
-                            input={<OutlinedInput label="Charts" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={MenuProps}
-                        >
-                            {chartsAvailable.map((chart) => (
-                                <MenuItem key={chart} value={chart}>
-                                    <Checkbox checked={charts.indexOf(chart) > -1} />
-                                    <ListItemText primary={chart} />
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
                 </Drawer>
             </div>
         </ThemeProvider>

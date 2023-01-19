@@ -28,13 +28,6 @@ const Dashboard = (props) => {
     const ref = useRef();
     const [data, setData] = useState(getData())
 
-    const selectedCharts = props.selectedCharts;
-    const [charts, setCharts] = useState(selectedCharts);
-
-    useEffect(() => {
-        setCharts(selectedCharts);
-    }, [selectedCharts]);
-
     const checkedAnimate = props.checkedAnimate;
     const [animate, setAnimate] = useState(checkedAnimate);
 
@@ -65,8 +58,6 @@ const Dashboard = (props) => {
     };
 
     const handleOutsideOusideClick = (e) => {
-        console.log(e.target.tagName)
-        console.log(e.target)
         if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
             setChosen(null);
             document.body.classList.add("config-closed")
@@ -76,12 +67,46 @@ const Dashboard = (props) => {
     };
 
     useEffect(() => {
+        if (props.triggerAddChart) {
+            setCharts([...charts, chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]]);
+        }
+    }, [props.triggerAddChart]);
+
+    useEffect(() => {
+        if (props.triggerRemoveChart) {
+            setCharts(charts.slice(0, charts.length - 1));
+        }
+    }, [props.triggerRemoveChart]);
+
+    useEffect(() => {
         document.addEventListener("click", handleOutsideOusideClick);
 
         return () => {
             document.removeEventListener("click", handleOutsideOusideClick);
         };
     });
+
+    const chartsAvailable = [
+        'ScatterPlot',
+        'Pie',
+        'Radar',
+        'Histogram',
+        'Timeline',
+        'Treemap',
+    ];
+
+    const [charts, setCharts] = React.useState(['ScatterPlot', 'Histogram', 'Timeline']);
+
+    const handleChangeChart = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setCharts(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
 
     return (
         <div className="App__charts__dashboard" ref={ref} onClick={handleOutsideClick}>
