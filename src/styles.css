@@ -43,7 +43,7 @@ h1 {
     background: #ecf0f1;
 }
 
-.Chart__rectangle, 
+.Chart__rectangle,
 .Chart__rectangle__large {
     height: 350px;
     min-width: 350px;
@@ -82,7 +82,7 @@ h1 {
     .Chart__rectangle {
         min-width: 550px;
     }
-    
+
     .Chart__rectangle__large {
         min-width: 750px;
     }
@@ -211,9 +211,112 @@ h1 {
 }
 
 
-.gridOnDesktop__right .RemoveIcon {
-   
-}
+.gridOnDesktop__right .RemoveIcon {}
+
 .gridOnDesktop__right .AddIcon {
     margin-right: 15px;
+}
+
+.dark .Chart__rectangle__large.active,
+.dark .Chart__rectangle.active,
+.dark .Chart__square.active {
+    border: 1px solid var(--theme-dark-color-primary);
+}
+
+.dark .Chart__rectangle__large.active .Axis__line,
+.dark .Chart__rectangle.active .Axis__line,
+.dark .Chart__square.active .Axis__line {
+    stroke: var(--theme-dark-color-primary);
+}
+
+.dark .Chart__rectangle__large.active .Circles,
+.dark .Chart__rectangle.active .Circles,
+.dark .Chart__square.active .Circles {
+    fill: #161C24;
+}
+
+.dark .Chart__rectangle__large.active .Rectangles__rect,
+.dark .Chart__rectangle.active .Rectangles__rect,
+.dark .Chart__square.active .Rectangles__rect {
+    fill: #161C24;
+}
+
+.dark .Chart__rectangle__large.active .Polyline--type-line,
+.dark .Chart__rectangle.active .Polyline--type-line,
+.dark .Chart__square.active .Polyline--type-line {
+    stroke: #161C24;
+}
+
+.dark .Chart__rectangle__large.active .Polyline--type-area,
+.dark .Chart__rectangle.active .Polyline--type-area,
+.dark .Chart__square.active .Polyline--type-area {
+    fill: #161C24;
+}
+
+.dark .Chart__rectangle__large.active .Axis__tick,
+.dark .Chart__rectangle.active .Axis__tick,
+.dark .Chart__square.active .Axis__tick {
+    fill: var(--theme-dark-color-primary);
+}
+
+.dark .Chart__rectangle__large.active .Axis__label,
+.dark .Chart__rectangle.active .Axis__label,
+.dark .Chart__square.active .Axis__label {
+    fill: var(--theme-dark-color-primary);
+}
+
+.light .Chart__rectangle__large.active,
+.light .Chart__rectangle.active,
+.light .Chart__square.active {
+    border: 1px solid var(--theme-light-color-primary);
+}
+
+.light .Chart__rectangle__large.active .Axis__line,
+.light .Chart__rectangle.active .Axis__line,
+.light .Chart__square.active .Axis__line {
+    stroke: var(--theme-light-color-primary);
+}
+
+.light .Chart__rectangle__large.active .Circles,
+.light .Chart__rectangle.active .Circles,
+.light .Chart__square.active .Circles {
+    fill: #eceff1;
+}
+
+.light .Chart__rectangle__large.active .Rectangles__rect,
+.light .Chart__rectangle.active .Rectangles__rect,
+.light .Chart__square.active .Rectangles__rect {
+    fill: #eceff1;
+}
+
+.light .Chart__rectangle__large.active .Polyline--type-line,
+.light .Chart__rectangle.active .Polyline--type-line,
+.light .Chart__square.active .Polyline--type-line {
+    stroke: #eceff1;
+}
+
+.light .Chart__rectangle__large.active .Polyline--type-area,
+.light .Chart__rectangle.active .Polyline--type-area,
+.light .Chart__square.active .Polyline--type-area {
+    fill: #eceff1;
+}
+
+.light .Chart__rectangle__large.active .Axis__tick,
+.light .Chart__rectangle.active .Axis__tick,
+.light .Chart__square.active .Axis__tick {
+    fill: var(--theme-light-color-primary);
+}
+
+.light .Chart__rectangle__large.active .Axis__label,
+.light .Chart__rectangle.active .Axis__label,
+.light .Chart__square.active .Axis__label {
+    fill: var(--theme-light-color-primary);
+}
+
+.config-closed .App__charts__config {
+    display: none;
+}
+
+.config-open .App__charts__config {
+    display: block;
 }

@@ -7,9 +7,10 @@ import Circles from "./chart/Circles"
 import Axis from "./chart/Axis"
 import { useChartDimensions, accessorPropsType } from "./chart/utils"
 
-const ScatterPlot = ({ data, xAccessor, yAccessor, xLabel, yLabel }) => {
+const ScatterPlot = ({ active, onClick, data, xAccessor, yAccessor, xLabel, yLabel }) => {
   const [ref, dimensions] = useChartDimensions({
-    marginBottom: 77,
+    marginBottom: active ? 227 : 77,
+    marginRight: active ? 150 : 0,
   })
 
   const xScale = d3.scaleLinear()
@@ -27,7 +28,7 @@ const ScatterPlot = ({ data, xAccessor, yAccessor, xLabel, yLabel }) => {
   const keyAccessor = (d, i) => i
 
   return (
-    <div className="Chart__square" ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__square active" : "Chart__square"} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimensions={dimensions}

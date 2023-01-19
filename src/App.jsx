@@ -24,14 +24,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Slider from '@mui/material/Slider';
-import Grid from '@mui/material/Unstable_Grid2';
-import Stack from '@mui/material/Stack';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
 
 import Dashboard from "./components/Dashboard"
 
@@ -212,12 +204,6 @@ const App = (props) => {
         );
     };
 
-    const [animate, setAnimate] = React.useState(true);
-
-    const handleAnimate = (event) => {
-        setAnimate(event.target.checked);
-    };
-
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -249,56 +235,8 @@ const App = (props) => {
                 </AppBar>
                 <Main open={open}>
                     <DrawerHeader />
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Grid container spacing={2} className="containerOnDesktop">
-                            <Grid xs={8} className="gridOnDesktop__left">
-                                <FormControl sx={{ m: 1, width: 300 }} className='formOnDesktop'>
-                                    <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
-                                    <Select
-                                        labelId="demo-multiple-checkbox-label"
-                                        id="demo-multiple-checkbox"
-                                        multiple
-                                        value={charts}
-                                        onChange={handleChange}
-                                        input={<OutlinedInput label="Charts" />}
-                                        renderValue={(selected) => selected.join(', ')}
-                                        MenuProps={MenuProps}
-                                    >
-                                        {chartsAvailable.map((chart) => (
-                                            <MenuItem className='menuItemOnDesktop' key={chart} value={chart}>
-                                                <Checkbox checked={charts.indexOf(chart) > -1} />
-                                                <ListItemText primary={chart} />
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid xs={4} className="gridOnDesktop__right">
-                                <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                                    <RemoveIcon className="RemoveIcon" />
-                                    <Slider className="sliderOnDesktop"
-                                        defaultValue={30}
-                                        valueLabelDisplay="auto"
-                                        step={10}
-                                        marks
-                                        min={10}
-                                        max={110}
-                                    />
-                                    <AddIcon className="AddIcon" />
-                                    <FormGroup>
-                                        <FormControlLabel control={
-                                            <Switch
-                                                checked={animate}
-                                                onChange={handleAnimate}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                            />
-                                        } label="Animate" />
-                                    </FormGroup>
-                                </Stack>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Dashboard selectedCharts={charts} checkedAnimate={animate} />
+                    
+                    <Dashboard selectedCharts={charts} />
                 </Main>
                 <Drawer
                     container={container}
@@ -365,6 +303,27 @@ const App = (props) => {
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>
                     </DrawerHeader>
+
+                    <FormControl sx={{ m: 1, width: 220 }} className='formOnMobile'>
+                        <InputLabel id="demo-multiple-checkbox-label">Charts</InputLabel>
+                        <Select
+                            labelId="demo-multiple-checkbox-label"
+                            id="demo-multiple-checkbox"
+                            multiple
+                            value={charts}
+                            onChange={handleChange}
+                            input={<OutlinedInput label="Charts" />}
+                            renderValue={(selected) => selected.join(', ')}
+                            MenuProps={MenuProps}
+                        >
+                            {chartsAvailable.map((chart) => (
+                                <MenuItem key={chart} value={chart}>
+                                    <Checkbox checked={charts.indexOf(chart) > -1} />
+                                    <ListItemText primary={chart} />
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Drawer>
             </div>
         </ThemeProvider>
