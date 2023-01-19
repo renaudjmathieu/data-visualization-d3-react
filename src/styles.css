@@ -223,46 +223,46 @@ h1 {
     border: 1px solid var(--theme-dark-color-primary);
 }
 
-.dark .Chart__rectangle__large.active .Axis__line,
-.dark .Chart__rectangle.active .Axis__line,
-.dark .Chart__square.active .Axis__line {
-    stroke: var(--theme-dark-color-primary);
-}
-
-.dark .Chart__rectangle__large.active .Circles,
-.dark .Chart__rectangle.active .Circles,
-.dark .Chart__square.active .Circles {
-    fill: #161C24;
-}
-
-.dark .Chart__rectangle__large.active .Rectangles__rect,
-.dark .Chart__rectangle.active .Rectangles__rect,
-.dark .Chart__square.active .Rectangles__rect {
-    fill: #161C24;
-}
-
-.dark .Chart__rectangle__large.active .Polyline--type-line,
-.dark .Chart__rectangle.active .Polyline--type-line,
-.dark .Chart__square.active .Polyline--type-line {
+.dark .Chart__rectangle__large.outOfFocus .Axis__line,
+.dark .Chart__rectangle.outOfFocus .Axis__line,
+.dark .Chart__square.outOfFocus .Axis__line {
     stroke: #161C24;
 }
 
-.dark .Chart__rectangle__large.active .Polyline--type-area,
-.dark .Chart__rectangle.active .Polyline--type-area,
-.dark .Chart__square.active .Polyline--type-area {
+.dark .Chart__rectangle__large.outOfFocus .Circles,
+.dark .Chart__rectangle.outOfFocus .Circles,
+.dark .Chart__square.outOfFocus .Circles {
     fill: #161C24;
 }
 
-.dark .Chart__rectangle__large.active .Axis__tick,
-.dark .Chart__rectangle.active .Axis__tick,
-.dark .Chart__square.active .Axis__tick {
-    fill: var(--theme-dark-color-primary);
+.dark .Chart__rectangle__large.outOfFocus .Rectangles__rect,
+.dark .Chart__rectangle.outOfFocus .Rectangles__rect,
+.dark .Chart__square.outOfFocus .Rectangles__rect {
+    fill: #161C24;
 }
 
-.dark .Chart__rectangle__large.active .Axis__label,
-.dark .Chart__rectangle.active .Axis__label,
-.dark .Chart__square.active .Axis__label {
-    fill: var(--theme-dark-color-primary);
+.dark .Chart__rectangle__large.outOfFocus .Polyline--type-line,
+.dark .Chart__rectangle.outOfFocus .Polyline--type-line,
+.dark .Chart__square.outOfFocus .Polyline--type-line {
+    stroke: #161C24;
+}
+
+.dark .Chart__rectangle__large.outOfFocus .Polyline--type-area,
+.dark .Chart__rectangle.outOfFocus .Polyline--type-area,
+.dark .Chart__square.outOfFocus .Polyline--type-area {
+    fill: #161C24;
+}
+
+.dark .Chart__rectangle__large.outOfFocus .Axis__tick,
+.dark .Chart__rectangle.outOfFocus .Axis__tick,
+.dark .Chart__square.outOfFocus .Axis__tick {
+    fill: #161C24;
+}
+
+.dark .Chart__rectangle__large.outOfFocus .Axis__label,
+.dark .Chart__rectangle.outOfFocus .Axis__label,
+.dark .Chart__square.outOfFocus .Axis__label {
+    fill: #161C24;
 }
 
 .light .Chart__rectangle__large.active,
@@ -271,46 +271,46 @@ h1 {
     border: 1px solid var(--theme-light-color-primary);
 }
 
-.light .Chart__rectangle__large.active .Axis__line,
-.light .Chart__rectangle.active .Axis__line,
-.light .Chart__square.active .Axis__line {
-    stroke: var(--theme-light-color-primary);
-}
-
-.light .Chart__rectangle__large.active .Circles,
-.light .Chart__rectangle.active .Circles,
-.light .Chart__square.active .Circles {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.active .Rectangles__rect,
-.light .Chart__rectangle.active .Rectangles__rect,
-.light .Chart__square.active .Rectangles__rect {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.active .Polyline--type-line,
-.light .Chart__rectangle.active .Polyline--type-line,
-.light .Chart__square.active .Polyline--type-line {
+.light .Chart__rectangle__large.outOfFocus .Axis__line,
+.light .Chart__rectangle.outOfFocus .Axis__line,
+.light .Chart__square.outOfFocus .Axis__line {
     stroke: #eceff1;
 }
 
-.light .Chart__rectangle__large.active .Polyline--type-area,
-.light .Chart__rectangle.active .Polyline--type-area,
-.light .Chart__square.active .Polyline--type-area {
+.light .Chart__rectangle__large.outOfFocus .Circles,
+.light .Chart__rectangle.outOfFocus .Circles,
+.light .Chart__square.outOfFocus .Circles {
     fill: #eceff1;
 }
 
-.light .Chart__rectangle__large.active .Axis__tick,
-.light .Chart__rectangle.active .Axis__tick,
-.light .Chart__square.active .Axis__tick {
-    fill: var(--theme-light-color-primary);
+.light .Chart__rectangle__large.outOfFocus .Rectangles__rect,
+.light .Chart__rectangle.outOfFocus .Rectangles__rect,
+.light .Chart__square.outOfFocus .Rectangles__rect {
+    fill: #eceff1;
 }
 
-.light .Chart__rectangle__large.active .Axis__label,
-.light .Chart__rectangle.active .Axis__label,
-.light .Chart__square.active .Axis__label {
-    fill: var(--theme-light-color-primary);
+.light .Chart__rectangle__large.outOfFocus .Polyline--type-line,
+.light .Chart__rectangle.outOfFocus .Polyline--type-line,
+.light .Chart__square.outOfFocus .Polyline--type-line {
+    stroke: #eceff1;
+}
+
+.light .Chart__rectangle__large.outOfFocus .Polyline--type-area,
+.light .Chart__rectangle.outOfFocus .Polyline--type-area,
+.light .Chart__square.outOfFocus .Polyline--type-area {
+    fill: #eceff1;
+}
+
+.light .Chart__rectangle__large.outOfFocus .Axis__tick,
+.light .Chart__rectangle.outOfFocus .Axis__tick,
+.light .Chart__square.outOfFocus .Axis__tick {
+    fill: #eceff1;
+}
+
+.light .Chart__rectangle__large.outOfFocus .Axis__label,
+.light .Chart__rectangle.outOfFocus .Axis__label,
+.light .Chart__square.outOfFocus .Axis__label {
+    fill: #eceff1;
 }
 
 .config-closed .App__charts__config {

@@ -241,18 +241,18 @@ const App = (props) => {
                 </AppBar>
                 <Main open={open}>
                     <DrawerHeader className="close_me" />
-                    <Box sx={{ flexGrow: 1 }}>
+                    <Box sx={{ flexGrow: 1 }} className="close_me">
                         <Grid container spacing={2} className="containerOnDesktop">
-                            <Grid xs={8} className="gridOnDesktop__left">
-                                <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                                    <Button>Add chart</Button>
-                                    <Button>Remove chart</Button>
+                            <Grid xs={8} className="gridOnDesktop__left close_me">
+                                <ButtonGroup variant="contained" aria-label="outlined primary button group" className="close_me">
+                                    <Button disabled = {open}>Add new chart</Button>
+                                    <Button disabled = {open}>Remove last chart</Button>
                                 </ButtonGroup>
                             </Grid>
-                            <Grid xs={4} className="gridOnDesktop__right">
+                            <Grid xs={4} className="gridOnDesktop__right close_me">
                                 <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                                    <FormGroup>
-                                        <FormControlLabel control={
+                                    <FormGroup className="close_me">
+                                        <FormControlLabel disabled = {open} control={
                                             <Switch
                                                 checked={animate}
                                                 onChange={handleAnimate}
@@ -260,8 +260,8 @@ const App = (props) => {
                                             />
                                         } label="Monochrome" />
                                     </FormGroup>
-                                    <FormGroup>
-                                        <FormControlLabel control={
+                                    <FormGroup className="  ">
+                                        <FormControlLabel disabled = {open} control={
                                             <Switch
                                                 checked={animate}
                                                 onChange={handleAnimate}

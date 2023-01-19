@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material/styles';
 
 const formatDate = d3.timeFormat("%-b %-d")
 
-const Timeline = ({ active, onClick,data, xAccessor, yAccessor, label }) => {
+const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, label }) => {
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
   const gradientColors = [theme.palette.primary.light, theme.palette.primary.contrastText]
@@ -31,7 +31,7 @@ const Timeline = ({ active, onClick,data, xAccessor, yAccessor, label }) => {
   const y0AccessorScaled = yScale(yScale.domain()[0])
 
   return (
-    <div onClick={onClick} className={active ? "Chart__rectangle__large active" : "Chart__rectangle__large"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__rectangle__large active" : outOfFocus ? "Chart__rectangle__large outOfFocus" : "Chart__rectangle__large"} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -57,7 +57,7 @@ const Timeline = ({ active, onClick,data, xAccessor, yAccessor, label }) => {
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           y0Accessor={y0AccessorScaled}
-          style={active ? {} : {fill: `url(#${gradientId})`}}
+          style={outOfFocus ? {} : {fill: `url(#${gradientId})`}}
         />
         <Polyline
           data={data}

@@ -8,7 +8,7 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Pie = ({ active, onClick, data, valueAccessor, entityAccessor }) => {
+const Pie = ({ outOfFocus, active, onClick, data, valueAccessor, entityAccessor }) => {
   const [ref, dimensions] = useChartDimensions({
     marginTop: 20,
     marginRight: 20,
@@ -46,7 +46,7 @@ const Pie = ({ active, onClick, data, valueAccessor, entityAccessor }) => {
     .range(interpolateWithSteps(dataByEntity.length).map(d3.interpolateLab("#f3a683", "#3dc1d3")))
 
   return (
-    <div onClick={onClick} className={active ? "Chart__square active" : "Chart__square"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__square active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square"} ref={ref}>
       <Chart dimensions={dimensions}>
         <g transform={`translate(${dimensions.boundedWidth / 2}, ${dimensions.boundedHeight / 2})`}>
           <defs>

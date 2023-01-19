@@ -9,11 +9,10 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ active, onClick, data, xAccessor, xLabel }) => {
+const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
-    marginRight: active ? 100 : 0
   })
   const theme = useTheme();
   const gradientColors = [theme.palette.primary.main, theme.palette.primary.contrastText]
@@ -48,7 +47,7 @@ const Histogram = ({ active, onClick, data, xAccessor, xLabel }) => {
   const keyAccessor = (d, i) => i
 
   return (
-    <div onClick={onClick} className={active ? "Chart__rectangle active" : "Chart__rectangle"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__rectangle active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle"} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -77,7 +76,7 @@ const Histogram = ({ active, onClick, data, xAccessor, xLabel }) => {
           yAccessor={yAccessorScaled}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
-          style={active ? {} : {fill: `url(#${gradientId})`}}
+          style={outOfFocus ? {} : {fill: `url(#${gradientId})`}}
         />
       </Chart>
     </div>
