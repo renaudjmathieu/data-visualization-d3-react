@@ -209,8 +209,8 @@ const App = (props) => {
             <CssBaseline />
             <div className="App">
                 <AppBar position="fixed" open={open}>
-                    <Toolbar>
-                        <Typography variant="h6" noWrap component="div">
+                    <Toolbar className="close_me">
+                        <Typography className="close_me" variant="h6" noWrap component="div">
                             D3 Dashboard
                         </Typography>
                         <Box sx={{ flexGrow: 1 }} />
@@ -225,9 +225,9 @@ const App = (props) => {
                     </Toolbar>
                 </AppBar>
                 <Main open={open}>
-                    <DrawerHeader />
+                    <DrawerHeader className="close_me" />
 
-                    <Dashboard selectedCharts={charts} handleDrawerOpen={handleDrawerOpen} />
+                    <Dashboard selectedCharts={charts} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
                 </Main>
                 <Drawer
                     sx={{

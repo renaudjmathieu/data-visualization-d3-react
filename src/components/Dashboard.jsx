@@ -9,18 +9,6 @@ import Histogram from "./Histogram"
 import Timeline from "./Timeline"
 import Treemap from "./Treemap"
 
-import Box from "@mui/material/Box";
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Slider from '@mui/material/Slider';
-import Grid from '@mui/material/Unstable_Grid2';
-import Stack from '@mui/material/Stack';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-
-import useOutsideClick from "./useOutsideClick";
-
 const parseDate = d3.timeParse("%m/%d/%Y")
 const formatMonth = d3.timeFormat("%b")
 const dateAccessor = d => parseDate(d.date)
@@ -61,10 +49,8 @@ const Dashboard = (props) => {
 
     const handleClick = (e, chart) => {
         setChosen(chart);
-
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
-
         props.handleDrawerOpen();
     };
 
@@ -73,19 +59,33 @@ const Dashboard = (props) => {
             setChosen(null);
             document.body.classList.add("config-closed")
             document.body.classList.remove("config-open")
+            props.handleDrawerClose();
         }
     };
 
-    useOutsideClick(ref, () => {
-        setChosen(null);
-        document.body.classList.add("config-closed")
-        document.body.classList.remove("config-open")
+    const handleOutsideOusideClick = (e) => {
+        console.log(e.target.tagName)
+        console.log(e.target)
+        if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.classList.contains("close_me")) {
+            setChosen(null);
+            document.body.classList.add("config-closed")
+            document.body.classList.remove("config-open")
+            props.handleDrawerClose();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("click", handleOutsideOusideClick);
+
+        return () => {
+            document.removeEventListener("click", handleOutsideOusideClick);
+        };
     });
 
     return (
         <div className="App__charts__dashboard" ref={ref} onClick={handleOutsideClick}>
             <div className="App__charts__config">
-                
+
             </div>
             <div className="App__charts">
                 {charts
