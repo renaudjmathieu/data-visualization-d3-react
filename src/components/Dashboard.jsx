@@ -64,10 +64,12 @@ const Dashboard = (props) => {
 
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
+
+        props.handleDrawerOpen();
     };
 
     const handleOutsideClick = (e) => {
-        if (e.target.tagName === "DIV") {
+        if (e.target.tagName === "DIV" && (!e.target.classList.contains("Chart__rectangle")) && (!e.target.classList.contains("Chart__rectangle__large")) && (!e.target.classList.contains("Chart__square"))) {
             setChosen(null);
             document.body.classList.add("config-closed")
             document.body.classList.remove("config-open")
@@ -83,36 +85,7 @@ const Dashboard = (props) => {
     return (
         <div className="App__charts__dashboard" ref={ref} onClick={handleOutsideClick}>
             <div className="App__charts__config">
-                <Box sx={{ flexGrow: 1 }}>
-                    <Grid container spacing={2} className="containerOnDesktop">
-                        <Grid xs={8} className="gridOnDesktop__left">
-
-                        </Grid>
-                        <Grid xs={4} className="gridOnDesktop__right">
-                            <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
-                                <RemoveIcon className="RemoveIcon" />
-                                <Slider className="sliderOnDesktop"
-                                    defaultValue={30}
-                                    valueLabelDisplay="auto"
-                                    step={10}
-                                    marks
-                                    min={10}
-                                    max={110}
-                                />
-                                <AddIcon className="AddIcon" />
-                                <FormGroup>
-                                    <FormControlLabel control={
-                                        <Switch
-                                            checked={animate}
-                                            onChange={handleAnimate}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                        />
-                                    } label="Animate" />
-                                </FormGroup>
-                            </Stack>
-                        </Grid>
-                    </Grid>
-                </Box>
+                
             </div>
             <div className="App__charts">
                 {charts

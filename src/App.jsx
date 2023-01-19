@@ -210,15 +210,6 @@ const App = (props) => {
             <div className="App">
                 <AppBar position="fixed" open={open}>
                     <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={{ mr: 2, ...(open) }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
                         <Typography variant="h6" noWrap component="div">
                             D3 Dashboard
                         </Typography>
@@ -235,21 +226,21 @@ const App = (props) => {
                 </AppBar>
                 <Main open={open}>
                     <DrawerHeader />
-                    
-                    <Dashboard selectedCharts={charts} />
+
+                    <Dashboard selectedCharts={charts} handleDrawerOpen={handleDrawerOpen} />
                 </Main>
                 <Drawer
-                    container={container}
-                    variant="temporary"
-                    open={open}
-                    onClose={handleDrawerClose}
-                    ModalProps={{
-                        keepMounted: true, // Better open performance on mobile.
-                    }}
                     sx={{
-                        display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        width: drawerWidth,
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                        },
                     }}
+                    variant="persistent"
+                    anchor="left"
+                    open={open}
                 >
                     <Toolbar />
                     <Divider />
