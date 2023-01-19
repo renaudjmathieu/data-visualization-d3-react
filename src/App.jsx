@@ -9,7 +9,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
@@ -24,6 +23,16 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Slider from '@mui/material/Slider';
+import Grid from '@mui/material/Unstable_Grid2';
+import Stack from '@mui/material/Stack';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 
 import Dashboard from "./components/Dashboard"
 
@@ -204,6 +213,12 @@ const App = (props) => {
         );
     };
 
+    const [animate, setAnimate] = React.useState(true);
+
+    const handleAnimate = (event) => {
+        setAnimate(event.target.checked);
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -226,8 +241,39 @@ const App = (props) => {
                 </AppBar>
                 <Main open={open}>
                     <DrawerHeader className="close_me" />
-
-                    <Dashboard selectedCharts={charts} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
+                    <Box sx={{ flexGrow: 1 }}>
+                        <Grid container spacing={2} className="containerOnDesktop">
+                            <Grid xs={8} className="gridOnDesktop__left">
+                                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                                    <Button>Add chart</Button>
+                                    <Button>Remove chart</Button>
+                                </ButtonGroup>
+                            </Grid>
+                            <Grid xs={4} className="gridOnDesktop__right">
+                                <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+                                    <FormGroup>
+                                        <FormControlLabel control={
+                                            <Switch
+                                                checked={animate}
+                                                onChange={handleAnimate}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                            />
+                                        } label="Monochrome" />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <FormControlLabel control={
+                                            <Switch
+                                                checked={animate}
+                                                onChange={handleAnimate}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                            />
+                                        } label="Animated" />
+                                    </FormGroup>
+                                </Stack>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                    <Dashboard selectedCharts={charts} checkedAnimate={animate} handleDrawerOpen={handleDrawerOpen} handleDrawerClose={handleDrawerClose} />
                 </Main>
                 <Drawer
                     sx={{

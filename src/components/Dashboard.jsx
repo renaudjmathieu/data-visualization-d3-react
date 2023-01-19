@@ -35,11 +35,12 @@ const Dashboard = (props) => {
         setCharts(selectedCharts);
     }, [selectedCharts]);
 
-    const [animate, setAnimate] = React.useState(true);
+    const checkedAnimate = props.checkedAnimate;
+    const [animate, setAnimate] = useState(checkedAnimate);
 
-    const handleAnimate = (event) => {
-        setAnimate(event.target.checked);
-    };
+    useEffect(() => {
+        setAnimate(checkedAnimate);
+    }, [checkedAnimate]);
 
     useInterval(() => {
         setData(getData())
