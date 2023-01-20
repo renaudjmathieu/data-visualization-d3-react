@@ -296,7 +296,7 @@ const App = (props) => {
                         </Grid>
                     </Box>
                     <Dashboard ref={dashboardRef}
-                        selectedCharts={charts}
+                        charts={charts}
                         checkedAnimate={animate}
                         handleDrawerOpen={handleDrawerOpen}
                         handleDrawerClose={handleDrawerClose} />

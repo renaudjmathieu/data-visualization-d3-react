@@ -26,12 +26,11 @@ const Dashboard = (props) => {
     const ref = useRef();
     const [data, setData] = useState(getData())
 
-    const selectedCharts = props.selectedCharts;
-    const [charts, setCharts] = useState(selectedCharts);
+    const [charts, setCharts] = useState(props.charts);
 
     useEffect(() => {
-        setCharts(selectedCharts);
-    }, [selectedCharts]);
+        setCharts(props.charts);
+    }, [props.charts]);
 
     const checkedAnimate = props.checkedAnimate;
     const [animate, setAnimate] = useState(checkedAnimate);
