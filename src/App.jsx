@@ -95,6 +95,15 @@ const MenuProps = {
     },
 };
 
+const chartsAvailable = [
+    'ScatterPlot',
+    'Pie',
+    'Radar',
+    'Histogram',
+    'Timeline',
+    'Treemap',
+];
+
 const App = (props) => {
     const { window } = props;
     const storedDarkMode = localStorage.getItem("DARK_MODE");
@@ -198,8 +207,21 @@ const App = (props) => {
         setAnimate(event.target.checked);
     };
 
-    const [triggerAddChart, setTriggerAddChart] = React.useState(0);
-    const [triggerRemoveChart, setTriggerRemoveChart] = React.useState(0);
+    const [charts, setCharts] = React.useState(['ScatterPlot', 'Histogram', 'Timeline']);
+
+    const handleReplaceChart = () => {
+        setCharts(charts.map((chart) => chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]));
+    };
+
+    const handleAddChart = () => {
+        setCharts([...charts, chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]]);
+    };
+
+    const handleRemoveChart = () => {
+        setCharts(charts.slice(0, charts.length - 1));
+    };
+
+    const dashboardRef = React.useRef();
 
     return (
         <ThemeProvider theme={theme}>
@@ -207,13 +229,14 @@ const App = (props) => {
             <div className="App">
                 <AppBar position="fixed" open={open} style={{ background: open ? mode === "light" ? '#EAA2D0' : '#242323' : '' }}>
                     <Toolbar className="close_me">
-                        <Typography className="close_me" variant="h6" noWrap component="div">
+                        <Typography className="close_me" variant="h6" noWrap component="div" style={{ color: open && mode === "dark" ? '#8B8E91' : '' }}>
                             D3 Dashboard
                         </Typography>
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
                             <IconButton
                                 color="inherit"
+                                style={{ color: open && mode === "dark" ? '#8B8E91' : '' }}
                                 onClick={colorMode.toggleColorMode}
                             >
                                 {mode === "dark" ? <LightMode /> : <DarkMode />}
@@ -227,12 +250,8 @@ const App = (props) => {
                         <Grid container spacing={2} className="containerOnDesktop">
                             <Grid xs={8} className="gridOnDesktop__left close_me">
                                 <ButtonGroup variant="contained" aria-label="outlined primary button group" className="close_me">
-                                    <Button disabled={open} onClick={() => {
-                                        setTriggerAddChart((triggerAddChart) => triggerAddChart + 1);
-                                    }}>Add new chart</Button>
-                                    <Button disabled={open} onClick={() => {
-                                        setTriggerRemoveChart((triggerRemoveChart) => triggerRemoveChart + 1);
-                                    }}>Remove last chart</Button>
+                                    <Button disabled={open} onClick={handleAddChart}>Add new chart</Button>
+                                    <Button disabled={open} onClick={handleRemoveChart}>Remove last chart</Button>
                                 </ButtonGroup>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me">
@@ -259,12 +278,11 @@ const App = (props) => {
                             </Grid>
                         </Grid>
                     </Box>
-                    <Dashboard
+                    <Dashboard ref={dashboardRef}
+                        selectedCharts={charts}
                         checkedAnimate={animate}
                         handleDrawerOpen={handleDrawerOpen}
-                        handleDrawerClose={handleDrawerClose}
-                        triggerAddChart={triggerAddChart}
-                        triggerRemoveChart={triggerRemoveChart} />
+                        handleDrawerClose={handleDrawerClose} />
                 </Main>
                 <Drawer
                     sx={{
@@ -292,7 +310,7 @@ const App = (props) => {
                         </ListItem>
                     </List>
                     <Divider />
-                    
+
                 </Drawer>
                 <Drawer
                     sx={{
@@ -312,7 +330,20 @@ const App = (props) => {
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>
                     </DrawerHeader>
-
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Charts"
+                            value={charts}
+                            onChange={handleReplaceChart}
+                        >
+                            {chartsAvailable.map((chart) => (
+                                <MenuItem value={chart}>{chart}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Drawer>
             </div>
         </ThemeProvider>

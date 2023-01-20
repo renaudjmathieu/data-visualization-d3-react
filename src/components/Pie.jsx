@@ -60,7 +60,7 @@ const Pie = ({ outOfFocus, active, onClick, data, valueAccessor, entityAccessor 
             data={arcs}
             keyAccessor={keyAccessor}
             radius={dimensions.boundedWidth / 2}
-            style={{ fill: `url(#${gradientId})` }}
+            style={outOfFocus ? {} : {fill: `url(#${gradientId})`}}
           />
         </g>
       </Chart>

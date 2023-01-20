@@ -253,6 +253,19 @@ h1 {
     fill: #161C24;
 }
 
+
+.dark .Chart__rectangle__large.outOfFocus .Arc--type-pie,
+.dark .Chart__rectangle.outOfFocus .Arc--type-pie,
+.dark .Chart__square.outOfFocus .Arc--type-pie {
+    fill: #161C24;
+}
+
+.dark .Chart__rectangle__large.outOfFocus .Arc--type-donut,
+.dark .Chart__rectangle.outOfFocus .Arc--type-donut,
+.dark .Chart__square.outOfFocus .Arc--type-donut {
+    fill: #161C24;
+}
+
 .dark .Chart__rectangle__large.outOfFocus .Axis__tick,
 .dark .Chart__rectangle.outOfFocus .Axis__tick,
 .dark .Chart__square.outOfFocus .Axis__tick {
@@ -298,6 +311,18 @@ h1 {
 .light .Chart__rectangle__large.outOfFocus .Polyline--type-area,
 .light .Chart__rectangle.outOfFocus .Polyline--type-area,
 .light .Chart__square.outOfFocus .Polyline--type-area {
+    fill: #eceff1;
+}
+
+.light .Chart__rectangle__large.outOfFocus .Arc--type-pie,
+.light .Chart__rectangle.outOfFocus .Arc--type-pie,
+.light .Chart__square.outOfFocus .Arc--type-pie {
+    fill: #eceff1;
+}
+
+.light .Chart__rectangle__large.outOfFocus .Arc--type-donut,
+.light .Chart__rectangle.outOfFocus .Arc--type-donut,
+.light .Chart__square.outOfFocus .Arc--type-donut {
     fill: #eceff1;
 }
 

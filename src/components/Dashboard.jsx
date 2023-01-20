@@ -28,6 +28,13 @@ const Dashboard = (props) => {
     const ref = useRef();
     const [data, setData] = useState(getData())
 
+    const selectedCharts = props.selectedCharts;
+    const [charts, setCharts] = useState(selectedCharts);
+
+    useEffect(() => {
+        setCharts(selectedCharts);
+    }, [selectedCharts]);
+
     const checkedAnimate = props.checkedAnimate;
     const [animate, setAnimate] = useState(checkedAnimate);
 
@@ -41,8 +48,8 @@ const Dashboard = (props) => {
 
     const [chosen, setChosen] = useState(null);
 
-    const handleClick = (e, chart) => {
-        setChosen(chart);
+    const handleClick = (e, index) => {
+        setChosen(index);
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
         props.handleDrawerOpen();
@@ -67,46 +74,12 @@ const Dashboard = (props) => {
     };
 
     useEffect(() => {
-        if (props.triggerAddChart) {
-            setCharts([...charts, chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]]);
-        }
-    }, [props.triggerAddChart]);
-
-    useEffect(() => {
-        if (props.triggerRemoveChart) {
-            setCharts(charts.slice(0, charts.length - 1));
-        }
-    }, [props.triggerRemoveChart]);
-
-    useEffect(() => {
         document.addEventListener("click", handleOutsideOusideClick);
 
         return () => {
             document.removeEventListener("click", handleOutsideOusideClick);
         };
     });
-
-    const chartsAvailable = [
-        'ScatterPlot',
-        'Pie',
-        'Radar',
-        'Histogram',
-        'Timeline',
-        'Treemap',
-    ];
-
-    const [charts, setCharts] = React.useState(['ScatterPlot', 'Histogram', 'Timeline']);
-
-    const handleChangeChart = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setCharts(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
-    };
-
 
     return (
         <div className="App__charts__dashboard" ref={ref} onClick={handleOutsideClick}>
@@ -115,12 +88,12 @@ const Dashboard = (props) => {
             </div>
             <div className="App__charts">
                 {charts
-                    .map(chart => {
+                    .map((chart, index) => {
                         switch (chart) {
                             case "ScatterPlot": return <ScatterPlot
-                                outOfFocus={chosen !== null && chart !== chosen}
-                                active={chart === chosen}
-                                onClick={(e) => handleClick(e, chart)}
+                                outOfFocus={chosen !== null && index !== chosen}
+                                active={index === chosen}
+                                onClick={(e) => handleClick(e, index)}
                                 data={data.scatter}
                                 xAccessor={humidityAccessor}
                                 yAccessor={temperatureAccessor}
@@ -128,9 +101,9 @@ const Dashboard = (props) => {
                                 yLabel="Temperature"
                             />
                             case "Pie": return <Pie
-                                outOfFocus={chosen !== null && chart !== chosen}
-                                active={chart === chosen}
-                                onClick={(e) => handleClick(e, chart)}
+                                outOfFocus={chosen !== null && index !== chosen}
+                                active={index === chosen}
+                                onClick={(e) => handleClick(e, index)}
                                 data={data.random}
                                 valueAccessor={numberAccessor}
                                 entityAccessor={categoryAccessor}
@@ -141,26 +114,26 @@ const Dashboard = (props) => {
                                 entityAccessor={categoryAccessor}
                             />
                             case "Histogram": return <Histogram
-                                outOfFocus={chosen !== null && chart !== chosen}
-                                active={chart === chosen}
-                                onClick={(e) => handleClick(e, chart)}
+                                outOfFocus={chosen !== null && index !== chosen}
+                                active={index === chosen}
+                                onClick={(e) => handleClick(e, index)}
                                 data={data.scatter}
                                 xAccessor={humidityAccessor}
                                 xLabel="Humidity"
                             />
                             case "Timeline": return <Timeline
-                                outOfFocus={chosen !== null && chart !== chosen}
-                                active={chart === chosen}
-                                onClick={(e) => handleClick(e, chart)}
+                                outOfFocus={chosen !== null && index !== chosen}
+                                active={index === chosen}
+                                onClick={(e) => handleClick(e, index)}
                                 data={data.timeline}
                                 xAccessor={dateAccessor}
                                 yAccessor={temperatureAccessor}
                                 label="Temperature"
                             />
                             case "Treemap": return <Treemap
-                                outOfFocus={chosen !== null && chart !== chosen}
-                                active={chart === chosen}
-                                onClick={(e) => handleClick(e, chart)}
+                                outOfFocus={chosen !== null && index !== chosen}
+                                active={index === chosen}
+                                onClick={(e) => handleClick(e, index)}
                                 data={data.random}
                                 valueAccessor={numberAccessor}
                                 entityAccessor={categoryAccessor}
