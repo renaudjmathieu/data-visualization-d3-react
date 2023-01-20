@@ -23,7 +23,7 @@ const boxMullerRandom = () => (
 
 const today = new Date()
 const formatDate = d3.timeFormat("%m/%d/%Y")
-export const getTimelineData = (length = 100) => {
+export const getRandomData = (length = 100) => {
   let lastTemperature = randomAroundMean(70, 20)
   const firstTemperature = d3.timeDay.offset(today, -length)
 
@@ -32,20 +32,7 @@ export const getTimelineData = (length = 100) => {
     return {
       date: formatDate(d3.timeDay.offset(firstTemperature, i)),
       temperature: lastTemperature,
-    }
-  })
-}
-
-export const getScatterData = (count = 100) => (
-  new Array(count).fill(0).map((d, i) => ({
-    temperature: randomAroundMean(70, 20),
-    humidity: randomAroundMean(0.5, 0.1),
-  }))
-)
-
-export const getRandomData = (length = 100) => {
-  return new Array(length).fill(0).map((d, i) => {
-    return {
+      humidity: randomAroundMean(0.5, 0.1),
       category: randomCategory(),
       number: randomNumber(0, 100),
     }

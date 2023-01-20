@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import * as d3 from "d3"
-import { getTimelineData, getScatterData, getRandomData } from "./../utils/dummyData"
+import { getRandomData } from "./../utils/dummyData"
 
 import ScatterPlot from "./ScatterPlot"
 import Pie from "./Pie"
@@ -19,8 +19,6 @@ const numberAccessor = d => d.number
 const categoryAccessor = d => d.category
 
 const getData = () => ({
-    timeline: getTimelineData(),
-    scatter: getScatterData(),
     random: getRandomData(),
 })
 const Dashboard = (props) => {
@@ -96,7 +94,7 @@ const Dashboard = (props) => {
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
-                                data={data.scatter}
+                                data={data.random}
                                 xAccessor={humidityAccessor}
                                 yAccessor={temperatureAccessor}
                                 xLabel="Humidity"
@@ -119,7 +117,7 @@ const Dashboard = (props) => {
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
-                                data={data.scatter}
+                                data={data.random}
                                 xAccessor={humidityAccessor}
                                 xLabel="Humidity"
                             />
@@ -127,7 +125,7 @@ const Dashboard = (props) => {
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
-                                data={data.timeline}
+                                data={data.random}
                                 xAccessor={dateAccessor}
                                 yAccessor={temperatureAccessor}
                                 label="Temperature"
