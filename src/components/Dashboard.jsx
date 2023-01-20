@@ -48,11 +48,11 @@ const Dashboard = (props) => {
 
     const [chosen, setChosen] = useState(null);
 
-    const handleClick = (e, index) => {
+    const handleClick = (e, chart, index) => {
         setChosen(index);
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
-        props.handleDrawerOpen();
+        props.handleDrawerOpen(chart, index);
     };
 
     const handleOutsideClick = (e) => {
@@ -93,7 +93,7 @@ const Dashboard = (props) => {
                             case "ScatterPlot": return <ScatterPlot
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
-                                onClick={(e) => handleClick(e, index)}
+                                onClick={(e) => handleClick(e, chart, index)}
                                 data={data.scatter}
                                 xAccessor={humidityAccessor}
                                 yAccessor={temperatureAccessor}
@@ -103,7 +103,7 @@ const Dashboard = (props) => {
                             case "Pie": return <Pie
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
-                                onClick={(e) => handleClick(e, index)}
+                                onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
                                 valueAccessor={numberAccessor}
                                 entityAccessor={categoryAccessor}
@@ -116,7 +116,7 @@ const Dashboard = (props) => {
                             case "Histogram": return <Histogram
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
-                                onClick={(e) => handleClick(e, index)}
+                                onClick={(e) => handleClick(e, chart, index)}
                                 data={data.scatter}
                                 xAccessor={humidityAccessor}
                                 xLabel="Humidity"
@@ -124,7 +124,7 @@ const Dashboard = (props) => {
                             case "Timeline": return <Timeline
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
-                                onClick={(e) => handleClick(e, index)}
+                                onClick={(e) => handleClick(e, chart, index)}
                                 data={data.timeline}
                                 xAccessor={dateAccessor}
                                 yAccessor={temperatureAccessor}
@@ -133,7 +133,7 @@ const Dashboard = (props) => {
                             case "Treemap": return <Treemap
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
-                                onClick={(e) => handleClick(e, index)}
+                                onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
                                 valueAccessor={numberAccessor}
                                 entityAccessor={categoryAccessor}

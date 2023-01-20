@@ -186,14 +186,20 @@ const App = (props) => {
         [mode]
     );
     const [open, setOpen] = React.useState(false);
+    const [selectedChart, setSelectedChart] = React.useState(null);
+    const [selectedChartIndex, setSelectedChartIndex] = React.useState(null);
 
-    const handleDrawerOpen = () => {
+    const handleDrawerOpen = (chart, index) => {
+        setSelectedChart(chart)
+        setSelectedChartIndex(index)
         setOpen(true);
         document.body.classList.add("open")
         document.body.classList.remove("closed")
     };
 
     const handleDrawerClose = () => {
+        setSelectedChart(null)
+        setSelectedChartIndex(null)
         setOpen(false);
         document.body.classList.add("closed")
         document.body.classList.remove("open")
@@ -209,8 +215,9 @@ const App = (props) => {
 
     const [charts, setCharts] = React.useState(['ScatterPlot', 'Histogram', 'Timeline']);
 
-    const handleReplaceChart = () => {
-        setCharts(charts.map((chart) => chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]));
+    const handleReplaceChart = (event) => {
+        setSelectedChart(event.target.value)
+        setCharts(charts.map((chart, index) => index === selectedChartIndex ? event.target.value : chart));
     };
 
     const handleAddChart = () => {
@@ -331,12 +338,12 @@ const App = (props) => {
                         </IconButton>
                     </DrawerHeader>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        <InputLabel id="demo-simple-select-label"></InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             label="Charts"
-                            value={charts}
+                            value={selectedChart}
                             onChange={handleReplaceChart}
                         >
                             {chartsAvailable.map((chart) => (
