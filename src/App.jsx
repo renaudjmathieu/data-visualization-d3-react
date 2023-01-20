@@ -220,6 +220,10 @@ const App = (props) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? event.target.value : chart));
     };
 
+    const handleRemoveSelectedChart = (event) => {
+        setCharts(charts.filter((chart, index) => index !== selectedChartIndex));
+    };
+
     const handleAddChart = () => {
         setCharts([...charts, chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]]);
     };
@@ -257,8 +261,8 @@ const App = (props) => {
                         <Grid container spacing={2} className="containerOnDesktop">
                             <Grid xs={8} className="gridOnDesktop__left close_me">
                                 <ButtonGroup variant="contained" aria-label="outlined primary button group" className="close_me">
-                                    <Button disabled={open} onClick={handleAddChart}>Add new chart</Button>
-                                    <Button disabled={open} onClick={handleRemoveChart}>Remove last chart</Button>
+                                    <Button disabled={open} onClick={handleAddChart}>Add New Chart</Button>
+                                    <Button disabled={open} onClick={handleRemoveChart}>Remove Last Chart</Button>
                                 </ButtonGroup>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me">
@@ -338,11 +342,10 @@ const App = (props) => {
                         </IconButton>
                     </DrawerHeader>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label"></InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            label="Charts"
+                            className="config__select"
                             value={selectedChart}
                             onChange={handleReplaceChart}
                         >
@@ -351,6 +354,8 @@ const App = (props) => {
                             ))}
                         </Select>
                     </FormControl>
+                    <Divider />
+                    <Button variant="contained" className="config__button close_me" onClick={handleRemoveSelectedChart}>Remove Chart</Button>
                 </Drawer>
             </div>
         </ThemeProvider>

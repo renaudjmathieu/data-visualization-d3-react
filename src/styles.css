@@ -345,3 +345,23 @@ h1 {
 .config-open .App__charts__config {
     display: block;
 }
+
+.config__select {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+}
+
+.config__button {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    margin-top: 20px !important;
+}
+
+.dark .config__select * {
+    color: var(--theme-dark-color-primary);
+}
+
+.light .config__select * {
+    color: var(--theme-light-color-primary);
+}
