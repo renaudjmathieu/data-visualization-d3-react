@@ -262,7 +262,7 @@ const App = (props) => {
                             <Grid xs={8} className="gridOnDesktop__left close_me">
                                 <ButtonGroup variant="contained" aria-label="outlined primary button group" className="close_me">
                                     <Button disabled={open} onClick={handleAddChart}>Add New Chart</Button>
-                                    <Button disabled={open} onClick={handleRemoveChart}>Remove Last Chart</Button>
+                                    <Button disabled={open || (charts.length === 0)} onClick={handleRemoveChart}>Remove Last Chart</Button>
                                 </ButtonGroup>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me">
