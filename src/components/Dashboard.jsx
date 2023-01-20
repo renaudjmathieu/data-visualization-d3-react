@@ -65,6 +65,8 @@ const Dashboard = (props) => {
     };
 
     const handleOutsideOusideClick = (e) => {
+        console.log(e.target.tagName);
+        console.log(e.target);
         if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
             setChosen(null);
             document.body.classList.add("config-closed")

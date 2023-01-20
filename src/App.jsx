@@ -234,6 +234,12 @@ const App = (props) => {
 
     const dashboardRef = React.useRef();
 
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+        setAge(event.target.value);
+    };
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -266,7 +272,7 @@ const App = (props) => {
                                 </ButtonGroup>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me">
-                                <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center">
+                                <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center" className="close_me">
                                     <FormGroup className="close_me">
                                         <FormControlLabel disabled={open} control={
                                             <Switch
@@ -354,7 +360,45 @@ const App = (props) => {
                             ))}
                         </Select>
                     </FormControl>
-                    <Divider />
+
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                        <InputLabel id="demo-simple-select-helper-label-X-axis">X axis</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-helper-label-X-axis"
+                            id="demo-simple-select-helper-X-axis"
+                            value={age}
+                            label="X axis"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                        <InputLabel id="demo-simple-select-helper-label-Y-axis">Y axis</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-helper-label-Y-axis"
+                            id="demo-simple-select-helper-Y-axis"
+                            value={age}
+                            label="Y axis"
+                            onChange={handleChange}
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                    </FormControl>
+
+                    <Divider className="config__divider" />
+
                     <Button variant="contained" className="config__button close_me" onClick={handleRemoveSelectedChart}>Remove Chart</Button>
                 </Drawer>
             </div>
