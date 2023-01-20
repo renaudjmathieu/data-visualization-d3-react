@@ -62,8 +62,6 @@ const Dashboard = (props) => {
     };
 
     const handleOutsideOusideClick = (e) => {
-        console.log(e.target.tagName);
-        console.log(e.target);
         if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
             setChosen(null);
             document.body.classList.add("config-closed")
@@ -88,8 +86,8 @@ const Dashboard = (props) => {
             <div className="App__charts">
                 {charts
                     .map((chart, index) => {
-                        switch (chart) {
-                            case "ScatterPlot": return <ScatterPlot
+                        switch (chart.id) {
+                            case "scatter": return <ScatterPlot
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
@@ -99,7 +97,7 @@ const Dashboard = (props) => {
                                 xLabel="Humidity"
                                 yLabel="Temperature"
                             />
-                            case "Pie": return <Pie
+                            case "pie": return <Pie
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
@@ -107,12 +105,12 @@ const Dashboard = (props) => {
                                 valueAccessor={numberAccessor}
                                 entityAccessor={categoryAccessor}
                             />
-                            case "Radar": return <Radar
+                            case "radar": return <Radar
                                 data={data.random}
                                 valueAccessor={numberAccessor}
                                 entityAccessor={categoryAccessor}
                             />
-                            case "Histogram": return <Histogram
+                            case "histogram": return <Histogram
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
@@ -120,7 +118,7 @@ const Dashboard = (props) => {
                                 xAccessor={humidityAccessor}
                                 xLabel="Humidity"
                             />
-                            case "Timeline": return <Timeline
+                            case "timeline": return <Timeline
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
@@ -129,7 +127,7 @@ const Dashboard = (props) => {
                                 yAccessor={temperatureAccessor}
                                 label="Temperature"
                             />
-                            case "Treemap": return <Treemap
+                            case "treemap": return <Treemap
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}

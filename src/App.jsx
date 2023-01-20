@@ -95,14 +95,15 @@ const MenuProps = {
     },
 };
 
+//create a list of items of the charts with the name, id, and type
 const chartsAvailable = [
-    'ScatterPlot',
-    'Pie',
-    'Radar',
-    'Histogram',
-    'Timeline',
-    'Treemap',
-];
+    { id: 'scatter', name: "Scatter chart", xAxis: true, yAxis: true, category: true, playAxis: true },
+    { id: 'pie', name: "Pie chart", xAxis: false, yAxis: false, category: true, playAxis: true },
+    { id: 'radar', name: "Radar chart", xAxis: false, yAxis: false, category: true, playAxis: true },
+    { id: 'histogram', name: "Column chart", xAxis: true, yAxis: true, category: true, playAxis: true },
+    { id: 'timeline', name: "Line chart", xAxis: true, yAxis: true, category: true, playAxis: true },
+    { id: 'treemap', name: "Treemap", xAxis: true, yAxis: true, category: true, playAxis: true },
+]
 
 const App = (props) => {
     const { window } = props;
@@ -186,11 +187,11 @@ const App = (props) => {
         [mode]
     );
     const [open, setOpen] = React.useState(false);
-    const [selectedChart, setSelectedChart] = React.useState(null);
+    const [selectedChartId, setSelectedChartId] = React.useState(null);
     const [selectedChartIndex, setSelectedChartIndex] = React.useState(null);
 
     const handleDrawerOpen = (chart, index) => {
-        setSelectedChart(chart)
+        setSelectedChartId(chart.id)
         setSelectedChartIndex(index)
         setOpen(true);
         document.body.classList.add("open")
@@ -198,7 +199,7 @@ const App = (props) => {
     };
 
     const handleDrawerClose = () => {
-        setSelectedChart(null)
+        setSelectedChartId(null)
         setSelectedChartIndex(null)
         setOpen(false);
         document.body.classList.add("closed")
@@ -213,11 +214,13 @@ const App = (props) => {
         setAnimate(event.target.checked);
     };
 
-    const [charts, setCharts] = React.useState(['ScatterPlot', 'Histogram', 'Timeline']);
+    const [charts, setCharts] = React.useState(
+        chartsAvailable.filter((chart) => ['scatter', 'histogram', 'timeline'].includes(chart.id))
+        );
 
     const handleReplaceChart = (event) => {
-        setSelectedChart(event.target.value)
-        setCharts(charts.map((chart, index) => index === selectedChartIndex ? event.target.value : chart));
+        setSelectedChartId(event.target.value)
+        setCharts(charts.map((chart, index) => index === selectedChartIndex ? chartsAvailable.find((chart) => chart.id === event.target.value) : chart));
     };
 
     const handleRemoveSelectedChart = (event) => {
@@ -352,11 +355,11 @@ const App = (props) => {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             className="config__select"
-                            value={selectedChart}
+                            value={selectedChartId}
                             onChange={handleReplaceChart}
                         >
                             {chartsAvailable.map((chart) => (
-                                <MenuItem value={chart}>{chart}</MenuItem>
+                                <MenuItem value={chart.id}>{chart.name}</MenuItem>
                             ))}
                         </Select>
                     </FormControl>
