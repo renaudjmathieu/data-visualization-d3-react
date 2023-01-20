@@ -95,7 +95,6 @@ const MenuProps = {
     },
 };
 
-//create a list of items of the charts with the name, id, and type
 const chartsAvailable = [
     { id: 'scatter', name: "Scatter chart", xAxis: true, yAxis: true, category: true, playAxis: true },
     { id: 'pie', name: "Pie chart", xAxis: false, yAxis: false, category: true, playAxis: true },
@@ -103,6 +102,14 @@ const chartsAvailable = [
     { id: 'histogram', name: "Column chart", xAxis: true, yAxis: true, category: true, playAxis: true },
     { id: 'timeline', name: "Line chart", xAxis: true, yAxis: true, category: true, playAxis: true },
     { id: 'treemap', name: "Treemap", xAxis: true, yAxis: true, category: true, playAxis: true },
+]
+
+const fieldsAvailable = [
+    'date',
+    'temperature',
+    'humidity',
+    'category',
+    'number',
 ]
 
 const App = (props) => {
@@ -216,7 +223,7 @@ const App = (props) => {
 
     const [charts, setCharts] = React.useState(
         chartsAvailable.filter((chart) => ['scatter', 'histogram', 'timeline'].includes(chart.id))
-        );
+    );
 
     const handleReplaceChart = (event) => {
         setSelectedChartId(event.target.value)
@@ -241,6 +248,8 @@ const App = (props) => {
 
     const handleChange = (event) => {
         setAge(event.target.value);
+        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, xAxis: event.target.value } : chart));
+        
     };
 
     return (
@@ -350,6 +359,7 @@ const App = (props) => {
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>
                     </DrawerHeader>
+
                     <FormControl fullWidth>
                         <Select
                             labelId="demo-simple-select-label"
@@ -358,47 +368,36 @@ const App = (props) => {
                             value={selectedChartId}
                             onChange={handleReplaceChart}
                         >
-                            {chartsAvailable.map((chart) => (
-                                <MenuItem value={chart.id}>{chart.name}</MenuItem>
-                            ))}
+                            {chartsAvailable
+                                .map((chart) => (
+                                    <MenuItem value={chart.id}>{chart.name}</MenuItem>
+                                ))}
                         </Select>
                     </FormControl>
 
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                        <InputLabel id="demo-simple-select-helper-label-X-axis">X axis</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-helper-label-X-axis"
-                            id="demo-simple-select-helper-X-axis"
-                            value={age}
-                            label="X axis"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
-
-                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                        <InputLabel id="demo-simple-select-helper-label-Y-axis">Y axis</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-helper-label-Y-axis"
-                            id="demo-simple-select-helper-Y-axis"
-                            value={age}
-                            label="Y axis"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={10}>Ten</MenuItem>
-                            <MenuItem value={20}>Twenty</MenuItem>
-                            <MenuItem value={30}>Thirty</MenuItem>
-                        </Select>
-                    </FormControl>
+                    {chartsAvailable
+                        .filter(chart => chart.id === selectedChartId)
+                        .map(chart => (
+                            Object.keys(chart)
+                                .filter((keyName, i) => keyName.keyName !== 'id' && keyName.keyName !== 'name' && chart[keyName] === true)
+                                .map((keyName, i) => (
+                                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                                        <InputLabel id={`demo-simple-select-helper-label-${keyName}`}>{keyName}</InputLabel>
+                                        <Select
+                                            labelId={`demo-simple-select-helper-label-${keyName}`}
+                                            id={`demo-simple-select-helper-${keyName}`}
+                                            value={charts.filter(chart => chart.id === selectedChartId)[0][keyName]}
+                                            label={keyName}
+                                            onChange={1 == 1 ? handleChange : handleAnimate}
+                                        >
+                                            {fieldsAvailable
+                                                .map(field => (
+                                                    <MenuItem value={field}>{field}</MenuItem>
+                                                ))}
+                                        </Select>
+                                    </FormControl>
+                                ))
+                        ))}
 
                     <Divider className="config__divider" />
 
