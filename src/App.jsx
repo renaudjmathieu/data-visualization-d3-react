@@ -95,21 +95,21 @@ const MenuProps = {
     },
 };
 
-const chartsAvailable = [
-    { id: 'scatter', name: "Scatter chart", xAxis: true, yAxis: true, category: true, playAxis: true },
-    { id: 'pie', name: "Pie chart", xAxis: false, yAxis: false, category: true, playAxis: true },
-    { id: 'radar', name: "Radar chart", xAxis: false, yAxis: false, category: true, playAxis: true },
-    { id: 'histogram', name: "Column chart", xAxis: true, yAxis: true, category: true, playAxis: true },
-    { id: 'timeline', name: "Line chart", xAxis: true, yAxis: true, category: true, playAxis: true },
-    { id: 'treemap', name: "Treemap", xAxis: true, yAxis: true, category: true, playAxis: true },
-]
-
 const fieldsAvailable = [
     'date',
     'temperature',
     'humidity',
     'category',
     'number',
+]
+
+const chartsAvailable = [
+    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperature', category: null, playAxis: null },
+    { id: 'pie', name: "Pie chart", xAxis: null, yAxis: null, category: 'category', playAxis: null },
+    { id: 'radar', name: "Radar chart", xAxis: null, yAxis: null, category: null, playAxis: null },
+    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: null, category: null, playAxis: null },
+    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperature', category: null, playAxis: null },
+    { id: 'treemap', name: "Treemap", xAxis: null, yAxis: null, category: 'category', playAxis: null },
 ]
 
 const App = (props) => {
@@ -230,7 +230,8 @@ const App = (props) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? chartsAvailable.find((chart) => chart.id === event.target.value) : chart));
     };
 
-    const handleRemoveSelectedChart = (event) => {
+    const handleRemoveSelectedChart = () => {
+        setSelectedChartId(null)
         setCharts(charts.filter((chart, index) => index !== selectedChartIndex));
     };
 
@@ -244,12 +245,8 @@ const App = (props) => {
 
     const dashboardRef = React.useRef();
 
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event) => {
-        setAge(event.target.value);
-        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, xAxis: event.target.value } : chart));
-        
+    const handleFieldChange = (event, keyName) => {
+        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
     };
 
     return (
@@ -379,7 +376,7 @@ const App = (props) => {
                         .filter(chart => chart.id === selectedChartId)
                         .map(chart => (
                             Object.keys(chart)
-                                .filter((keyName, i) => keyName.keyName !== 'id' && keyName.keyName !== 'name' && chart[keyName] === true)
+                                .filter((keyName, i) => keyName !== 'id' && keyName !== 'name' && chart[keyName] !== null)
                                 .map((keyName, i) => (
                                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                                         <InputLabel id={`demo-simple-select-helper-label-${keyName}`}>{keyName}</InputLabel>
@@ -388,7 +385,7 @@ const App = (props) => {
                                             id={`demo-simple-select-helper-${keyName}`}
                                             value={charts.filter(chart => chart.id === selectedChartId)[0][keyName]}
                                             label={keyName}
-                                            onChange={1 == 1 ? handleChange : handleAnimate}
+                                            onChange={(e) => handleFieldChange(e, keyName)}
                                         >
                                             {fieldsAvailable
                                                 .map(field => (
