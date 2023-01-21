@@ -92,9 +92,9 @@ const Dashboard = (props) => {
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
-                                xAccessor={humidityAccessor}
-                                yAccessor={d => d[chart.yAxis]}
-                                xLabel="Humidity"
+                                xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
+                                yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
+                                xLabel={chart.xAxis}
                                 yLabel={chart.yAxis}
                             />
                             case "pie": return <Pie
@@ -103,7 +103,7 @@ const Dashboard = (props) => {
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
                                 valueAccessor={numberAccessor}
-                                entityAccessor={categoryAccessor}
+                                entityAccessor={props.fields.find(field => field.id === chart.category).accessor}
                             />
                             case "radar": return <Radar
                                 data={data.random}
@@ -115,17 +115,17 @@ const Dashboard = (props) => {
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
-                                xAccessor={humidityAccessor}
-                                xLabel="Humidity"
+                                xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
+                                xLabel={chart.xAxis}
                             />
                             case "timeline": return <Timeline
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
-                                xAccessor={dateAccessor}
-                                yAccessor={temperatureAccessor}
-                                label="Temperature"
+                                xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
+                                yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
+                                label={chart.yAxis}
                             />
                             case "treemap": return <Treemap
                                 outOfFocus={chosen !== null && index !== chosen}
@@ -133,9 +133,9 @@ const Dashboard = (props) => {
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
                                 valueAccessor={numberAccessor}
-                                entityAccessor={categoryAccessor}
+                                entityAccessor={props.fields.find(field => field.id === chart.category).accessor}
                                 valueLabel="Number"
-                                entityLabel="Category"
+                                entityLabel={chart.category}
                             />
                             default: return null
                         }

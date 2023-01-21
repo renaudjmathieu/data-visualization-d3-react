@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as d3 from "d3"
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -96,12 +97,16 @@ const MenuProps = {
     },
 };
 
+const parseDate = d3.timeParse("%m/%d/%Y")
+const formatMonth = d3.timeFormat("%b")
+const monthAccessor = d => formatMonth(parseDate(d.date))
+
 const fieldsAvailable = [
-    'date',
-    'temperature',
-    'humidity',
-    'category',
-    'number',
+    { id: 'date', accessor: d => parseDate(d.date) },
+    { id: 'temperature', accessor: d => d.temperature },
+    { id: 'humidity', accessor: d => d.humidity },
+    { id: 'category', accessor: d => d.category },
+    { id: 'number', accessor: d => d.number },
 ]
 
 const chartsAvailable = [
@@ -307,6 +312,7 @@ const App = (props) => {
                     </Box>
                     <Dashboard ref={dashboardRef}
                         charts={charts}
+                        fields={fieldsAvailable}
                         checkedAnimate={animate}
                         handleDrawerOpen={handleDrawerOpen}
                         handleDrawerClose={handleDrawerClose} />
@@ -392,7 +398,7 @@ const App = (props) => {
                                         >
                                             {fieldsAvailable
                                                 .map(field => (
-                                                    <MenuItem value={field}>{field}</MenuItem>
+                                                    <MenuItem value={field.id}>{field.id}</MenuItem>
                                                 ))}
                                         </Select>
                                         {console.log(charts.filter((chart, index) => index === selectedChartIndex)[0][keyName])}
