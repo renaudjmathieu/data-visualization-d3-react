@@ -104,12 +104,12 @@ const fieldsAvailable = [
 ]
 
 const chartsAvailable = [
-    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperature', category: null, playAxis: null },
-    { id: 'pie', name: "Pie chart", xAxis: null, yAxis: null, category: 'category', playAxis: null },
-    { id: 'radar', name: "Radar chart", xAxis: null, yAxis: null, category: null, playAxis: null },
-    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: null, category: null, playAxis: null },
-    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperature', category: null, playAxis: null },
-    { id: 'treemap', name: "Treemap", xAxis: null, yAxis: null, category: 'category', playAxis: null },
+    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperature', category:'', playAxis:'' },
+    { id: 'pie', name: "Pie chart", xAxis:'', yAxis:'', category: 'category', playAxis:'' },
+    { id: 'radar', name: "Radar chart", xAxis:'', yAxis:'', category:'', playAxis:'' },
+    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis:'', category:'', playAxis:'' },
+    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperature', category:'', playAxis:'' },
+    { id: 'treemap', name: "Treemap", xAxis:'', yAxis:'', category: 'category', playAxis:'' },
 ]
 
 const App = (props) => {
@@ -376,7 +376,7 @@ const App = (props) => {
                         .filter(chart => chart.id === selectedChartId)
                         .map(chart => (
                             Object.keys(chart)
-                                .filter((keyName, i) => keyName !== 'id' && keyName !== 'name' && chart[keyName] !== null)
+                                .filter((keyName, i) => keyName !== 'id' && keyName !== 'name' && chart[keyName] !== '')
                                 .map((keyName, i) => (
                                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                                         <InputLabel id={`demo-simple-select-helper-label-${keyName}`}>{keyName}</InputLabel>
@@ -392,6 +392,8 @@ const App = (props) => {
                                                     <MenuItem value={field}>{field}</MenuItem>
                                                 ))}
                                         </Select>
+                                        {console.log(charts.filter((chart, index) => index === selectedChartIndex)[0][keyName])}
+                                        {console.log(keyName)}
                                     </FormControl>
                                 ))
                         ))}
