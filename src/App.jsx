@@ -48,12 +48,13 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-        marginLeft: -drawerWidth,
+        marginRight: -drawerWidth,
         ...(open && {
             transition: theme.transitions.create('margin', {
                 easing: theme.transitions.easing.easeOut,
                 duration: theme.transitions.duration.enteringScreen,
             }),
+            marginRight: -drawerWidth,
         }),
     }),
 );
@@ -67,11 +68,11 @@ const AppBar = styled(MuiAppBar, {
     }),
     ...(open && {
         width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        marginRight: drawerWidth,
     }),
 }));
 
@@ -104,12 +105,12 @@ const fieldsAvailable = [
 ]
 
 const chartsAvailable = [
-    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperature', category:'', playAxis:'' },
-    { id: 'pie', name: "Pie chart", xAxis:'', yAxis:'', category: 'category', playAxis:'' },
-    { id: 'radar', name: "Radar chart", xAxis:'', yAxis:'', category:'', playAxis:'' },
-    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis:'', category:'', playAxis:'' },
-    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperature', category:'', playAxis:'' },
-    { id: 'treemap', name: "Treemap", xAxis:'', yAxis:'', category: 'category', playAxis:'' },
+    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperature', category: '', playAxis: '' },
+    { id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', category: 'category', playAxis: '' },
+    { id: 'radar', name: "Radar chart", xAxis: '', yAxis: '', category: '', playAxis: '' },
+    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: '', category: '', playAxis: '' },
+    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperature', category: '', playAxis: '' },
+    { id: 'treemap', name: "Treemap", xAxis: '', yAxis: '', category: 'category', playAxis: '' },
 ]
 
 const App = (props) => {
@@ -255,7 +256,7 @@ const App = (props) => {
             <div className="App">
                 <AppBar position="fixed" open={open} style={{ background: open ? mode === "light" ? '#EAA2D0' : '#242323' : '' }}>
                     <Toolbar className="close_me">
-                        <Typography className="close_me" variant="h6" noWrap component="div" style={{ color: open && mode === "dark" ? '#8B8E91' : '' }}>
+                        <Typography className="close_me" variant="h6" noWrap sx={{ flexGrow: 1 }} component="div" style={{ color: open && mode === "dark" ? '#8B8E91' : '' }}>
                             D3 Dashboard
                         </Typography>
                         <Box sx={{ flexGrow: 1 }} />
@@ -313,14 +314,15 @@ const App = (props) => {
                 <Drawer
                     sx={{
                         width: drawerWidth,
+                        position:'absolute',
+                        whiteSpace: 'nowrap',
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: drawerWidth,
-                            boxSizing: 'border-box',
                         },
                     }}
                     variant="persistent"
-                    anchor="left"
+                    anchor="right"
                     open={open}
                 >
                     <Toolbar />
@@ -341,21 +343,22 @@ const App = (props) => {
                 <Drawer
                     sx={{
                         width: drawerWidth,
+                        position:'absolute',
+                        whiteSpace: 'nowrap',
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
                             width: drawerWidth,
-                            boxSizing: 'border-box',
                         },
                     }}
                     variant="persistent"
-                    anchor="left"
+                    anchor="right"
                     open={open}
                 >
                     <DrawerHeader>
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
-                    </DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </DrawerHeader>
 
                     <FormControl fullWidth>
                         <Select
