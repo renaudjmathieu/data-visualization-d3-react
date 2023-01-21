@@ -93,9 +93,9 @@ const Dashboard = (props) => {
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
                                 xAccessor={humidityAccessor}
-                                yAccessor={temperatureAccessor}
+                                yAccessor={d => d[chart.yAxis]}
                                 xLabel="Humidity"
-                                yLabel="Temperature"
+                                yLabel={chart.yAxis}
                             />
                             case "pie": return <Pie
                                 outOfFocus={chosen !== null && index !== chosen}
