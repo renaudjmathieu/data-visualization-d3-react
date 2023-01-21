@@ -227,7 +227,7 @@ const App = (props) => {
 
     const handleReplaceChart = (event) => {
         setSelectedChartId(event.target.value)
-        setCharts(charts.map((chart, index) => index === selectedChartIndex ? chartsAvailable.find((chart) => chart.id === event.target.value) : chart));
+        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, id: event.target.value, name: chartsAvailable.find((chart) => chart.id === event.target.value).name } : chart));
     };
 
     const handleRemoveSelectedChart = () => {
@@ -383,7 +383,7 @@ const App = (props) => {
                                         <Select
                                             labelId={`demo-simple-select-helper-label-${keyName}`}
                                             id={`demo-simple-select-helper-${keyName}`}
-                                            value={charts.filter(chart => chart.id === selectedChartId)[0][keyName]}
+                                            value={charts.filter((chart, index) => index === selectedChartIndex)[0][keyName]}
                                             label={keyName}
                                             onChange={(e) => handleFieldChange(e, keyName)}
                                         >
