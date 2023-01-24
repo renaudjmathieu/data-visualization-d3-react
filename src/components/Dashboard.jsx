@@ -1,25 +1,17 @@
 import React, { useState, useEffect, useRef } from "react"
 import * as d3 from "d3"
-import { getRandomData } from "./../utils/dummyData"
 
 import ScatterPlot from "./ScatterPlot"
 import Pie from "./Pie"
 import Radar from "./Radar"
 import Histogram from "./Histogram"
 import Timeline from "./Timeline"
-import Treemap from "./Treemap"
 
-const parseDate = d3.timeParse("%m/%d/%Y")
-const formatMonth = d3.timeFormat("%b")
-const dateAccessor = d => parseDate(d.date)
-const monthAccessor = d => formatMonth(parseDate(d.date))
-const temperatureAccessor = d => d.temperature
-const humidityAccessor = d => d.humidity
-const numberAccessor = d => d.number
-const categoryAccessor = d => d.category
+import data from '../../my_weather_data.json'
 
 const getData = () => ({
-    random: getRandomData(),
+    random: data
+    
 })
 const Dashboard = (props) => {
 
@@ -133,17 +125,6 @@ const Dashboard = (props) => {
                                 yLabel={chart.yAxis}
                                 xFormat={props.fields.find(field => field.id === chart.xAxis).format}
                                 yFormat={props.fields.find(field => field.id === chart.yAxis).format}
-                            />
-                            case "treemap": return <Treemap
-                                outOfFocus={chosen !== null && index !== chosen}
-                                active={index === chosen}
-                                onClick={(e) => handleClick(e, chart, index)}
-                                data={data.random}
-                                valueAccessor={numberAccessor}
-                                entityAccessor={props.fields.find(field => field.id === chart.category).accessor}
-                                valueLabel="Number"
-                                entityLabel={chart.category}
-                                entityFormat={props.fields.find(field => field.id === chart.category).format}
                             />
                             default: return null
                         }

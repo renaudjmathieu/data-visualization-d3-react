@@ -12,6 +12,12 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, 
     marginBottom: 77
   })
 
+  if (!xAccessor)
+    xAccessor = d => d[xLabel]
+
+  if (!yAccessor)
+    yAccessor = d => d[yLabel]
+
   const xScale = d3.scaleLinear()
     .domain(d3.extent(data, xAccessor))
     .range([0, dimensions.boundedWidth])
@@ -64,7 +70,7 @@ ScatterPlot.propTypes = {
 }
 
 ScatterPlot.defaultProps = {
-  xAccessor: d => d.x,
-  yAccessor: d => d.y,
+  xFormat: ",",
+  yFormat: ",",
 }
 export default ScatterPlot

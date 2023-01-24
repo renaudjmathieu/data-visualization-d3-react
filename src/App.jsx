@@ -98,25 +98,24 @@ const MenuProps = {
     },
 };
 
-const parseDate = d3.timeParse("%m/%d/%Y")
+const parseDate = d3.timeParse("%Y-%m-%d")
 const formatMonth = d3.timeFormat("%b")
 const monthAccessor = d => formatMonth(parseDate(d.date))
 
 const fieldsAvailable = [
     { id: 'date', accessor: d => parseDate(d.date), format: 'date' },
-    { id: 'temperature', accessor: d => d.temperature, format: 'number' },
-    { id: 'humidity', accessor: d => d.humidity, format: 'number' },
-    { id: 'category', accessor: d => d.category, format: 'text' },
-    { id: 'number', accessor: d => d.number, format: 'number' },
+    { id: 'temperatureMin' },
+    { id: 'temperatureMax' },
+    { id: 'humidity' },
+    { id: 'icon' },
 ]
 
 const chartsAvailable = [
-    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperature', category: '', playAxis: '' },
-    { id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', category: 'category', playAxis: '' },
+    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', category: '', playAxis: '' },
+    { id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', category: 'icon', playAxis: '' },
     { id: 'radar', name: "Radar chart", xAxis: '', yAxis: '', category: '', playAxis: '' },
     { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: '', category: '', playAxis: '' },
-    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperature', category: '', playAxis: '' },
-    { id: 'treemap', name: "Treemap", xAxis: '', yAxis: '', category: 'category', playAxis: '' },
+    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', category: '', playAxis: '' },
 ]
 
 const App = (props) => {
