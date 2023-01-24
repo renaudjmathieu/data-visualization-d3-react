@@ -9,9 +9,7 @@ import Gradient from "./chart/Gradient";
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const formatDate = d3.timeFormat("%-b %-d")
-
-const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, label }) => {
+const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, xLabel, yLabel, xFormat, yFormat }) => {
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
   const gradientColors = [theme.palette.primary.light, theme.palette.primary.contrastText]
@@ -44,12 +42,13 @@ const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, labe
         <Axis
           dimension="x"
           scale={xScale}
-          formatTick={formatDate}
+          formatTick={xFormat}
         />
         <Axis
           dimension="y"
           scale={yScale}
-          label={label}
+          label={yLabel}
+          formatTick={yFormat}
         />
         <Polyline
           type="area"
@@ -72,7 +71,10 @@ const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, labe
 Timeline.propTypes = {
     xAccessor: accessorPropsType,
     yAccessor: accessorPropsType,
-    label: PropTypes.string,
+    xLabel: PropTypes.string,
+    yLabel: PropTypes.string,
+    xFormat: PropTypes.func,
+    yFormat: PropTypes.func,
 }
 
 Timeline.defaultProps = {

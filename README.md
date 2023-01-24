@@ -33,6 +33,7 @@ npm install @mui/icons-material
 npm install d3
 npm install prop-types
 npm install resize-observer-polyfill
+npm install babel-plugin-inline-react-svg
 ```	
 
 

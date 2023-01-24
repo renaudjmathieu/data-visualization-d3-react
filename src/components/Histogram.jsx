@@ -9,7 +9,7 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel }) => {
+const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xFormat }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -62,6 +62,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel }) => 
           dimension="x"
           scale={xScale}
           label={xLabel}
+          formatTick={xFormat}
         />
         <Axis
           dimensions={dimensions}
@@ -86,6 +87,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel }) => 
 Histogram.propTypes = {
   xAccessor: accessorPropsType,
   xLabel: PropTypes.string,
+  xFormat: PropTypes.func,
 }
 
 Histogram.defaultProps = {

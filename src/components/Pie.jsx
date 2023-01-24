@@ -8,7 +8,7 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Pie = ({ outOfFocus, active, onClick, data, valueAccessor, entityAccessor }) => {
+const Pie = ({ outOfFocus, active, onClick, data, valueAccessor, entityAccessor, entityFormat }) => {
   const [ref, dimensions] = useChartDimensions({
     marginTop: 20,
     marginRight: 20,

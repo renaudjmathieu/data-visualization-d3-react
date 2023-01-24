@@ -34,6 +34,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
+import GitHubSvg from './github.svg';
 
 import Dashboard from "./components/Dashboard"
 
@@ -102,11 +103,11 @@ const formatMonth = d3.timeFormat("%b")
 const monthAccessor = d => formatMonth(parseDate(d.date))
 
 const fieldsAvailable = [
-    { id: 'date', accessor: d => parseDate(d.date) },
-    { id: 'temperature', accessor: d => d.temperature },
-    { id: 'humidity', accessor: d => d.humidity },
-    { id: 'category', accessor: d => d.category },
-    { id: 'number', accessor: d => d.number },
+    { id: 'date', accessor: d => parseDate(d.date), format: d => d3.timeFormat("%-b %-d")(d) },
+    { id: 'temperature', accessor: d => d.temperature, format: d => d3.format(".0f")(d) },
+    { id: 'humidity', accessor: d => d.humidity, format: d => d3.format(".0f")(d) },
+    { id: 'category', accessor: d => d.category, format: d => d },
+    { id: 'number', accessor: d => d.number, format: d => d3.format(".0f")(d) },
 ]
 
 const chartsAvailable = [
@@ -266,13 +267,9 @@ const App = (props) => {
                         </Typography>
                         <Box sx={{ flexGrow: 1 }} />
                         <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                            <IconButton
-                                color="inherit"
-                                style={{ color: open && mode === "dark" ? '#8B8E91' : '' }}
-                                onClick={colorMode.toggleColorMode}
-                            >
-                                {mode === "dark" ? <LightMode /> : <DarkMode />}
-                            </IconButton>
+                            <a href="https://github.com/renaudjmathieu/data-visualization-d3-react" target="_blank" className='imgLink' rel="noreferrer" aria-label="GitHub">
+                                <GitHubSvg className='headerSvg' alt="GitHub logo" />
+                            </a>
                         </Box>
                     </Toolbar>
                 </AppBar>
@@ -320,7 +317,7 @@ const App = (props) => {
                 <Drawer
                     sx={{
                         width: drawerWidth,
-                        position:'absolute',
+                        position: 'absolute',
                         whiteSpace: 'nowrap',
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
@@ -349,7 +346,7 @@ const App = (props) => {
                 <Drawer
                     sx={{
                         width: drawerWidth,
-                        position:'absolute',
+                        position: 'absolute',
                         whiteSpace: 'nowrap',
                         flexShrink: 0,
                         '& .MuiDrawer-paper': {
@@ -361,10 +358,10 @@ const App = (props) => {
                     open={open}
                 >
                     <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        </IconButton>
+                    </DrawerHeader>
 
                     <FormControl fullWidth>
                         <Select

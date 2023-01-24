@@ -96,6 +96,8 @@ const Dashboard = (props) => {
                                 yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
                                 xLabel={chart.xAxis}
                                 yLabel={chart.yAxis}
+                                xFormat={props.fields.find(field => field.id === chart.xAxis).format}
+                                yFormat={props.fields.find(field => field.id === chart.yAxis).format}
                             />
                             case "pie": return <Pie
                                 outOfFocus={chosen !== null && index !== chosen}
@@ -104,6 +106,7 @@ const Dashboard = (props) => {
                                 data={data.random}
                                 valueAccessor={numberAccessor}
                                 entityAccessor={props.fields.find(field => field.id === chart.category).accessor}
+                                entityFormat={props.fields.find(field => field.id === chart.category).format}
                             />
                             case "radar": return <Radar
                                 data={data.random}
@@ -117,6 +120,7 @@ const Dashboard = (props) => {
                                 data={data.random}
                                 xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
                                 xLabel={chart.xAxis}
+                                xFormat={props.fields.find(field => field.id === chart.xAxis).format}
                             />
                             case "timeline": return <Timeline
                                 outOfFocus={chosen !== null && index !== chosen}
@@ -125,7 +129,10 @@ const Dashboard = (props) => {
                                 data={data.random}
                                 xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
                                 yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
-                                label={chart.yAxis}
+                                xLabel={chart.xAxis}
+                                yLabel={chart.yAxis}
+                                xFormat={props.fields.find(field => field.id === chart.xAxis).format}
+                                yFormat={props.fields.find(field => field.id === chart.yAxis).format}
                             />
                             case "treemap": return <Treemap
                                 outOfFocus={chosen !== null && index !== chosen}
@@ -136,6 +143,7 @@ const Dashboard = (props) => {
                                 entityAccessor={props.fields.find(field => field.id === chart.category).accessor}
                                 valueLabel="Number"
                                 entityLabel={chart.category}
+                                entityFormat={props.fields.find(field => field.id === chart.category).format}
                             />
                             default: return null
                         }

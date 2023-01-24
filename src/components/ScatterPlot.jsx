@@ -7,7 +7,7 @@ import Circles from "./chart/Circles"
 import Axis from "./chart/Axis"
 import { useChartDimensions, accessorPropsType } from "./chart/utils"
 
-const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, xLabel, yLabel }) => {
+const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, xLabel, yLabel, xFormat, yFormat }) => {
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
   })
@@ -34,12 +34,14 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, 
           dimension="x"
           scale={xScale}
           label={xLabel}
+          formatTick={xFormat}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
           label={yLabel}
+          formatTick={yFormat}
         />
         <Circles
           data={data}
@@ -57,6 +59,8 @@ ScatterPlot.propTypes = {
   yAccessor: accessorPropsType,
   xLabel: PropTypes.string,
   yLabel: PropTypes.string,
+  xFormat: PropTypes.func,
+  yFormat: PropTypes.func,
 }
 
 ScatterPlot.defaultProps = {

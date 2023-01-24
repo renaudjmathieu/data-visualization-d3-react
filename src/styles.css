@@ -370,3 +370,20 @@ h1 {
 .light .config__select * {
     color: var(--theme-light-color-primary);
 }
+
+.imgLink {
+    margin: 5px 0 0 10px;
+}
+
+.headerSvg {
+    height: 28px;
+    width: 28px;
+}
+
+.headerSvg [fill='#123456'] {
+    fill: var(--light-color);
+}
+
+.headerSvg:hover [fill='#123456'] {
+    fill: #FABFE2;
+}
