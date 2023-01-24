@@ -104,10 +104,10 @@ const monthAccessor = d => formatMonth(parseDate(d.date))
 
 const fieldsAvailable = [
     { id: 'date', accessor: d => parseDate(d.date), format: d => d3.timeFormat("%-b %-d")(d) },
-    { id: 'temperature', accessor: d => d.temperature, format: d => d3.format(".0f")(d) },
-    { id: 'humidity', accessor: d => d.humidity, format: d => d3.format(".0f")(d) },
+    { id: 'temperature', accessor: d => d.temperature, format: d => d3.format(",")(d) },
+    { id: 'humidity', accessor: d => d.humidity, format: d => d3.format(",")(d) },
     { id: 'category', accessor: d => d.category, format: d => d },
-    { id: 'number', accessor: d => d.number, format: d => d3.format(".0f")(d) },
+    { id: 'number', accessor: d => d.number, format: d => d3.format(",")(d) },
 ]
 
 const chartsAvailable = [
