@@ -9,11 +9,17 @@ import Gradient from "./chart/Gradient";
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, xLabel, yLabel, xFormat, yFormat }) => {
+const Timeline = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, xLabel, yLabel, xFormat, yFormat }) => {
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
   const gradientColors = [theme.palette.primary.light, theme.palette.primary.contrastText]
   const gradientId = useUniqueId("Timeline-gradient")
+
+  if (!xAccessor)
+    xAccessor = d => d[xLabel]
+
+  if (!yAccessor)
+    yAccessor = d => d[yLabel]
 
   const xScale = d3.scaleTime()
     .domain(d3.extent(data, xAccessor))
@@ -56,7 +62,7 @@ const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, xLab
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           y0Accessor={y0AccessorScaled}
-          style={outOfFocus ? {} : {fill: `url(#${gradientId})`}}
+          style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
         />
         <Polyline
           data={data}
@@ -69,16 +75,16 @@ const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, xLab
 }
 
 Timeline.propTypes = {
-    xAccessor: accessorPropsType,
-    yAccessor: accessorPropsType,
-    xLabel: PropTypes.string,
-    yLabel: PropTypes.string,
-    xFormat: PropTypes.func,
-    yFormat: PropTypes.func,
+  xAccessor: accessorPropsType,
+  yAccessor: accessorPropsType,
+  xLabel: PropTypes.string,
+  yLabel: PropTypes.string,
+  xFormat: PropTypes.func,
+  yFormat: PropTypes.func,
 }
 
 Timeline.defaultProps = {
-    xAccessor: d => d.x,
-    yAccessor: d => d.y,
+  xFormat: ",",
+  yFormat: ",",
 }
 export default Timeline

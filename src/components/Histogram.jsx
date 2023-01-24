@@ -20,6 +20,9 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
   
   const numberOfThresholds = 9
 
+  if (!xAccessor)
+    xAccessor = d => d[xLabel]
+
   const xScale = d3.scaleLinear()
     .domain(d3.extent(data, xAccessor))
     .range([0, dimensions.boundedWidth])
@@ -91,6 +94,6 @@ Histogram.propTypes = {
 }
 
 Histogram.defaultProps = {
-  xAccessor: d => d.x,
+  xFormat: ",",
 }
 export default Histogram

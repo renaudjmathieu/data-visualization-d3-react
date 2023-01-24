@@ -102,6 +102,7 @@ const parseDate = d3.timeParse("%Y-%m-%d")
 const formatMonth = d3.timeFormat("%b")
 const monthAccessor = d => formatMonth(parseDate(d.date))
 
+
 const fieldsAvailable = [
     { id: 'date', accessor: d => parseDate(d.date), format: 'date' },
     { id: 'temperatureMin' },
@@ -109,6 +110,14 @@ const fieldsAvailable = [
     { id: 'humidity' },
     { id: 'icon' },
 ]
+
+const fieldsAvailableByChart = {
+    scatter: ['date', 'temperatureMin', 'temperatureMax', 'humidity'],
+    pie: ['icon'],
+    radar: ['temperatureMin', 'temperatureMax', 'humidity'],
+    histogram: ['humidity'],
+    timeline: ['date', 'temperatureMin', 'temperatureMax', 'humidity'],
+}
 
 const chartsAvailable = [
     { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', category: '', playAxis: '' },
@@ -232,8 +241,19 @@ const App = (props) => {
     );
 
     const handleReplaceChart = (event) => {
+        const fieldsToCheck = { xAxis: '', yAxis: '', category: '', playAxis: '' }
+        const currentChart = charts.find((chart, index) => index === selectedChartIndex)
+
+        //for each field to check, print the value of the field in the current chart
+        Object.keys(fieldsToCheck).forEach((field) => {
+            if (fieldsAvailableByChart[event.target.value].includes(currentChart[field])) {
+                fieldsToCheck[field] = currentChart[field]
+            }
+        }
+        )
+        
         setSelectedChartId(event.target.value)
-        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, id: event.target.value, name: chartsAvailable.find((chart) => chart.id === event.target.value).name } : chart));
+        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, id: event.target.value, name: chartsAvailable.find((chart) => chart.id === event.target.value).name, ...fieldsToCheck } : chart));
     };
 
     const handleRemoveSelectedChart = () => {
@@ -392,13 +412,11 @@ const App = (props) => {
                                             label={keyName}
                                             onChange={(e) => handleFieldChange(e, keyName)}
                                         >
-                                            {fieldsAvailable
+                                            {fieldsAvailableByChart[selectedChartId]
                                                 .map(field => (
-                                                    <MenuItem value={field.id}>{field.id}</MenuItem>
+                                                    <MenuItem value={field}>{field}</MenuItem>
                                                 ))}
                                         </Select>
-                                        {console.log(charts.filter((chart, index) => index === selectedChartIndex)[0][keyName])}
-                                        {console.log(keyName)}
                                     </FormControl>
                                 ))
                         ))}
