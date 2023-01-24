@@ -109,6 +109,7 @@ const fieldsAvailable = [
     { id: 'temperatureMax' },
     { id: 'humidity' },
     { id: 'icon' },
+    { id: '' },
 ]
 
 const fieldsAvailableByChart = {
