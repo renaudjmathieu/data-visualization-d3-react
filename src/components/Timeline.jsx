@@ -42,13 +42,13 @@ const Timeline = ({ outOfFocus, active, onClick,data, xAccessor, yAccessor, xLab
         <Axis
           dimension="x"
           scale={xScale}
-          formatTick={xFormat}
+          labelFormat={xFormat}
         />
         <Axis
           dimension="y"
           scale={yScale}
           label={yLabel}
-          formatTick={yFormat}
+          labelFormat={yFormat}
         />
         <Polyline
           type="area"

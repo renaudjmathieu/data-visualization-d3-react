@@ -62,7 +62,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
           dimension="x"
           scale={xScale}
           label={xLabel}
-          formatTick={xFormat}
+          labelFormat={xFormat}
         />
         <Axis
           dimensions={dimensions}

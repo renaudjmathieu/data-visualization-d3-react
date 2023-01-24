@@ -34,14 +34,14 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, 
           dimension="x"
           scale={xScale}
           label={xLabel}
-          formatTick={xFormat}
+          labelFormat={xFormat}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
           label={yLabel}
-          formatTick={yFormat}
+          labelFormat={yFormat}
         />
         <Circles
           data={data}
