@@ -253,9 +253,7 @@ const App = (props) => {
         }
         )
         setSelectedChartId(event.target.value)
-        console.log(fieldsToCheck)
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, id: event.target.value, name: chartsAvailable.find((chart) => chart.id === event.target.value).name, ...fieldsToCheck } : chart));
-        console.log(charts)
     };
 
     const handleRemoveSelectedChart = () => {

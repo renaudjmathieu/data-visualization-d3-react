@@ -73,7 +73,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
           scale={yScale}
           label="Count"
         />
-        <Rectangles
+        {xLabel && <Rectangles
           data={bins}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
@@ -81,7 +81,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
           style={outOfFocus ? {} : {fill: `url(#${gradientId})`}}
-        />
+        />}
       </Chart>
     </div>
   )
