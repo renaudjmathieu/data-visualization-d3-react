@@ -40,6 +40,14 @@ import Dashboard from "./components/Dashboard"
 
 import "./styles.css"
 
+
+import data from '../my_weather_data.json'
+
+const getData = () => ({
+    random: data
+
+})
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -98,23 +106,14 @@ const MenuProps = {
     },
 };
 
-const fieldsAvailable = [
-    { id: 'date', name: 'Date', parser: d3.timeParse("%Y-%m-%d"), formatter: d3.timeFormat("%b %Y") },
-    { id: 'temperatureMin', name: 'Temperature (min)' },
-    { id: 'temperatureMax', name: 'Temperature (max)' },
-    { id: 'humidity', name: 'Humidity' },
-    { id: 'icon', name: 'Icon' },
-    { id: '' },
-]
-
 const summarizationAvailable = [
-    { id: 'distinct', name: 'Count (Distinct)' },
-    { id: 'count', name: 'Count' },
-    { id: 'sum', name: 'Sum' },
-    { id: 'mean', name: 'Mean' },
-    { id: 'median', name: 'Median' },
-    { id: 'min', name: 'Min' },
-    { id: 'max', name: 'Max' },
+    { id: 'distinct', name: 'Count (Distinct)', numberOnly: false },
+    { id: 'count', name: 'Count', numberOnly: false },
+    { id: 'sum', name: 'Sum', numberOnly: true },
+    { id: 'mean', name: 'Mean', numberOnly: true },
+    { id: 'median', name: 'Median', numberOnly: true },
+    { id: 'min', name: 'Min', numberOnly: true },
+    { id: 'max', name: 'Max', numberOnly: true },
 ]
 
 const chartsAvailable = [
@@ -135,6 +134,15 @@ const App = (props) => {
         }),
         []
     );
+
+
+    const [data, setData] = React.useState(getData())
+
+    /*
+    useInterval(() => {
+        setData(getData())
+    }, animate ? 4000 : null)
+    */
 
     // Whenever dark mode changes, update the localStorage DARK_MODE item
     React.useEffect(() => {
@@ -260,6 +268,20 @@ const App = (props) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
     };
 
+
+    const fieldsAvailable = Object.keys(data.random[0])
+        .map(id => (
+            {
+                id,
+                type: typeof data.random[0][id],
+                name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
+                ...(id === 'date' ? {
+                    parser: d3.timeParse("%Y-%m-%d"),
+                    formatter: d3.timeFormat("%b %Y")
+                } : {})
+            }))
+        .sort((a, b) => a.name.localeCompare(b.name))
+        
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -312,6 +334,7 @@ const App = (props) => {
                         </Grid>
                     </Box>
                     <Dashboard ref={dashboardRef}
+                        data={data}
                         charts={charts}
                         fields={fieldsAvailable}
                         checkedAnimate={animate}
@@ -404,9 +427,14 @@ const App = (props) => {
                                                     ))
                                                 :
                                                 summarizationAvailable
+                                                    .filter(
+                                                        summarization => summarization.numberOnly === false ||
+                                                        (fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')]))[0].type === 'number'
+                                                    )
                                                     .map(summarization => (
                                                         <MenuItem value={summarization.id}>{summarization.name}</MenuItem>
-                                                    ))}
+                                                    ))
+                                            }
                                         </Select>
                                     </FormControl>
                                 ))
@@ -422,3 +450,23 @@ const App = (props) => {
 }
 
 export default App;
+
+function useInterval(callback, delay) {
+    const savedCallback = useRef()
+
+    // Remember the latest callback.
+    useEffect(() => {
+        savedCallback.current = callback
+    })
+
+    // Set up the interval.
+    useEffect(() => {
+        function tick() {
+            savedCallback.current()
+        }
+        if (delay !== null) {
+            let id = setInterval(tick, delay)
+            return () => clearInterval(id)
+        }
+    }, [delay])
+}

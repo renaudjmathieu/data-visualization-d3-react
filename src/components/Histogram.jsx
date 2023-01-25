@@ -63,8 +63,6 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
     )
   })
 
-  console.log(yAxisSummarization)
-
   const yAccessorSummarization = d => d[yAxisSummarization]
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(bins, yAccessorSummarization)])

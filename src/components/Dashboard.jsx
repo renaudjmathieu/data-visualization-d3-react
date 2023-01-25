@@ -7,16 +7,9 @@ import Radar from "./Radar"
 import Histogram from "./Histogram"
 import Timeline from "./Timeline"
 
-import data from '../../my_weather_data.json'
-
-const getData = () => ({
-    random: data
-    
-})
 const Dashboard = (props) => {
 
     const ref = useRef();
-    const [data, setData] = useState(getData())
 
     const [charts, setCharts] = useState(props.charts);
 
@@ -30,10 +23,6 @@ const Dashboard = (props) => {
     useEffect(() => {
         setAnimate(checkedAnimate);
     }, [checkedAnimate]);
-
-    useInterval(() => {
-        setData(getData())
-    }, animate ? 4000 : null)
 
     const [chosen, setChosen] = useState(null);
 
@@ -83,7 +72,7 @@ const Dashboard = (props) => {
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
-                                data={data.random}
+                                data={props.data.random}
                                 xAxis={chart.xAxis}
                                 yAxis={chart.yAxis}
                                 xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
@@ -95,7 +84,7 @@ const Dashboard = (props) => {
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
-                                data={data.random}
+                                data={props.data.random}
                                 xAxis={chart.xAxis}
                                 yAxis={chart.yAxis}
                                 xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
@@ -108,7 +97,7 @@ const Dashboard = (props) => {
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
-                                data={data.random}
+                                data={props.data.random}
                                 xAxis={chart.xAxis}
                                 yAxis={chart.yAxis}
                                 xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
@@ -126,23 +115,3 @@ const Dashboard = (props) => {
 }
 
 export default Dashboard
-
-function useInterval(callback, delay) {
-    const savedCallback = useRef()
-
-    // Remember the latest callback.
-    useEffect(() => {
-        savedCallback.current = callback
-    })
-
-    // Set up the interval.
-    useEffect(() => {
-        function tick() {
-            savedCallback.current()
-        }
-        if (delay !== null) {
-            let id = setInterval(tick, delay)
-            return () => clearInterval(id)
-        }
-    }, [delay])
-}
