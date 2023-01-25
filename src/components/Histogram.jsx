@@ -102,6 +102,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
           abc={yAccessorSummarization}
+          boundedHeight={dimensions.boundedHeight}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
         />}
       </Chart>

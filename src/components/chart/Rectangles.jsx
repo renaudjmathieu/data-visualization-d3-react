@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 
-const Rectangles = ({ data, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, abc, ...props }) => {
+const Rectangles = ({ data, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, abc, boundedHeight, ...props }) => {
   const tooltip = d3.select("#tooltipD3")
 
   const handleMouseEnter = (e, d, i) => {
@@ -19,9 +19,13 @@ const Rectangles = ({ data, keyAccessor, xAccessor, yAccessor, widthAccessor, he
 
     const parentDiv = e.target.parentElement.getBoundingClientRect()
 
+    console.log(parentDiv.y)
+    console.log(boundedHeight)
+    console.log(callAccessor(heightAccessor, d, i))
+    
     tooltip.style("transform", `translate(`
-      + `calc(-50% + 120px + ${parentDiv.x}px + ${callAccessor(xAccessor, d, i)}px),`
-      + `calc(-100% + 5px + ${parentDiv.y}px + ${callAccessor(yAccessor, d, i)}px)`
+      + `calc(${parentDiv.x}px + ${callAccessor(xAccessor, d, i)}px + ${callAccessor(widthAccessor, d, i)}px - 50%),`
+      + `calc(${parentDiv.y}px + (${boundedHeight}px - ${callAccessor(heightAccessor, d, i)}px - 100%))`
       + `)`)
 
     tooltip.style("opacity", 1)
@@ -55,6 +59,7 @@ Rectangles.propTypes = {
   widthAccessor: accessorPropsType,
   heightAccessor: accessorPropsType,
   abc: accessorPropsType,
+  boundedHeight: PropTypes.number,
 }
 
 Rectangles.defaultProps = {
