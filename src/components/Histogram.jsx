@@ -44,16 +44,26 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
   const bins = binsGenerator(data)
 
   bins.forEach(bin => {
-    switch (yAxisSummarization) {
-      case "median": bin[yAxisSummarization] = d3.median(bin, yAccessor); break;
-      case "mean": bin[yAxisSummarization] = d3.mean(bin, yAccessor); break;
-      case "count": bin[yAxisSummarization] = d3.count(bin, yAccessor); break;
-      case "sum": bin[yAxisSummarization] = d3.sum(bin, yAccessor); break;
-      case "min": bin[yAxisSummarization] = d3.min(bin, yAccessor); break;
-      case "max": bin[yAxisSummarization] = d3.max(bin, yAccessor); break;
-      default: bin[yAxisSummarization] = d3.median(bin, yAccessor);
+    //for each bin, use d3.group on yAccessor and count, distinc count, sum, average mean and median of the grouped values then add to bin
+    const grouped = d3.group(bin, yAccessor)
+    bin.count = bin.length
+    bin.distinct = grouped.size
+    bin.sum = d3.sum(grouped, ([key, value]) => value.length)
+    bin.average = d3.mean(grouped, ([key, value]) => value.length)
+    bin.mean = d3.mean(grouped, ([key, value]) => value.length)
+    bin.median = d3.median(grouped, ([key, value]) => value.length)
+
+    //add the summarization to the bin
+    bin[yAxisSummarization] = bin[yAxisSummarization] || bin.count
+
+    //add the bin to the data
+    bin.forEach(d => {
+      d.bin = bin
     }
+    )
   })
+
+  console.log(yAxisSummarization)
 
   const yAccessorSummarization = d => d[yAxisSummarization]
   const yScale = d3.scaleLinear()

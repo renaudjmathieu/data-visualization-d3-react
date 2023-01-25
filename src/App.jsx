@@ -108,6 +108,7 @@ const fieldsAvailable = [
 ]
 
 const summarizationAvailable = [
+    { id: 'distinct', name: 'Count (Distinct)' },
     { id: 'count', name: 'Count' },
     { id: 'sum', name: 'Sum' },
     { id: 'mean', name: 'Mean' },
