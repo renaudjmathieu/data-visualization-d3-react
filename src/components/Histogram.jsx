@@ -51,7 +51,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
       default: null;
     }
   })
-  
+
   const yAccessorSummarization = d => d[yAxisSummarization]
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(bins, yAccessorSummarization)])
@@ -101,6 +101,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
           yAccessor={yAccessorScaled}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
+          abc={yAccessorSummarization}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
         />}
       </Chart>

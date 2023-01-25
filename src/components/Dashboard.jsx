@@ -62,7 +62,14 @@ const Dashboard = (props) => {
     return (
         <div className="App__charts__dashboard" ref={ref} onClick={handleOutsideClick}>
             <div className="App__charts__config">
-
+            </div>
+            <div id="tooltipD3" className="tooltipD3">
+                <div className="tooltipD3-range">
+                    Bin: <span id="rangeD3"></span>
+                </div>
+                <div className="tooltipD3-value">
+                    Value: <span id="countD3"></span>
+                </div>
             </div>
             <div className="App__charts">
                 {charts
