@@ -9,17 +9,22 @@ import Gradient from "./chart/Gradient";
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Timeline = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, xLabel, yLabel, xFormat, yFormat }) => {
+const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
   const gradientColors = [theme.palette.primary.light, theme.palette.primary.contrastText]
   const gradientId = useUniqueId("Timeline-gradient")
 
-  if (!xAccessor)
-    xAccessor = d => d[xLabel]
+  let xAccessor = d => d[xAxis]
+  let yAccessor = d => d[yAxis]
 
-  if (!yAccessor)
-    yAccessor = d => d[yLabel]
+  if (xAxisParser) {
+    xAccessor = d => xAxisParser(d[xAxis])
+  }
+
+  if (yAxisParser) {
+    yAccessor = d => yAxisParser(d[yAxis])
+  }
 
   const xScale = d3.scaleTime()
     .domain(d3.extent(data, xAccessor))
@@ -48,13 +53,13 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, xLa
         <Axis
           dimension="x"
           scale={xScale}
-          labelFormat={xFormat}
+          formatter={xAxisFormatter}
         />
         <Axis
           dimension="y"
           scale={yScale}
-          label={yLabel}
-          labelFormat={yFormat}
+          label={yAxis}
+          formatter={yAxisFormatter}
         />
         <Polyline
           type="area"
@@ -75,16 +80,12 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, xLa
 }
 
 Timeline.propTypes = {
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
-  xLabel: PropTypes.string,
-  yLabel: PropTypes.string,
-  xFormat: PropTypes.func,
-  yFormat: PropTypes.func,
+  xAxis: PropTypes.string,
+  yAxis: PropTypes.string,
+  xAxisParser: PropTypes.func,
+  yAxisParser: PropTypes.func,
+  xAxisFormatter: PropTypes.func,
+  yAxisFormatter: PropTypes.func,
 }
 
-Timeline.defaultProps = {
-  xFormat: ",",
-  yFormat: ",",
-}
 export default Timeline

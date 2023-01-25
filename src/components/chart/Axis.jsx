@@ -21,47 +21,28 @@ const Axis = ({ dimension, ...props }) => {
   )
 }
 
-const formatFunction = (labelFormat) => {
-  switch (labelFormat) {
-    case 'text':
-      return d3.format(",")
-      break;
-    case 'number':
-      return d3.format(",")
-      break;
-    case 'date':
-      return d3.timeFormat("%b %Y")
-      break;
-    default:
-      return d3.format(",")
-      break;
-  }
-}
-
 Axis.propTypes = {
   dimension: PropTypes.oneOf(["x", "y"]),
   dimensions: dimensionsPropsType,
   scale: PropTypes.func,
   label: PropTypes.string,
-  labelFormat: PropTypes.string,
+  formatter: PropTypes.func,
 }
 
 Axis.defaultProps = {
   dimension: "x",
   scale: null,
-  labelFormat: 'text',
+  formatter: d3.format(","),
 }
 
 export default Axis
 
-
-function AxisHorizontal({ dimensions, label, labelFormat, scale, ...props }) {
+function AxisHorizontal({ dimensions, scale, label, formatter, ...props }) {
   const numberOfTicks = dimensions.boundedWidth < 600
     ? dimensions.boundedWidth / 100
     : dimensions.boundedWidth / 250
 
   const ticks = scale.ticks(numberOfTicks)
-  const formatFunc = formatFunction(labelFormat)
 
   return (
     <g className="Axis AxisHorizontal" transform={`translate(0, ${dimensions.boundedHeight})`} {...props}>
@@ -76,7 +57,7 @@ function AxisHorizontal({ dimensions, label, labelFormat, scale, ...props }) {
           className="Axis__tick"
           transform={`translate(${scale(tick)}, 25)`}
         >
-          {formatFunc(tick)}
+          {formatter(tick)}
         </text>
       ))}
 
@@ -92,11 +73,10 @@ function AxisHorizontal({ dimensions, label, labelFormat, scale, ...props }) {
   )
 }
 
-function AxisVertical({ dimensions, label, labelFormat, scale, ...props }) {
+function AxisVertical({ dimensions, scale, label, formatter, ...props }) {
   const numberOfTicks = dimensions.boundedHeight / 70
 
   const ticks = scale.ticks(numberOfTicks)
-  const formatFunc = formatFunction(labelFormat)
 
   return (
     <g className="Axis AxisVertical" {...props}>
@@ -111,7 +91,7 @@ function AxisVertical({ dimensions, label, labelFormat, scale, ...props }) {
           className="Axis__tick"
           transform={`translate(-16, ${scale(tick)})`}
         >
-          {formatFunc(tick)}
+          {formatter(tick)}
         </text>
       ))}
 

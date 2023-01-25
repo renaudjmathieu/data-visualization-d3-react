@@ -84,51 +84,37 @@ const Dashboard = (props) => {
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
-                                xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
-                                yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
-                                xLabel={chart.xAxis}
-                                yLabel={chart.yAxis}
-                                xFormat={props.fields.find(field => field.id === chart.xAxis).format}
-                                yFormat={props.fields.find(field => field.id === chart.yAxis).format}
-                            />
-                            case "pie": return <Pie
-                                outOfFocus={chosen !== null && index !== chosen}
-                                active={index === chosen}
-                                onClick={(e) => handleClick(e, chart, index)}
-                                data={data.random}
-                                valueAccessor={numberAccessor}
-                                entityAccessor={props.fields.find(field => field.id === chart.category).accessor}
-                                entityFormat={props.fields.find(field => field.id === chart.category).format}
-                            />
-                            case "radar": return <Radar
-                                data={data.random}
-                                valueAccessor={numberAccessor}
-                                entityAccessor={categoryAccessor}
+                                xAxis={chart.xAxis}
+                                yAxis={chart.yAxis}
+                                xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
+                                yAxisParser={props.fields.find(field => field.id === chart.yAxis).parser}
+                                xAxisFormatter={props.fields.find(field => field.id === chart.xAxis).formatter}
+                                yAxisFormatter={props.fields.find(field => field.id === chart.yAxis).formatter}
                             />
                             case "histogram": return <Histogram
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
-                                xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
-                                yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
-                                xLabel={chart.xAxis}
-                                yLabel={chart.yAxis}
+                                xAxis={chart.xAxis}
+                                yAxis={chart.yAxis}
+                                xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
+                                yAxisParser={props.fields.find(field => field.id === chart.yAxis).parser}
+                                xAxisFormatter={props.fields.find(field => field.id === chart.xAxis).formatter}
+                                yAxisFormatter={props.fields.find(field => field.id === chart.yAxis).formatter}
                                 yAxisSummarization={chart.yAxisSummarization}
-                                xFormat={props.fields.find(field => field.id === chart.xAxis).format}
-                                yFormat={props.fields.find(field => field.id === chart.yAxis).format}
                             />
                             case "timeline": return <Timeline
                                 outOfFocus={chosen !== null && index !== chosen}
                                 active={index === chosen}
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
-                                xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
-                                yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
-                                xLabel={chart.xAxis}
-                                yLabel={chart.yAxis}
-                                xFormat={props.fields.find(field => field.id === chart.xAxis).format}
-                                yFormat={props.fields.find(field => field.id === chart.yAxis).format}
+                                xAxis={chart.xAxis}
+                                yAxis={chart.yAxis}
+                                xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
+                                yAxisParser={props.fields.find(field => field.id === chart.yAxis).parser}
+                                xAxisFormatter={props.fields.find(field => field.id === chart.xAxis).formatter}
+                                yAxisFormatter={props.fields.find(field => field.id === chart.yAxis).formatter}
                             />
                             default: return null
                         }

@@ -98,27 +98,14 @@ const MenuProps = {
     },
 };
 
-const parseDate = d3.timeParse("%Y-%m-%d")
-const formatMonth = d3.timeFormat("%b")
-const monthAccessor = d => formatMonth(parseDate(d.date))
-
-
 const fieldsAvailable = [
-    { id: 'date', accessor: d => parseDate(d.date), format: 'date' },
-    { id: 'temperatureMin' },
-    { id: 'temperatureMax' },
-    { id: 'humidity' },
-    { id: 'icon' },
+    { id: 'date', name: 'Date', parser: d3.timeParse("%Y-%m-%d"), formatter: d3.timeFormat("%b %Y") },
+    { id: 'temperatureMin', name: 'Temperature (min)' },
+    { id: 'temperatureMax', name: 'Temperature (max)' },
+    { id: 'humidity', name: 'Humidity' },
+    { id: 'icon', name: 'Icon' },
     { id: '' },
 ]
-
-const fieldsAvailableByChart = {
-    scatter: ['date', 'temperatureMin', 'temperatureMax', 'humidity', 'icon'],
-    pie: ['icon'],
-    radar: ['temperatureMin', 'temperatureMax', 'humidity'],
-    histogram: ['date', 'temperatureMin', 'temperatureMax', 'humidity', 'icon'],
-    timeline: ['date', 'temperatureMin', 'temperatureMax', 'humidity', 'icon'],
-}
 
 const summarizationAvailable = [
     { id: 'count', name: 'Count' },
@@ -131,10 +118,8 @@ const summarizationAvailable = [
 
 const chartsAvailable = [
     { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', playAxis: '' },
-    { id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', category: 'icon', playAxis: '' },
-    { id: 'radar', name: "Radar chart", xAxis: '', yAxis: '', category: '', playAxis: '' },
     { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', playAxis: '' },
-    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', category: '', playAxis: '' },
+    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', playAxis: '' },
 ]
 
 const App = (props) => {
@@ -251,18 +236,8 @@ const App = (props) => {
     );
 
     const handleReplaceChart = (event) => {
-        const fieldsToCheck = { xAxis: '', yAxis: '', category: '', playAxis: '' }
-        const currentChart = charts.find((chart, index) => index === selectedChartIndex)
-
-        //for each field to check, print the value of the field in the current chart
-        Object.keys(fieldsToCheck).forEach((field) => {
-            if (fieldsAvailableByChart[event.target.value].includes(currentChart[field])) {
-                fieldsToCheck[field] = currentChart[field]
-            }
-        }
-        )
         setSelectedChartId(event.target.value)
-        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, id: event.target.value, name: chartsAvailable.find((chart) => chart.id === event.target.value).name, ...fieldsToCheck } : chart));
+        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, id: event.target.value, name: chartsAvailable.find((chart) => chart.id === event.target.value).name } : chart));
     };
 
     const handleRemoveSelectedChart = () => {
@@ -422,11 +397,12 @@ const App = (props) => {
                                             onChange={(e) => handleFieldChange(e, keyName)}
                                         >
                                             {!keyName.includes('Summarization') ?
-                                                fieldsAvailableByChart[selectedChartId]
+                                                fieldsAvailable
                                                     .map(field => (
-                                                        <MenuItem value={field}>{field}</MenuItem>
-                                                    )) :
-                                                    summarizationAvailable
+                                                        <MenuItem value={field.id}>{field.name}</MenuItem>
+                                                    ))
+                                                :
+                                                summarizationAvailable
                                                     .map(summarization => (
                                                         <MenuItem value={summarization.id}>{summarization.name}</MenuItem>
                                                     ))}

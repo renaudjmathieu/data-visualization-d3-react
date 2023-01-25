@@ -7,16 +7,21 @@ import Circles from "./chart/Circles"
 import Axis from "./chart/Axis"
 import { useChartDimensions, accessorPropsType } from "./chart/utils"
 
-const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, xLabel, yLabel, xFormat, yFormat }) => {
+const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
   })
 
-  if (!xAccessor)
-    xAccessor = d => d[xLabel]
+  let xAccessor = d => d[xAxis]
+  let yAccessor = d => d[yAxis]
 
-  if (!yAccessor)
-    yAccessor = d => d[yLabel]
+  if (xAxisParser) {
+    xAccessor = d => xAxisParser(d[xAxis])
+  }
+
+  if (yAxisParser) {
+    yAccessor = d => yAxisParser(d[yAxis])
+  }
 
   const xScale = d3.scaleLinear()
     .domain(d3.extent(data, xAccessor))
@@ -39,15 +44,15 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, 
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xLabel}
-          labelFormat={xFormat}
+          label={xAxis}
+          formatter={xAxisFormatter}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label={yLabel}
-          labelFormat={yFormat}
+          label={yAxis}
+          formatter={yAxisFormatter}
         />
         <Circles
           data={data}
@@ -61,16 +66,12 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, 
 }
 
 ScatterPlot.propTypes = {
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
-  xLabel: PropTypes.string,
-  yLabel: PropTypes.string,
-  xFormat: PropTypes.func,
-  yFormat: PropTypes.func,
+  xAxis: PropTypes.string,
+  yAxis: PropTypes.string,
+  xAxisParser: PropTypes.func,
+  yAxisParser: PropTypes.func,
+  xAxisFormatter: PropTypes.func,
+  yAxisFormatter: PropTypes.func,
 }
 
-ScatterPlot.defaultProps = {
-  xFormat: ",",
-  yFormat: ",",
-}
 export default ScatterPlot

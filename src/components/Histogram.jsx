@@ -9,7 +9,7 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, yAxisSummarization, xLabel, yLabel, xFormat, yFormat }) => {
+const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter, yAxisSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -20,8 +20,16 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, yA
 
   const numberOfThresholds = 9
 
-  if (!xAccessor)
-    xAccessor = d => d[xLabel]
+  let xAccessor = d => d[xAxis]
+  let yAccessor = d => d[yAxis]
+
+  if (xAxisParser) {
+    xAccessor = d => xAxisParser(d[xAxis])
+  }
+
+  if (yAxisParser) {
+    yAccessor = d => yAxisParser(d[yAxis])
+  }
 
   const xScale = d3.scaleLinear()
     .domain(d3.extent(data, xAccessor))
@@ -35,19 +43,17 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, yA
 
   const bins = binsGenerator(data)
 
-  console.log(yLabel)
-  console.log(yAxisSummarization)
-
-  //add aggregate data to bins
   bins.forEach(bin => {
-    bin.median = d3.median(bin, b => b[yLabel])
-    bin.mean = d3.mean(bin, b => b[yLabel])
-    bin.count = d3.count(bin, b => b[yLabel])
-    bin.sum = d3.sum(bin, b => b[yLabel])
-    bin.min = d3.min(bin, b => b[yLabel])
-    bin.max = d3.max(bin, b => b[yLabel])
+    switch (yAxisSummarization) {
+      case "median": bin[yAxisSummarization] = d3.median(bin, yAccessor); break;
+      case "mean": bin[yAxisSummarization] = d3.mean(bin, yAccessor); break;
+      case "count": bin[yAxisSummarization] = d3.count(bin, yAccessor); break;
+      case "sum": bin[yAxisSummarization] = d3.sum(bin, yAccessor); break;
+      case "min": bin[yAxisSummarization] = d3.min(bin, yAccessor); break;
+      case "max": bin[yAxisSummarization] = d3.max(bin, yAccessor); break;
+      default: bin[yAxisSummarization] = d3.median(bin, yAccessor);
+    }
   })
-
 
   const yAccessorSummarization = d => d[yAxisSummarization]
   const yScale = d3.scaleLinear()
@@ -78,16 +84,17 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, yA
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xLabel}
-          labelFormat={xFormat}
+          label={xAxis}
+          formatter={xAxisFormatter}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
           label="Count"
+          formatter={yAxisFormatter}
         />
-        {xLabel && <Rectangles
+        {xAxis && <Rectangles
           data={bins}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
@@ -102,17 +109,13 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, yA
 }
 
 Histogram.propTypes = {
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
-  xLabel: PropTypes.string,
-  yLabel: PropTypes.string,
+  xAxis: PropTypes.string,
+  yAxis: PropTypes.string,
+  xAxisParser: PropTypes.func,
+  yAxisParser: PropTypes.func,
+  xAxisFormatter: PropTypes.func,
+  yAxisFormatter: PropTypes.func,
   yAxisSummarization: PropTypes.string,
-  xFormat: PropTypes.func,
-  yFormat: PropTypes.func,
 }
 
-Histogram.defaultProps = {
-  xFormat: ",",
-  yFormat: ",",
-}
 export default Histogram
