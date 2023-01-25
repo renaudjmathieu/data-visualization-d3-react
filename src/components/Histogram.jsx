@@ -9,7 +9,7 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xFormat }) => {
+const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, yAccessor, yAxisSummarization, xLabel, yLabel, xFormat, yFormat }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -17,7 +17,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
   const theme = useTheme();
   const gradientColors = [theme.palette.primary.main, theme.palette.primary.contrastText]
   const gradientId = useUniqueId("Histogram-gradient")
-  
+
   const numberOfThresholds = 9
 
   if (!xAccessor)
@@ -35,18 +35,32 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
 
   const bins = binsGenerator(data)
 
-  const yAccessor = d => d.length
+  console.log(yLabel)
+  console.log(yAxisSummarization)
+
+  //add aggregate data to bins
+  bins.forEach(bin => {
+    bin.median = d3.median(bin, b => b[yLabel])
+    bin.mean = d3.mean(bin, b => b[yLabel])
+    bin.count = d3.count(bin, b => b[yLabel])
+    bin.sum = d3.sum(bin, b => b[yLabel])
+    bin.min = d3.min(bin, b => b[yLabel])
+    bin.max = d3.max(bin, b => b[yLabel])
+  })
+
+
+  const yAccessorSummarization = d => d[yAxisSummarization]
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(bins, yAccessor)])
+    .domain([0, d3.max(bins, yAccessorSummarization)])
     .range([dimensions.boundedHeight, 0])
     .nice()
 
   const barPadding = 2
 
   const xAccessorScaled = d => xScale(d.x0) + barPadding
-  const yAccessorScaled = d => yScale(yAccessor(d))
+  const yAccessorScaled = d => yScale(yAccessorSummarization(d))
   const widthAccessorScaled = d => xScale(d.x1) - xScale(d.x0) - barPadding
-  const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessor(d))
+  const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
   const keyAccessor = (d, i) => i
 
   return (
@@ -80,7 +94,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
           yAccessor={yAccessorScaled}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
-          style={outOfFocus ? {} : {fill: `url(#${gradientId})`}}
+          style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
         />}
       </Chart>
     </div>
@@ -89,11 +103,16 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAccessor, xLabel, xForm
 
 Histogram.propTypes = {
   xAccessor: accessorPropsType,
+  yAccessor: accessorPropsType,
   xLabel: PropTypes.string,
+  yLabel: PropTypes.string,
+  yAxisSummarization: PropTypes.string,
   xFormat: PropTypes.func,
+  yFormat: PropTypes.func,
 }
 
 Histogram.defaultProps = {
   xFormat: ",",
+  yFormat: ",",
 }
 export default Histogram

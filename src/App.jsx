@@ -113,18 +113,27 @@ const fieldsAvailable = [
 ]
 
 const fieldsAvailableByChart = {
-    scatter: ['date', 'temperatureMin', 'temperatureMax', 'humidity'],
+    scatter: ['date', 'temperatureMin', 'temperatureMax', 'humidity', 'icon'],
     pie: ['icon'],
     radar: ['temperatureMin', 'temperatureMax', 'humidity'],
-    histogram: ['humidity'],
-    timeline: ['date', 'temperatureMin', 'temperatureMax', 'humidity'],
+    histogram: ['date', 'temperatureMin', 'temperatureMax', 'humidity', 'icon'],
+    timeline: ['date', 'temperatureMin', 'temperatureMax', 'humidity', 'icon'],
 }
 
+const summarizationAvailable = [
+    { id: 'count', name: 'Count' },
+    { id: 'sum', name: 'Sum' },
+    { id: 'mean', name: 'Mean' },
+    { id: 'median', name: 'Median' },
+    { id: 'min', name: 'Min' },
+    { id: 'max', name: 'Max' },
+]
+
 const chartsAvailable = [
-    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', category: '', playAxis: '' },
+    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', playAxis: '' },
     { id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', category: 'icon', playAxis: '' },
     { id: 'radar', name: "Radar chart", xAxis: '', yAxis: '', category: '', playAxis: '' },
-    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: '', category: '', playAxis: '' },
+    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', playAxis: '' },
     { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', category: '', playAxis: '' },
 ]
 
@@ -412,10 +421,15 @@ const App = (props) => {
                                             label={keyName}
                                             onChange={(e) => handleFieldChange(e, keyName)}
                                         >
-                                            {fieldsAvailableByChart[selectedChartId]
-                                                .map(field => (
-                                                    <MenuItem value={field}>{field}</MenuItem>
-                                                ))}
+                                            {!keyName.includes('Summarization') ?
+                                                fieldsAvailableByChart[selectedChartId]
+                                                    .map(field => (
+                                                        <MenuItem value={field}>{field}</MenuItem>
+                                                    )) :
+                                                    summarizationAvailable
+                                                    .map(summarization => (
+                                                        <MenuItem value={summarization.id}>{summarization.name}</MenuItem>
+                                                    ))}
                                         </Select>
                                     </FormControl>
                                 ))

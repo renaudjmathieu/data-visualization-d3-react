@@ -111,8 +111,12 @@ const Dashboard = (props) => {
                                 onClick={(e) => handleClick(e, chart, index)}
                                 data={data.random}
                                 xAccessor={props.fields.find(field => field.id === chart.xAxis).accessor}
+                                yAccessor={props.fields.find(field => field.id === chart.yAxis).accessor}
                                 xLabel={chart.xAxis}
+                                yLabel={chart.yAxis}
+                                yAxisSummarization={chart.yAxisSummarization}
                                 xFormat={props.fields.find(field => field.id === chart.xAxis).format}
+                                yFormat={props.fields.find(field => field.id === chart.yAxis).format}
                             />
                             case "timeline": return <Timeline
                                 outOfFocus={chosen !== null && index !== chosen}
