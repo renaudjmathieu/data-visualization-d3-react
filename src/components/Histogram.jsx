@@ -9,7 +9,7 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter, yAxisSummarization }) => {
+const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, xAxisFormatter, yAxisSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -27,10 +27,6 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
     xAccessor = d => xAxisParser(d[xAxis])
   }
 
-  if (yAxisParser) {
-    yAccessor = d => yAxisParser(d[yAxis])
-  }
-
   const xScale = d3.scaleLinear()
     .domain(d3.extent(data, xAccessor))
     .range([0, dimensions.boundedWidth])
@@ -44,25 +40,18 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
   const bins = binsGenerator(data)
 
   bins.forEach(bin => {
-    //for each bin, use d3.group on yAccessor and count, distinc count, sum, average mean and median of the grouped values then add to bin
-    const grouped = d3.group(bin, yAccessor)
-    bin.count = bin.length
-    bin.distinct = grouped.size
-    bin.sum = d3.sum(grouped, ([key, value]) => value.length)
-    bin.average = d3.mean(grouped, ([key, value]) => value.length)
-    bin.mean = d3.mean(grouped, ([key, value]) => value.length)
-    bin.median = d3.median(grouped, ([key, value]) => value.length)
-
-    //add the summarization to the bin
-    bin[yAxisSummarization] = bin[yAxisSummarization] || bin.count
-
-    //add the bin to the data
-    bin.forEach(d => {
-      d.bin = bin
+    switch (yAxisSummarization) {
+      case "sum": bin[yAxisSummarization] = d3.sum(bin, yAccessor); break;
+      case "average": bin[yAxisSummarization] = d3.sum(d3.rollup(bin, v => d3.sum(v, yAccessor), yAccessor).values()) / bin.length; break;
+      case "min": bin[yAxisSummarization] = d3.min(bin, yAccessor); break;
+      case "max": bin[yAxisSummarization] = d3.max(bin, yAccessor); break;
+      case "distinct": bin[yAxisSummarization] = d3.group(bin, yAccessor).size; break;
+      case "count": bin[yAxisSummarization] = bin.length; break;
+      case "median": bin[yAxisSummarization] = d3.median(bin, yAccessor); break;
+      default: null;
     }
-    )
   })
-
+  
   const yAccessorSummarization = d => d[yAxisSummarization]
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(bins, yAccessorSummarization)])
@@ -76,6 +65,10 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
   const widthAccessorScaled = d => xScale(d.x1) - xScale(d.x0) - barPadding
   const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
   const keyAccessor = (d, i) => i
+
+  if (yAxisSummarization === 'distinct') {
+    yAxisSummarization = 'count'
+  }
 
   return (
     <div onClick={onClick} className={active ? "Chart__rectangle active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle"} ref={ref}>
@@ -92,15 +85,14 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xAxis}
+          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           formatter={xAxisFormatter}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label="Count"
-          formatter={yAxisFormatter}
+          label={yAxisSummarization.charAt(0).toUpperCase() + yAxisSummarization.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
         />
         {xAxis && <Rectangles
           data={bins}
@@ -120,9 +112,7 @@ Histogram.propTypes = {
   xAxis: PropTypes.string,
   yAxis: PropTypes.string,
   xAxisParser: PropTypes.func,
-  yAxisParser: PropTypes.func,
   xAxisFormatter: PropTypes.func,
-  yAxisFormatter: PropTypes.func,
   yAxisSummarization: PropTypes.string,
 }
 

@@ -107,13 +107,13 @@ const MenuProps = {
 };
 
 const summarizationAvailable = [
-    { id: 'distinct', name: 'Count (Distinct)', numberOnly: false },
-    { id: 'count', name: 'Count', numberOnly: false },
     { id: 'sum', name: 'Sum', numberOnly: true },
-    { id: 'mean', name: 'Mean', numberOnly: true },
-    { id: 'median', name: 'Median', numberOnly: true },
+    { id: 'average', name: 'Average', numberOnly: true },
     { id: 'min', name: 'Min', numberOnly: true },
     { id: 'max', name: 'Max', numberOnly: true },
+    { id: 'distinct', name: 'Count (Distinct)', numberOnly: false },
+    { id: 'count', name: 'Count', numberOnly: false },
+    { id: 'median', name: 'Median', numberOnly: true },
 ]
 
 const chartsAvailable = [

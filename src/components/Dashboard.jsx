@@ -88,9 +88,7 @@ const Dashboard = (props) => {
                                 xAxis={chart.xAxis}
                                 yAxis={chart.yAxis}
                                 xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
-                                yAxisParser={props.fields.find(field => field.id === chart.yAxis).parser}
                                 xAxisFormatter={props.fields.find(field => field.id === chart.xAxis).formatter}
-                                yAxisFormatter={props.fields.find(field => field.id === chart.yAxis).formatter}
                                 yAxisSummarization={chart.yAxisSummarization}
                             />
                             case "timeline": return <Timeline
