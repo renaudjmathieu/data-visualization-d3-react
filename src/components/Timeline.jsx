@@ -6,6 +6,7 @@ import Chart from "./chart/Chart"
 import Polyline from "./chart/Polyline"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient";
+import Tooltipper from "./chart/Tooltipper";
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
@@ -73,6 +74,19 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
           data={data}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
+        />
+        <Tooltipper
+          data={data}
+          dimensions={dimensions}
+          xAccessor={xAccessor}
+          yAccessor={yAccessor}
+          xScale={xScale}
+          yScale={yScale}
+          a={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          ab={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          abc={xAccessor}
+          abcd={yAccessor}
+          //style={{ fill: `transparent` }}
         />
       </Chart>
     </div>

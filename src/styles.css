@@ -388,11 +388,11 @@ h1 {
     fill: #FABFE2;
 }
 
-rect:hover {
+.Rectangles__rect:hover {
     fill: #108ADE !important;
 }
 
-circle:hover {
+.tooltipDot:hover {
     fill: #108ADE !important;
 }
 
@@ -434,5 +434,9 @@ circle:hover {
 }
 
 .voronoi {
+    fill: transparent;
+}
+
+.listening-rect {
     fill: transparent;
 }

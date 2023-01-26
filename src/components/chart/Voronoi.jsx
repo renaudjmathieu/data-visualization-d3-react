@@ -8,8 +8,6 @@ const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...
   const tooltip = d3.select("#tooltipD3")
 
   const handleMouseEnter = (e, d, i) => {
-
-    //get parent svg element and add a circle to it
     const bounds = d3.select(e.target.parentElement)
 
     const dayDot = bounds.append("circle")
