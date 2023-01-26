@@ -17,13 +17,6 @@ const Dashboard = (props) => {
         setCharts(props.charts);
     }, [props.charts]);
 
-    const checkedAnimate = props.checkedAnimate;
-    const [animate, setAnimate] = useState(checkedAnimate);
-
-    useEffect(() => {
-        setAnimate(checkedAnimate);
-    }, [checkedAnimate]);
-
     const [chosen, setChosen] = useState(null);
 
     const handleClick = (e, chart, index) => {

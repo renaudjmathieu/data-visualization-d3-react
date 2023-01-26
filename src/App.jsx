@@ -141,7 +141,7 @@ const App = (props) => {
     /*
     useInterval(() => {
         setData(getData())
-    }, animate ? 4000 : null)
+    }, monochrome ? 4000 : null)
     */
 
     // Whenever dark mode changes, update the localStorage DARK_MODE item
@@ -234,10 +234,10 @@ const App = (props) => {
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
-    const [animate, setAnimate] = React.useState(true);
+    const [monochrome, setMonochrome] = React.useState(true);
 
-    const handleAnimate = (event) => {
-        setAnimate(event.target.checked);
+    const handleChangeMonochrome = (event) => {
+        setMonochrome(event.target.checked);
     };
 
     const [charts, setCharts] = React.useState(
@@ -314,20 +314,11 @@ const App = (props) => {
                                     <FormGroup className="close_me">
                                         <FormControlLabel disabled={open} control={
                                             <Switch
-                                                checked={animate}
-                                                onChange={handleAnimate}
+                                                checked={monochrome}
+                                                onChange={handleChangeMonochrome}
                                                 inputProps={{ 'aria-label': 'controlled' }}
                                             />
                                         } label="Monochrome" />
-                                    </FormGroup>
-                                    <FormGroup className="close_me">
-                                        <FormControlLabel disabled={open} control={
-                                            <Switch
-                                                checked={animate}
-                                                onChange={handleAnimate}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                            />
-                                        } label="Animated" />
                                     </FormGroup>
                                 </Stack>
                             </Grid>
@@ -337,7 +328,6 @@ const App = (props) => {
                         data={data}
                         charts={charts}
                         fields={fieldsAvailable}
-                        checkedAnimate={animate}
                         handleDrawerOpen={handleDrawerOpen}
                         handleDrawerClose={handleDrawerClose} />
                 </Main>
