@@ -4,6 +4,7 @@ import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
 import Circles from "./chart/Circles"
+import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 import { useChartDimensions, accessorPropsType } from "./chart/utils"
 
@@ -57,6 +58,12 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
         <Circles
           data={data}
           keyAccessor={keyAccessor}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+        />
+        <Voronoi
+          data={data}
+          dimensions={dimensions}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
         />

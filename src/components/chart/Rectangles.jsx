@@ -18,10 +18,6 @@ const Rectangles = ({ data, keyAccessor, xAccessor, yAccessor, widthAccessor, he
       ].join(" - "))
 
     const parentDiv = e.target.parentElement.getBoundingClientRect()
-
-    console.log(parentDiv.y)
-    console.log(boundedHeight)
-    console.log(callAccessor(heightAccessor, d, i))
     
     tooltip.style("transform", `translate(`
       + `calc(${parentDiv.x}px + ${callAccessor(xAccessor, d, i)}px + ${callAccessor(widthAccessor, d, i)}px - 50%),`

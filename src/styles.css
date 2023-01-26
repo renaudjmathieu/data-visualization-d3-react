@@ -389,7 +389,11 @@ h1 {
 }
 
 rect:hover {
-    fill: var(--theme-light-color-primary) !important;
+    fill: #108ADE !important;
+}
+
+circle:hover {
+    fill: #108ADE !important;
 }
 
 .tooltipD3 {
@@ -425,4 +429,10 @@ rect:hover {
 .tooltipD3-range {
     margin-bottom: 0.2em;
     font-weight: 600;
+}
+
+.voronoi {
+    stroke: #c90077;
+    stroke-width: 1;
+    fill: none;
 }
