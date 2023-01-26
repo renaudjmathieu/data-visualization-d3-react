@@ -426,13 +426,13 @@ circle:hover {
     z-index: 10;
 }
 
-.tooltipD3-range {
+.tooltipD3-value1 {
     margin-bottom: 0.2em;
+    /*
     font-weight: 600;
+    */
 }
 
 .voronoi {
-    stroke: #c90077;
-    stroke-width: 1;
-    fill: none;
+    fill: transparent;
 }

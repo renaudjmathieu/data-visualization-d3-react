@@ -96,13 +96,15 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
         />
         {xAxis && <Rectangles
           data={bins}
+          dimensions={dimensions}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
+          a={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          ab={yAxisSummarization.charAt(0).toUpperCase() + yAxisSummarization.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           abc={yAccessorSummarization}
-          boundedHeight={dimensions.boundedHeight}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
         />}
       </Chart>

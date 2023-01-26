@@ -64,11 +64,11 @@ const Dashboard = (props) => {
             <div className="App__charts__config">
             </div>
             <div id="tooltipD3" className="tooltipD3">
-                <div className="tooltipD3-range">
-                    Bin: <span id="rangeD3"></span>
+                <div className="tooltipD3-value1">
+                    <span id="tooltipD3-value1"></span>
                 </div>
-                <div className="tooltipD3-value">
-                    Value: <span id="countD3"></span>
+                <div className="tooltipD3-value2">
+                    <span id="tooltipD3-value2"></span>
                 </div>
             </div>
             <div className="App__charts">

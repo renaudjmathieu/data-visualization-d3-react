@@ -2,26 +2,31 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
+import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ data, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, abc, boundedHeight, ...props }) => {
+const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, a, ab, abc, ...props }) => {
   const tooltip = d3.select("#tooltipD3")
 
   const handleMouseEnter = (e, d, i) => {
-    tooltip.select("#countD3")
-      .text(abc(d))
-
-    const formatHumidity = d3.format(".2f")
-    tooltip.select("#rangeD3")
-      .text([
-        formatHumidity(d.x0),
-        formatHumidity(d.x1)
+    tooltip.select("#tooltipD3-value1")
+      .text(a + ": " + abc(d))
+      
+    tooltip.select("#tooltipD3-value2")
+      .text(ab + ": " + [
+        d.x0,
+        d.x1
       ].join(" - "))
 
     const parentDiv = e.target.parentElement.getBoundingClientRect()
-    
+
+    const x = parentDiv.x + callAccessor(xAccessor, d, i) + callAccessor(widthAccessor, d, i)
+    const y = parentDiv.y + parentDiv.height - dimensions.marginBottom - callAccessor(heightAccessor, d, i)
+
+    console.log(parentDiv.y)
+
     tooltip.style("transform", `translate(`
-      + `calc(${parentDiv.x}px + ${callAccessor(xAccessor, d, i)}px + ${callAccessor(widthAccessor, d, i)}px - 50%),`
-      + `calc(${parentDiv.y}px + (${boundedHeight}px - ${callAccessor(heightAccessor, d, i)}px - 100%))`
+      + `calc(-50% + ${x}px),`
+      + `calc(-100% + ${y}px)`
       + `)`)
 
     tooltip.style("opacity", 1)
@@ -49,13 +54,15 @@ const Rectangles = ({ data, keyAccessor, xAccessor, yAccessor, widthAccessor, he
 
 Rectangles.propTypes = {
   data: PropTypes.array,
+  dimensions: dimensionsPropsType,
   keyAccessor: accessorPropsType,
   xAccessor: accessorPropsType,
   yAccessor: accessorPropsType,
   widthAccessor: accessorPropsType,
   heightAccessor: accessorPropsType,
+  a: accessorPropsType,
+  ab: accessorPropsType,
   abc: accessorPropsType,
-  boundedHeight: PropTypes.number,
 }
 
 Rectangles.defaultProps = {

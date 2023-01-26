@@ -66,6 +66,11 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
           dimensions={dimensions}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
+          a={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          ab={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          abc={xAccessor}
+          abcd={yAccessor}
+          //style={{ fill: `transparent` }}
         />
       </Chart>
     </div>
