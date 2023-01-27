@@ -284,7 +284,7 @@ const App = (props) => {
         { id: 'apparentTemperatureMinTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
         { id: 'apparentTemperatureMaxTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
     ]
-    
+
     const fieldsAvailable = Object.keys(data.random[0])
         .map(id => (
             {
@@ -326,18 +326,16 @@ const App = (props) => {
                                     <Button disabled={open || (charts.length === 0)} onClick={handleRemoveChart}>Remove Last Chart</Button>
                                 </ButtonGroup>
                             </Grid>
-                            <Grid xs={4} className="gridOnDesktop__right close_me">
-                                <Stack spacing={2} direction="row" sx={{ mb: 1 }} alignItems="center" className="close_me">
-                                    <FormGroup className="close_me">
-                                        <FormControlLabel disabled={open} control={
-                                            <Switch
-                                                checked={monochrome}
-                                                onChange={handleChangeMonochrome}
-                                                inputProps={{ 'aria-label': 'controlled' }}
-                                            />
-                                        } label="Monochrome" />
-                                    </FormGroup>
-                                </Stack>
+                            <Grid xs={4} className="gridOnDesktop__right close_me" justifyContent="right" alignItems="right">
+                                <div className="textright">
+                                    <FormControlLabel disabled={open} control={
+                                        <Switch
+                                            checked={monochrome}
+                                            onChange={handleChangeMonochrome}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                        />
+                                    } label="Monochrome" />
+                                </div>
                             </Grid>
                         </Grid>
                     </Box>

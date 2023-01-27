@@ -88,7 +88,7 @@ h1 {
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 763px) {
 
     .containerOnDesktop {
         display: none;
@@ -203,18 +203,16 @@ h1 {
 
 .gridOnDesktop__left,
 .gridOnDesktop__right {
-    padding-bottom: 0 !important;
+    padding-bottom: 15px !important;
 }
 
 .gridOnDesktop__right {
-    padding-top: 30px !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
 }
 
-
-.gridOnDesktop__right .RemoveIcon {}
-
-.gridOnDesktop__right .AddIcon {
-    margin-right: 15px;
+.gridOnDesktop__right div {
+    text-align: right;
 }
 
 .dark .Chart__rectangle__large.active,
