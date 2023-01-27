@@ -15,7 +15,9 @@ const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...
       .attr("cx", callAccessor(xAccessor, d, i))
       .attr("cy", callAccessor(yAccessor, d, i))
       .attr("r", 6)
-      .style("fill", "#108ADE")
+      .style("stroke", "#108ADE")
+      .style("fill", "white")
+      .style("stroke-width", 2)
       .style("pointer-events", "none")
 
     tooltip.select("#tooltipD3-value1")

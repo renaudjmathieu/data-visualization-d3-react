@@ -7,8 +7,10 @@ import { dimensionsPropsType } from "./utils";
 const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a, ab, abc, abcd, ...props }) => {
   const tooltip = d3.select("#tooltipD3")
 
-  const handleMouseEnter = (e, data) => {
+  const handleMouseMove = (e, data) => {
     const bounds = d3.select(e.target.parentElement)
+
+    const tooltipDot = bounds.selectAll(".tooltip-circle")
 
     const mousePosition = d3.pointer(e)
     const hoveredDate = xScale.invert(mousePosition[0])
@@ -30,38 +32,27 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
 
     const parentDiv = e.target.parentElement.getBoundingClientRect()
 
-    const x = xScale(closestXValue)
-      + dimensions.marginLeft
-    const y = yScale(closestYValue)
-      + dimensions.marginTop
+    const x = parentDiv.x + xScale(closestXValue) + dimensions.marginLeft
+    const y = parentDiv.y + yScale(closestYValue)
 
     tooltip.style("transform", `translate(`
       + `calc( -50% + ${x}px),`
       + `calc(-100% + ${y}px)`
       + `)`)
 
-    const tooltipCircle = bounds.append("circle")
-      .attr("class", "tooltip-circle")
-      .attr("cx", xScale(closestXValue))
-      .attr("cy", yScale(closestYValue))
-      .attr("r", 4)
-      .attr("stroke", "#af9358")
-      .attr("fill", "white")
-      .attr("stroke-width", 2)
-      .style("opacity", 1)
-
     tooltip.style("opacity", 1)
 
-    console.log(mousePosition)
-    console.log(closestXValue)
-    console.log(closestYValue)
+    tooltipDot
+      .attr("cx", xScale(closestXValue))
+      .attr("cy", yScale(closestYValue))
+      .style("opacity", 1)
   }
 
   const handleMouseLeave = () => {
-    d3.selectAll(".tooltipDot")
-      .remove()
-
     tooltip.style("opacity", 0)
+
+    d3.selectAll(".tooltip-circle")
+      .style("opacity", 0)
   }
 
   const delaunay = d3.Delaunay.from(
@@ -78,8 +69,17 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
       className="listening-rect"
       width={dimensions.boundedWidth}
       height={dimensions.boundedHeight}
-      onMouseEnter={e => handleMouseEnter(e, data)}
+      onMouseMove={e => handleMouseMove(e, data)}
       onMouseLeave={handleMouseLeave}
+    />
+    <circle
+      id="tooltipDot"
+      className="tooltip-circle"
+      r={6}
+      stroke="#108ADE"
+      fill="white"
+      stroke-width={2}
+      opacity={0}
     />
   </React.Fragment>
 }

@@ -22,8 +22,6 @@ const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, width
     const x = parentDiv.x + callAccessor(xAccessor, d, i) + callAccessor(widthAccessor, d, i)
     const y = parentDiv.y + parentDiv.height - dimensions.marginBottom - callAccessor(heightAccessor, d, i)
 
-    console.log(parentDiv.y)
-
     tooltip.style("transform", `translate(`
       + `calc(-50% + ${x}px),`
       + `calc(-100% + ${y}px)`
