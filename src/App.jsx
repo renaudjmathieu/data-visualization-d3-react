@@ -268,20 +268,37 @@ const App = (props) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
     };
 
-
+    const parsersAndFormatters = [
+        { id: 'date', parser: d3.timeParse("%Y-%m-%d"), formatter: d3.timeFormat("%b %Y") },
+        { id: 'time', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'sunriseTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'sunsetTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'temperatureHighTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'temperatureLowTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'apparentTemperatureHighTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'apparentTemperatureLowTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'windGustTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'uvIndexTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'temperatureMinTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'temperatureMaxTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'apparentTemperatureMinTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+        { id: 'apparentTemperatureMaxTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+    ]
+    
     const fieldsAvailable = Object.keys(data.random[0])
         .map(id => (
             {
                 id,
                 type: typeof data.random[0][id],
                 name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
-                ...(id === 'date' ? {
-                    parser: d3.timeParse("%Y-%m-%d"),
-                    formatter: d3.timeFormat("%b %Y")
+                ...(parsersAndFormatters.find(f => f.id === id) ? {
+                    parser: parsersAndFormatters.find(f => f.id === id).parser,
+                    formatter: parsersAndFormatters.find(f => f.id === id).formatter
                 } : {})
-            }))
+            }
+        ))
         .sort((a, b) => a.name.localeCompare(b.name))
-        
+
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -419,7 +436,7 @@ const App = (props) => {
                                                 summarizationAvailable
                                                     .filter(
                                                         summarization => summarization.numberOnly === false ||
-                                                        (fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')]))[0].type === 'number'
+                                                            (fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')]))[0].type === 'number'
                                                     )
                                                     .map(summarization => (
                                                         <MenuItem value={summarization.id}>{summarization.name}</MenuItem>
