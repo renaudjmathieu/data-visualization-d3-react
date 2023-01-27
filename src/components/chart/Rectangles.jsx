@@ -17,8 +17,6 @@ const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, width
         d.x1
       ].join(" - "))
 
-    const parentDiv = e.target.parentElement.getBoundingClientRect()
-
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i) + (callAccessor(widthAccessor, d, i) / 2)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
 
@@ -28,12 +26,6 @@ const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, width
       + `)`)
 
     tooltip.style("opacity", 1)
-
-    console.log('offsetTop', dimensions.offsetTop)
-    console.log('parentDiv.y', parentDiv.y)
-    
-    console.log('offsetLeft', dimensions.offsetLeft)
-    console.log('parentDiv.x', parentDiv.x)
   }
 
   const handleMouseLeave = () => {

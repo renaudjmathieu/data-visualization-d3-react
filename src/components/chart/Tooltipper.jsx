@@ -30,10 +30,8 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
     tooltip.select("#tooltipD3-value2")
       .text(ab + ": " + "abcd(d)")
 
-    const parentDiv = e.target.parentElement.getBoundingClientRect()
-
-    const x = parentDiv.x + xScale(closestXValue) + dimensions.marginLeft
-    const y = parentDiv.y + yScale(closestYValue)
+    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
+    const y = dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)
 
     tooltip.style("transform", `translate(`
       + `calc( -50% + ${x}px),`

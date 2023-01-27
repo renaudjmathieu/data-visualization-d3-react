@@ -15,9 +15,7 @@ const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...
       .attr("cx", callAccessor(xAccessor, d, i))
       .attr("cy", callAccessor(yAccessor, d, i))
       .attr("r", 6)
-      .style("stroke", "#108ADE")
-      .style("fill", "white")
-      .style("stroke-width", 2)
+      .style("fill", "#108ADE")
       .style("pointer-events", "none")
 
     tooltip.select("#tooltipD3-value1")
@@ -26,10 +24,8 @@ const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...
     tooltip.select("#tooltipD3-value2")
       .text(ab + ": " + abcd(d))
 
-    const parentDiv = e.target.parentElement.getBoundingClientRect()
-
-    const x = parentDiv.x + callAccessor(xAccessor, d, i) + dimensions.marginLeft
-    const y = parentDiv.y + callAccessor(yAccessor, d, i)
+    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i)
+    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
 
     tooltip.style("transform", `translate(`
       + `calc(-50% + ${x}px),`
