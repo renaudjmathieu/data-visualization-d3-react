@@ -79,6 +79,8 @@ export const useChartDimensions = passedSettings => {
         ...dimensions,
         width: dimensions.width || width,
         height: dimensions.height || height,
+        offsetTop: dimensions.offsetTop || ref.current?.offsetTop,
+        offsetLeft: dimensions.offsetLeft || ref.current?.offsetLeft,
     })
 
     return [ref, newSettings]
