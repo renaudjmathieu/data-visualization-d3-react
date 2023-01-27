@@ -8,9 +8,7 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
   const tooltip = d3.select("#tooltipD3")
 
   const handleMouseMove = (e, data) => {
-    const bounds = d3.select(e.target.parentElement)
-
-    const tooltipDot = bounds.selectAll(".tooltip-circle")
+    const tooltipDot = d3.selectAll(".tooltip-circle")
 
     const mousePosition = d3.pointer(e)
     const hoveredDate = xScale.invert(mousePosition[0])
@@ -25,10 +23,10 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
     const closestYValue = yAccessor(closestDataPoint)
 
     tooltip.select("#tooltipD3-value1")
-      .text(a + ": " + "abc(d)")
+      .text(a + ": " + abc(closestDataPoint))
 
     tooltip.select("#tooltipD3-value2")
-      .text(ab + ": " + "abcd(d)")
+      .text(ab + ": " + abcd(closestDataPoint))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)

@@ -59,7 +59,7 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
         <Axis
           dimension="y"
           scale={yScale}
-          label={yAxis}
+          label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           formatter={yAxisFormatter}
         />
         <Polyline

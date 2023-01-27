@@ -45,14 +45,14 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xAxis}
+          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           formatter={xAxisFormatter}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label={yAxis}
+          label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           formatter={yAxisFormatter}
         />
         <Circles
