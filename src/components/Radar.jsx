@@ -19,7 +19,7 @@ const Radar = ({ data, valueAccessor, entityAccessor }) => {
     marginLeft: 20,
   })
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.main, theme.palette.primary.contrastText]
+  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
   const gradientId = useUniqueId("Histogram-gradient")
 
   const radius = dimensions.boundedWidth / 2

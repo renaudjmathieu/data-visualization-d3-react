@@ -1,37 +1,26 @@
 import * as React from 'react';
 import * as d3 from "d3"
-import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import {
+    Experimental_CssVarsProvider as CssVarsProvider,
+    experimental_extendTheme as extendTheme,
+    useColorScheme,
+} from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Box from "@mui/material/Box";
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
-import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import LightMode from "@mui/icons-material/LightMode";
-import DarkMode from "@mui/icons-material/DarkMode";
-import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import Slider from '@mui/material/Slider';
 import Grid from '@mui/material/Unstable_Grid2';
-import Stack from '@mui/material/Stack';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import GitHubSvg from './github.svg';
@@ -40,12 +29,10 @@ import Dashboard from "./components/Dashboard"
 
 import "./styles.css"
 
-
 import data from '../my_weather_data.json'
 
 const getData = () => ({
     random: data
-
 })
 
 const drawerWidth = 240;
@@ -95,17 +82,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-start',
 }));
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
-
 const summarizationAvailable = [
     { id: 'sum', name: 'Sum', numberOnly: true },
     { id: 'average', name: 'Average', numberOnly: true },
@@ -122,96 +98,81 @@ const chartsAvailable = [
     { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', playAxis: '' },
 ]
 
+function ModeToggle() {
+    const { mode, setMode } = useColorScheme();
+    return (
+        <Button
+            onClick={() => {
+                setMode(mode === 'light' ? 'dark' : 'light');
+
+                let resizeTimer;
+                document.body.classList.add("resize-animation-stopper");
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    document.body.classList.remove("resize-animation-stopper");
+                }, 300);
+                if (mode === "light") {
+                    document.body.classList.add("dark")
+                    document.body.classList.remove("light")
+                }
+                else {
+                    document.body.classList.add("light")
+                    document.body.classList.remove("dark")
+                }
+            }}
+        >
+            {mode === 'light' ? 'Turn dark' : 'Turn light'}
+        </Button>
+    );
+}
+
+const theme = extendTheme({
+    colorSchemes: {
+        light: { // palette for light mode
+            palette: {
+                primary: {
+                    light: "#ff34ac",
+                    main: "#ec008c",
+                    dark: "#a50062",
+                    contrastText: "#f8f9fa",
+                },
+                text: {
+                    primary: "#212529",
+                },
+                background: {
+                    default: "#eceff1",
+                    primary: "#eceff1",
+                    secondary: "#fff",
+                },
+            }
+        },
+        dark: { // palette for dark mode
+            palette: {
+                primary: {
+                    light: "#f3df61",
+                    main: "#edd018",
+                    dark: "#a9940d",
+                    contrastText: "#212529",
+                },
+                text: {
+                    primary: "#f8f9fa",
+                },
+                background: {
+                    paper: "#1b1a19",
+                    default: "#161C24",
+                    primary: "#161C24",
+                    secondary: "#252423",
+                },
+            }
+        },
+    }
+});
+
 const App = (props) => {
     const { window } = props;
-    const storedDarkMode = localStorage.getItem("DARK_MODE");
-    const [mode, setMode] = React.useState(storedDarkMode ?? "light");
-    const colorMode = React.useMemo(
-        () => ({
-            toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-            },
-        }),
-        []
-    );
-
 
     const [data, setData] = React.useState(getData())
 
-    /*
-    useInterval(() => {
-        setData(getData())
-    }, monochrome ? 4000 : null)
-    */
-
-    // Whenever dark mode changes, update the localStorage DARK_MODE item
-    React.useEffect(() => {
-        localStorage.setItem("DARK_MODE", mode);
-
-        let resizeTimer;
-        document.body.classList.add("resize-animation-stopper");
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            document.body.classList.remove("resize-animation-stopper");
-        }, 300);
-        if (mode !== "light") {
-            document.body.classList.add("dark")
-            document.body.classList.remove("light")
-        }
-        else {
-            document.body.classList.add("light")
-            document.body.classList.remove("dark")
-        }
-    }, [mode]);
-
-    // Whenever the mode changes, change the theme 
-    const theme = React.useMemo(
-        () =>
-            createTheme({
-                palette: {
-                    mode,
-                    primary: {
-                        ...(mode === "light"
-                            ? {
-                                light: "#ff34ac",
-                                main: "#ec008c",
-                                dark: "#a50062",
-                                contrastText: "#f8f9fa",
-                            }
-                            : {
-                                light: "#f3df61",
-                                main: "#edd018",
-                                dark: "#a9940d",
-                                contrastText: "#212529",
-                            }),
-                    },
-                    text: {
-                        ...(mode === "light"
-                            ? {
-                                primary: "#212529",
-                            }
-                            : {
-                                primary: "#f8f9fa",
-                            }),
-                    },
-                    background: {
-                        ...(mode === "light"
-                            ? {
-                                default: "#eceff1",
-                                primary: "#eceff1",
-                                secondary: "#fff",
-                            }
-                            : {
-                                paper: "#1b1a19",
-                                default: "#161C24",
-                                primary: "#161C24",
-                                secondary: "#252423",
-                            }),
-                    },
-                },
-            }),
-        [mode]
-    );
     const [open, setOpen] = React.useState(false);
     const [selectedChartId, setSelectedChartId] = React.useState(null);
     const [selectedChartIndex, setSelectedChartIndex] = React.useState(null);
@@ -233,12 +194,6 @@ const App = (props) => {
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
-
-    const [monochrome, setMonochrome] = React.useState(true);
-
-    const handleChangeMonochrome = (event) => {
-        setMonochrome(event.target.checked);
-    };
 
     const [charts, setCharts] = React.useState(
         chartsAvailable.filter((chart) => ['scatter', 'histogram', 'timeline'].includes(chart.id))
@@ -300,12 +255,12 @@ const App = (props) => {
         .sort((a, b) => a.name.localeCompare(b.name))
 
     return (
-        <ThemeProvider theme={theme}>
+        <CssVarsProvider theme={theme}>
             <CssBaseline />
             <div className="App">
-                <AppBar position="fixed" open={open} style={{ background: open ? mode === "light" ? '#EAA2D0' : '#242323' : '' }}>
+                <AppBar position="fixed" open={open} style={{ background: open ? "mode" === "light" ? '#EAA2D0' : '#242323' : '' }}>
                     <Toolbar className="close_me">
-                        <Typography className="close_me" variant="h6" noWrap sx={{ flexGrow: 1 }} component="div" style={{ color: open && mode === "dark" ? '#8B8E91' : '' }}>
+                        <Typography className="close_me" variant="h6" noWrap sx={{ flexGrow: 1 }} component="div" style={{ color: open && "mode" === "dark" ? '#8B8E91' : '' }}>
                             D3 Dashboard
                         </Typography>
                         <Box sx={{ flexGrow: 1 }} />
@@ -328,13 +283,7 @@ const App = (props) => {
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me" justifyContent="right" alignItems="right">
                                 <div className="textright">
-                                    <FormControlLabel disabled={open} control={
-                                        <Switch
-                                            checked={monochrome}
-                                            onChange={handleChangeMonochrome}
-                                            inputProps={{ 'aria-label': 'controlled' }}
-                                        />
-                                    } label="Monochrome" />
+                                    <ModeToggle />
                                 </div>
                             </Grid>
                         </Grid>
@@ -361,19 +310,6 @@ const App = (props) => {
                     open={open}
                 >
                     <Toolbar />
-                    <Divider />
-                    <List>
-                        <ListItem disablePadding>
-                            <ListItemButton onClick={colorMode.toggleColorMode}>
-                                <ListItemIcon>
-                                    {mode === "dark" ? <LightMode /> : <DarkMode />}
-                                </ListItemIcon>
-                                <ListItemText primary={mode === "dark" ? "Turn on the lights" : "Turn off the lights"} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                    <Divider />
-
                 </Drawer>
                 <Drawer
                     sx={{
@@ -450,7 +386,7 @@ const App = (props) => {
                     <Button variant="contained" className="config__button close_me" onClick={handleRemoveSelectedChart}>Remove Chart</Button>
                 </Drawer>
             </div>
-        </ThemeProvider>
+        </CssVarsProvider>
     );
 }
 

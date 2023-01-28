@@ -13,7 +13,7 @@ import { useTheme } from '@mui/material/styles';
 const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.light, theme.palette.primary.contrastText]
+  const gradientColors = [theme.vars.palette.primary.light, theme.vars.palette.primary.contrastText]
   const gradientId = useUniqueId("Timeline-gradient")
 
   let xAccessor = d => d[xAxis]

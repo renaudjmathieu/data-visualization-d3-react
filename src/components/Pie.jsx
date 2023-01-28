@@ -16,7 +16,7 @@ const Pie = ({ outOfFocus, active, onClick, data, valueAccessor, entityAccessor,
     marginLeft: 20,
   })
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.main, theme.palette.primary.contrastText]
+  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
   const gradientId = useUniqueId("Histogram-gradient")
 
   const numberOfThresholds = 4

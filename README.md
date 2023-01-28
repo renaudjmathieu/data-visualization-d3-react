@@ -86,8 +86,6 @@ This web app was built using these products :
 
 To learn all about **D3**, including how to get start on **D3 using React**, check out the [Fullstack D3 course](https://www.newline.co/fullstack-d3) by [Amelia Wattenberger](https://wattenberger.com/).
 
-To learn how to implement **light and dark modes** in React, check out [this article](https://levelup.gitconnected.com/dark-mode-in-react-533faaee3c6e) from [FAM](https://famzil.medium.com).
-
 For some help on setting up a React app using **Webpack**, check out [this article](https://medium.com/age-of-awareness/setup-react-with-webpack-and-babel-5114a14a47e9) from [Prateek Srivastava](https://medium.com/@prateeksrt).
 
 For information on **Azure Static Web Apps**, check out [Static Web Apps!](https://www.azurestaticwebapps.dev/), the [Azure Static Web Apps learning path](https://learn.microsoft.com/en-us/training/paths/azure-static-web-apps/) and the [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/overview).

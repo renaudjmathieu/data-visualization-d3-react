@@ -32,7 +32,7 @@ const Arcs = ({ type, data, keyAccessor, radius, radiusAdjust, ...props }) => {
         xAccessor={d => (arc.centroid(d)[0])}
         yAccessor={d => (arc.centroid(d)[1])}
         textAccessor={d => d.data[1].length}
-        style={{fill: theme.palette.background.secondary, textAnchor: "middle", alignmentBaseline: "middle"}}
+        style={{fill: theme.vars.palette.background.secondary, textAnchor: "middle", alignmentBaseline: "middle"}}
       />
     </React.Fragment>
   )

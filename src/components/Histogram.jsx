@@ -15,7 +15,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
     marginBottom: 77,
   })
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.main, theme.palette.primary.contrastText]
+  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
   const gradientId = useUniqueId("Histogram-gradient")
 
   const numberOfThresholds = 9

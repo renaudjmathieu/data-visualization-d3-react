@@ -1,19 +1,21 @@
 :root {
-    --theme-light-color-primary: #ec008c;
-    --theme-light-color-primary-dark: #d4007e;
-    --theme-light-color-primary-darker: #c90077;
-    --theme-light-color-primary-darkest: #a50062;
-    --theme-light-color-primary-light: #ff0599;
-    --theme-light-color-primary-lighter: #ff109e;
-    --theme-light-color-primary-lightest: #ff34ac;
+    /*
+    --mui-palette-primary-main: #ec008c;
+    --mui-palette-primary-main-dark: #d4007e;
+    --mui-palette-primary-main-darker: #c90077;
+    --mui-palette-primary-main-darkest: #a50062;
+    --mui-palette-primary-main-light: #ff0599;
+    --mui-palette-primary-main-lighter: #ff109e;
+    --mui-palette-primary-main-lightest: #ff34ac;
 
-    --theme-dark-color-primary: #edd018;
-    --theme-dark-color-primary-dark: #dabf11;
-    --theme-dark-color-primary-darker: #ceb410;
-    --theme-dark-color-primary-darkest: #a9940d;
-    --theme-dark-color-primary-light: #efd530;
-    --theme-dark-color-primary-lighter: #f0d73c;
-    --theme-dark-color-primary-lightest: #f3df61;
+    --mui-palette-primary-main: #edd018;
+    --mui-palette-primary-main-dark: #dabf11;
+    --mui-palette-primary-main-darker: #ceb410;
+    --mui-palette-primary-main-darkest: #a9940d;
+    --mui-palette-primary-main-light: #efd530;
+    --mui-palette-primary-main-lighter: #f0d73c;
+    --mui-palette-primary-main-lightest: #f3df61;
+    */
 
     --dark-color: #212529;
     --light-color: #f8f9fa;
@@ -128,36 +130,20 @@ h1 {
     background: #fff
 }
 
-.dark .Circle--type-circle {
-    fill: var(--theme-dark-color-primary);
+.Circle--type-circle {
+    fill: var(--mui-palette-primary-main);
 }
 
-.light .Circle--type-circle {
-    fill: var(--theme-light-color-primary);
+.Rectangles__rect {
+    fill: var(--mui-palette-primary-main);
 }
 
-.dark .Rectangles__rect {
-    fill: var(--theme-dark-color-primary);
+.Polyline--type-line {
+    stroke: var(--mui-palette-primary-main);
 }
 
-.light .Rectangles__rect {
-    fill: var(--theme-light-color-primary);
-}
-
-.dark .Polyline--type-line {
-    stroke: var(--theme-dark-color-primary);
-}
-
-.light .Polyline--type-line {
-    stroke: var(--theme-light-color-primary);
-}
-
-.dark .Polyline--type-area {
-    fill: var(--theme-dark-color-primary);
-}
-
-.light .Polyline--type-area {
-    fill: var(--theme-light-color-primary);
+.Polyline--type-area {
+    fill: var(--mui-palette-primary-main);
 }
 
 .dark .Axis__line {
@@ -176,19 +162,11 @@ h1 {
     fill: #95a5a6;
 }
 
-.dark .domain line {
+.domain line {
     stroke: #dadada;
 }
 
-.light .domain line {
-    stroke: #dadada;
-}
-
-.dark .tick line {
-    stroke: #dadada;
-}
-
-.light .tick line {
+.tick line {
     stroke: #dadada;
 }
 
@@ -215,125 +193,64 @@ h1 {
     text-align: right;
 }
 
-.dark .Chart__rectangle__large.active,
-.dark .Chart__rectangle.active,
-.dark .Chart__square.active {
-    border: 1px solid var(--theme-dark-color-primary);
+.Chart__rectangle__large.active,
+.Chart__rectangle.active,
+.Chart__square.active {
+    border: 1px solid var(--mui-palette-primary-main);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Axis__line,
-.dark .Chart__rectangle.outOfFocus .Axis__line,
-.dark .Chart__square.outOfFocus .Axis__line {
-    stroke: #161C24;
+.Chart__rectangle__large.outOfFocus .Axis__line,
+.Chart__rectangle.outOfFocus .Axis__line,
+.Chart__square.outOfFocus .Axis__line {
+    stroke: var(--mui-palette-background-primary);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Circles,
-.dark .Chart__rectangle.outOfFocus .Circles,
-.dark .Chart__square.outOfFocus .Circles {
-    fill: #161C24;
+.Chart__rectangle__large.outOfFocus .Circles,
+.Chart__rectangle.outOfFocus .Circles,
+.Chart__square.outOfFocus .Circles {
+    fill: var(--mui-palette-background-primary);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Rectangles__rect,
-.dark .Chart__rectangle.outOfFocus .Rectangles__rect,
-.dark .Chart__square.outOfFocus .Rectangles__rect {
-    fill: #161C24;
+.Chart__rectangle__large.outOfFocus .Rectangles__rect,
+.Chart__rectangle.outOfFocus .Rectangles__rect,
+.Chart__square.outOfFocus .Rectangles__rect {
+    fill: var(--mui-palette-background-primary);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Polyline--type-line,
-.dark .Chart__rectangle.outOfFocus .Polyline--type-line,
-.dark .Chart__square.outOfFocus .Polyline--type-line {
-    stroke: #161C24;
+.Chart__rectangle__large.outOfFocus .Polyline--type-line,
+.Chart__rectangle.outOfFocus .Polyline--type-line,
+.Chart__square.outOfFocus .Polyline--type-line {
+    stroke: var(--mui-palette-background-primary);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Polyline--type-area,
-.dark .Chart__rectangle.outOfFocus .Polyline--type-area,
-.dark .Chart__square.outOfFocus .Polyline--type-area {
-    fill: #161C24;
+.Chart__rectangle__large.outOfFocus .Polyline--type-area,
+.Chart__rectangle.outOfFocus .Polyline--type-area,
+.Chart__square.outOfFocus .Polyline--type-area {
+    fill: var(--mui-palette-background-primary);
 }
 
-
-.dark .Chart__rectangle__large.outOfFocus .Arc--type-pie,
-.dark .Chart__rectangle.outOfFocus .Arc--type-pie,
-.dark .Chart__square.outOfFocus .Arc--type-pie {
-    fill: #161C24;
+.Chart__rectangle__large.outOfFocus .Arc--type-pie,
+.Chart__rectangle.outOfFocus .Arc--type-pie,
+.Chart__square.outOfFocus .Arc--type-pie {
+    fill: var(--mui-palette-background-primary);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Arc--type-donut,
-.dark .Chart__rectangle.outOfFocus .Arc--type-donut,
-.dark .Chart__square.outOfFocus .Arc--type-donut {
-    fill: #161C24;
+.Chart__rectangle__large.outOfFocus .Arc--type-donut,
+.Chart__rectangle.outOfFocus .Arc--type-donut,
+.Chart__square.outOfFocus .Arc--type-donut {
+    fill: var(--mui-palette-background-primary);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Axis__tick,
-.dark .Chart__rectangle.outOfFocus .Axis__tick,
-.dark .Chart__square.outOfFocus .Axis__tick {
-    fill: #161C24;
+.Chart__rectangle__large.outOfFocus .Axis__tick,
+.Chart__rectangle.outOfFocus .Axis__tick,
+.Chart__square.outOfFocus .Axis__tick {
+    fill: var(--mui-palette-background-primary);
 }
 
-.dark .Chart__rectangle__large.outOfFocus .Axis__label,
-.dark .Chart__rectangle.outOfFocus .Axis__label,
-.dark .Chart__square.outOfFocus .Axis__label {
-    fill: #161C24;
-}
-
-.light .Chart__rectangle__large.active,
-.light .Chart__rectangle.active,
-.light .Chart__square.active {
-    border: 1px solid var(--theme-light-color-primary);
-}
-
-.light .Chart__rectangle__large.outOfFocus .Axis__line,
-.light .Chart__rectangle.outOfFocus .Axis__line,
-.light .Chart__square.outOfFocus .Axis__line {
-    stroke: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Circles,
-.light .Chart__rectangle.outOfFocus .Circles,
-.light .Chart__square.outOfFocus .Circles {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Rectangles__rect,
-.light .Chart__rectangle.outOfFocus .Rectangles__rect,
-.light .Chart__square.outOfFocus .Rectangles__rect {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Polyline--type-line,
-.light .Chart__rectangle.outOfFocus .Polyline--type-line,
-.light .Chart__square.outOfFocus .Polyline--type-line {
-    stroke: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Polyline--type-area,
-.light .Chart__rectangle.outOfFocus .Polyline--type-area,
-.light .Chart__square.outOfFocus .Polyline--type-area {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Arc--type-pie,
-.light .Chart__rectangle.outOfFocus .Arc--type-pie,
-.light .Chart__square.outOfFocus .Arc--type-pie {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Arc--type-donut,
-.light .Chart__rectangle.outOfFocus .Arc--type-donut,
-.light .Chart__square.outOfFocus .Arc--type-donut {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Axis__tick,
-.light .Chart__rectangle.outOfFocus .Axis__tick,
-.light .Chart__square.outOfFocus .Axis__tick {
-    fill: #eceff1;
-}
-
-.light .Chart__rectangle__large.outOfFocus .Axis__label,
-.light .Chart__rectangle.outOfFocus .Axis__label,
-.light .Chart__square.outOfFocus .Axis__label {
-    fill: #eceff1;
+.Chart__rectangle__large.outOfFocus .Axis__label,
+.Chart__rectangle.outOfFocus .Axis__label,
+.Chart__square.outOfFocus .Axis__label {
+    fill: var(--mui-palette-background-primary);
 }
 
 .config-closed .App__charts__config {
@@ -362,11 +279,11 @@ h1 {
 }
 
 .dark .config__select * {
-    color: var(--theme-dark-color-primary);
+    color: var(--mui-palette-primary-main);
 }
 
 .light .config__select * {
-    color: var(--theme-light-color-primary);
+    color: var(--mui-palette-primary-main);
 }
 
 .imgLink {
