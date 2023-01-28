@@ -263,11 +263,11 @@ h1 {
 }
 
 .Rectangles__rect:hover {
-    fill: #108ADE !important;
+    fill: var(--mui-palette-primary-complementaryColor) !important;
 }
 
 .tooltipDot:hover {
-    fill: #108ADE !important;
+    fill: var(--mui-palette-primary-complementaryColor) !important;
 }
 
 .tooltipD3 {

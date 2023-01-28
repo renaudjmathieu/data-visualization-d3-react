@@ -126,99 +126,72 @@ function ModeToggle() {
     );
 }
 
-const theme1 = extendTheme({
-    colorSchemes: {
-        light: {
-            palette: {
-                primary: {
-                    light: "#ff34ac",
-                    main: "#ec008c",
-                    dark: "#a50062",
-                    contrastText: "#f8f9fa",
-                },
-                text: {
-                    primary: "#212529",
-                },
-                background: {
-                    default: "#eceff1",
-                    primary: "#eceff1",
-                    secondary: "#fff",
-                },
-            }
-        }
-    }
-});
+const themeColors = [
+    { id: 'red', color: '#f44336', complementaryColor: '#36E7F4' },
+    { id: 'pink', color: '#e91e63', complementaryColor: '#1EE9A4' },
+    { id: 'purple', color: '#9c27b0', complementaryColor: '#3BB027' },
+    { id: 'deepPurple', color: '#673ab7', complementaryColor: '#8AB73A' },
+    { id: 'indigo', color: '#3f51b5', complementaryColor: '#B5A33F' },
+    { id: 'blue', color: '#2196f3', complementaryColor: '#F37E21' },
+    { id: 'lightBlue', color: '#03a9f4', complementaryColor: '#F44E03' },
+    { id: 'cyan', color: '#00bcd4', complementaryColor: '#D41800' },
+    { id: 'teal', color: '#009688', complementaryColor: '#96000E' },
+    { id: 'green', color: '#4caf50', complementaryColor: '#AF4CAB' },
+    { id: 'lightGreen', color: '#8bc34a', complementaryColor: '#824AC3' },
+    { id: 'lime', color: '#cddc39', complementaryColor: '#4839DC' },
+    { id: 'yellow', color: '#ffeb3b', complementaryColor: '#3B4FFF' },
+    { id: 'amber', color: '#ffc107', complementaryColor: '#0745FF' },
+    { id: 'orange', color: '#ff9800', complementaryColor: '#0067FF' },
+    { id: 'deepOrange', color: '#ff5722', complementaryColor: '#22CAFF' },
+    { id: 'brown', color: '#795548', complementaryColor: '#486C79' },
+    { id: 'grey', color: '#9e9e9e', complementaryColor: '#9E9E9E' },
+    { id: 'blueGrey', color: '#607d8b', complementaryColor: '#8B6E60' },
+]
 
-const theme2 = extendTheme({
-    colorSchemes: {
-        light: {
-            palette: {
-                primary: {
-                    light: "#f3df61",
-                    main: "#edd018",
-                    dark: "#a9940d",
-                    contrastText: "#212529",
-                },
-                text: {
-                    primary: "#f8f9fa",
-                },
-                background: {
-                    paper: "#1b1a19",
-                    default: "#161C24",
-                    primary: "#161C24",
-                    secondary: "#252423",
-                },
-            }
-        }
-    }
-});
+const getRandomColor = () => {
+    const randomIndex = Math.floor(Math.random() * themeColors.length)
+    return themeColors[randomIndex]
+}
 
-const theme3 = extendTheme({
-    colorSchemes: {
-        light: {
-            palette: {
-                primary: {
-                    light: "#f3df61",
-                    main: "#000",
-                    dark: "#a9940d",
-                    contrastText: "#212529",
-                },
-                text: {
-                    primary: "#f8f9fa",
-                },
-                background: {
-                    paper: "#1b1a19",
-                    default: "#161C24",
-                    primary: "#161C24",
-                    secondary: "#252423",
+const getThemeExtender = (color) => {
+    const theme = extendTheme({
+        colorSchemes: {
+            light: {
+                palette: {
+                    primary: {
+                        main: color.color,
+                        complementaryColor: color.complementaryColor,
+                        contrastText: "#f8f9fa",
+                    },
+                    background: {
+                        default: "#eceff1",
+                        primary: "#eceff1",
+                    }
                 },
             }
         }
-    }
-});
+    });
+
+    return theme
+}
+
 
 const App = (props) => {
     const { window } = props;
 
     const [data, setData] = React.useState(getData())
 
-    const [theme, setTheme] = React.useState(theme1)
+    const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {
-        switch (theme) {
-            case theme1:
-                setTheme(theme2)
-                break;
-            case theme2:
-                setTheme(theme3)
-                break;
-            case theme3:
-                setTheme(theme1)
-                break;
-            default:
-                setTheme(theme1)
-                break;
-        }
+        let resizeTimer;
+        document.body.classList.add("resize-animation-stopper");
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            document.body.classList.remove("resize-animation-stopper");
+        }, 300);
+
+        setTheme(getThemeExtender(getRandomColor()))
     }
 
     const [open, setOpen] = React.useState(false);
@@ -330,11 +303,11 @@ const App = (props) => {
                                 </ButtonGroup>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me" justifyContent="right" alignItems="right">
-                                <div className="textright">
+                                <div className="textright close_me">
                                     <Button
                                         onClick={handleThemeChange}
                                     >
-                                        Change Theme
+                                        Change theme color
                                     </Button>
                                 </div>
                             </Grid>
@@ -347,22 +320,6 @@ const App = (props) => {
                         handleDrawerOpen={handleDrawerOpen}
                         handleDrawerClose={handleDrawerClose} />
                 </Main>
-                <Drawer
-                    sx={{
-                        width: drawerWidth,
-                        position: 'absolute',
-                        whiteSpace: 'nowrap',
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: drawerWidth,
-                        },
-                    }}
-                    variant="persistent"
-                    anchor="right"
-                    open={open}
-                >
-                    <Toolbar />
-                </Drawer>
                 <Drawer
                     sx={{
                         width: drawerWidth,

@@ -3,9 +3,11 @@ import PropTypes from "prop-types"
 import * as d3 from "d3"
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
+import { useTheme } from '@mui/material/styles';
 
 const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...props }) => {
   const tooltip = d3.select("#tooltipD3")
+  const theme = useTheme();
 
   const handleMouseEnter = (e, d, i) => {
     const bounds = d3.select(e.target.parentElement)
@@ -15,7 +17,7 @@ const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...
       .attr("cx", callAccessor(xAccessor, d, i))
       .attr("cy", callAccessor(yAccessor, d, i))
       .attr("r", 6)
-      .style("fill", "#108ADE")
+      .style("fill", theme.vars.palette.primary.complementaryColor)
       .style("pointer-events", "none")
 
     tooltip.select("#tooltipD3-value1")

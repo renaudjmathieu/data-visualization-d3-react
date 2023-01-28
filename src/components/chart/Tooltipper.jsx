@@ -3,9 +3,11 @@ import PropTypes from "prop-types"
 import * as d3 from "d3"
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
+import { useTheme } from '@mui/material/styles';
 
 const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a, ab, abc, abcd, ...props }) => {
   const tooltip = d3.select("#tooltipD3")
+  const theme = useTheme();
 
   const handleMouseMove = (e, data) => {
     const tooltipDot = d3.selectAll(".tooltip-circle")
@@ -72,7 +74,7 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
       id="tooltipDot"
       className="tooltip-circle"
       r={6}
-      stroke="#108ADE"
+      stroke={theme.vars.palette.primary.complementaryColor}
       fill="white"
       stroke-width={2}
       opacity={0}
