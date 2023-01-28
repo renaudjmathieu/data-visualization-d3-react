@@ -126,9 +126,9 @@ function ModeToggle() {
     );
 }
 
-const theme = extendTheme({
+const theme1 = extendTheme({
     colorSchemes: {
-        light: { // palette for light mode
+        light: {
             palette: {
                 primary: {
                     light: "#ff34ac",
@@ -145,8 +145,13 @@ const theme = extendTheme({
                     secondary: "#fff",
                 },
             }
-        },
-        dark: { // palette for dark mode
+        }
+    }
+});
+
+const theme2 = extendTheme({
+    colorSchemes: {
+        light: {
             palette: {
                 primary: {
                     light: "#f3df61",
@@ -164,7 +169,31 @@ const theme = extendTheme({
                     secondary: "#252423",
                 },
             }
-        },
+        }
+    }
+});
+
+const theme3 = extendTheme({
+    colorSchemes: {
+        light: {
+            palette: {
+                primary: {
+                    light: "#f3df61",
+                    main: "#000",
+                    dark: "#a9940d",
+                    contrastText: "#212529",
+                },
+                text: {
+                    primary: "#f8f9fa",
+                },
+                background: {
+                    paper: "#1b1a19",
+                    default: "#161C24",
+                    primary: "#161C24",
+                    secondary: "#252423",
+                },
+            }
+        }
     }
 });
 
@@ -172,6 +201,25 @@ const App = (props) => {
     const { window } = props;
 
     const [data, setData] = React.useState(getData())
+
+    const [theme, setTheme] = React.useState(theme1)
+
+    const handleThemeChange = () => {
+        switch (theme) {
+            case theme1:
+                setTheme(theme2)
+                break;
+            case theme2:
+                setTheme(theme3)
+                break;
+            case theme3:
+                setTheme(theme1)
+                break;
+            default:
+                setTheme(theme1)
+                break;
+        }
+    }
 
     const [open, setOpen] = React.useState(false);
     const [selectedChartId, setSelectedChartId] = React.useState(null);
@@ -283,7 +331,11 @@ const App = (props) => {
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me" justifyContent="right" alignItems="right">
                                 <div className="textright">
-                                    <ModeToggle />
+                                    <Button
+                                        onClick={handleThemeChange}
+                                    >
+                                        Change Theme
+                                    </Button>
                                 </div>
                             </Grid>
                         </Grid>
