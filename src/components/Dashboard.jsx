@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import * as d3 from "d3"
 
-import ScatterPlot from "./ScatterPlot"
-import Pie from "./Pie"
-import Radar from "./Radar"
-import Histogram from "./Histogram"
-import Timeline from "./Timeline"
+import ChartContainer from "./Chart/ChartContainer"
 
 const Dashboard = (props) => {
 
@@ -67,46 +63,16 @@ const Dashboard = (props) => {
             <div className="App__charts">
                 {charts
                     .map((chart, index) => {
-                        switch (chart.id) {
-                            case "scatter": return <ScatterPlot
-                                outOfFocus={chosen !== null && index !== chosen}
-                                active={index === chosen}
-                                onClick={(e) => handleClick(e, chart, index)}
-                                data={props.data.random}
-                                xAxis={chart.xAxis}
-                                yAxis={chart.yAxis}
-                                xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
-                                yAxisParser={props.fields.find(field => field.id === chart.yAxis).parser}
-                                xAxisFormatter={props.fields.find(field => field.id === chart.xAxis).formatter}
-                                yAxisFormatter={props.fields.find(field => field.id === chart.yAxis).formatter}
-                            />
-                            case "histogram": return <Histogram
-                                outOfFocus={chosen !== null && index !== chosen}
-                                active={index === chosen}
-                                onClick={(e) => handleClick(e, chart, index)}
-                                data={props.data.random}
-                                xAxis={chart.xAxis}
-                                yAxis={chart.yAxis}
-                                xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
-                                xAxisFormatter={props.fields.find(field => field.id === chart.xAxis).formatter}
-                                yAxisSummarization={chart.yAxisSummarization}
-                            />
-                            case "timeline": return <Timeline
-                                outOfFocus={chosen !== null && index !== chosen}
-                                active={index === chosen}
-                                onClick={(e) => handleClick(e, chart, index)}
-                                data={props.data.random}
-                                xAxis={chart.xAxis}
-                                yAxis={chart.yAxis}
-                                xAxisParser={props.fields.find(field => field.id === chart.xAxis).parser}
-                                yAxisParser={props.fields.find(field => field.id === chart.yAxis).parser}
-                                xAxisFormatter={props.fields.find(field => field.id === chart.xAxis).formatter}
-                                yAxisFormatter={props.fields.find(field => field.id === chart.yAxis).formatter}
-                            />
-                            default: return null
-                        }
-                    })
-                }
+                        return <ChartContainer
+                            onClick={(e) => handleClick(e, chart, index)}
+                            chart={chart}
+                            chosen={chosen}
+                            index={index}
+                            data={props.data.random}
+                            fields={props.fields}
+                        />
+                    }
+                    )}
             </div>
         </div>
     )

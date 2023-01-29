@@ -1,103 +1,83 @@
 import React from "react"
-import PropTypes from "prop-types"
+import * as d3 from "d3"
 
-import { useTheme } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
+import Chart from "./chart/Chart"
+import { useChartDimensions, accessorPropsType } from "./chart/utils"
 
-import ScatterPlotVisuals from "./ScatterPlotVisuals"
-
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-
-const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
-
-  const theme = useTheme();
+import Circles from "./chart/Circles"
+import Voronoi from "./chart/Voronoi"
+import Axis from "./chart/Axis"
 
 
-  const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    height: window.innerHeight * 0.9,
-    width: window.innerHeight * 0.9,
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    border: `2px solid ${theme.vars.palette.primary.main}`,
-    boxShadow: 24,
-    p: 4,
-  };
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [ref, dimensions] = useChartDimensions({
+    marginBottom: 77
+  })
+
+  let xAccessor = d => d[xAxis]
+  let yAccessor = d => d[yAxis]
+
+  if (xAxisParser) {
+    xAccessor = d => xAxisParser(d[xAxis])
+  }
+
+  if (yAxisParser) {
+    yAccessor = d => yAxisParser(d[yAxis])
+  }
+
+  const xScale = d3.scaleLinear()
+    .domain(d3.extent(data, xAccessor))
+    .range([0, dimensions.boundedWidth])
+    .nice()
+
+  const yScale = d3.scaleLinear()
+    .domain(d3.extent(data, yAccessor))
+    .range([dimensions.boundedHeight, 0])
+    .nice()
+
+  const xAccessorScaled = d => xScale(xAccessor(d))
+  const yAccessorScaled = d => yScale(yAccessor(d))
+  const keyAccessor = (d, i) => i
 
   return (
-    <div onClick={outOfFocus ? onClick : null} className={`Chart__container ${outOfFocus ? 'outOfFocus' : 'inFocus'}`}>
-      <div className="ChartIconsContainer">
-        <div className="ChartIcons">
-          <IconButton onClick={onClick}>
-            <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
-          </IconButton>
-          <IconButton onClick={handleOpen}>
-            <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
-          </IconButton>
-        </div>
-      </div>
-
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={modalStyle}>
-          <div id="tooltipD3zoomed" className="tooltipD3">
-            <div className="tooltipD3-value1">
-              <span id="tooltipD3zoomed-value1"></span>
-            </div>
-            <div className="tooltipD3-value2">
-              <span id="tooltipD3zoomed-value2"></span>
-            </div>
-          </div>
-          <ScatterPlotVisuals
-            zoomed={true}
-            active={active}
-            outOfFocus={outOfFocus}
-            data={data}
-            xAxis={xAxis}
-            yAxis={yAxis}
-            xAxisParser={xAxisParser}
-            yAxisParser={yAxisParser}
-            xAxisFormatter={xAxisFormatter}
-            yAxisFormatter={yAxisFormatter}
-          />
-        </Box>
-      </Modal>
-      <ScatterPlotVisuals
-        zoomed={false}
-        active={active}
-        outOfFocus={outOfFocus}
-        data={data}
-        xAxis={xAxis}
-        yAxis={yAxis}
-        xAxisParser={xAxisParser}
-        yAxisParser={yAxisParser}
-        xAxisFormatter={xAxisFormatter}
-        yAxisFormatter={yAxisFormatter}
-      />
+    <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : '' } ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+      <Chart dimensions={dimensions}>
+        <Axis
+          dimensions={dimensions}
+          dimension="x"
+          scale={xScale}
+          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          formatter={xAxisFormatter}
+        />
+        <Axis
+          dimensions={dimensions}
+          dimension="y"
+          scale={yScale}
+          label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          formatter={yAxisFormatter}
+        />
+        <Circles
+          data={data}
+          keyAccessor={keyAccessor}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+        />
+        {!outOfFocus && <Voronoi
+          zoomed={zoomed}
+          data={data}
+          dimensions={dimensions}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+          a={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          ab={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          abc={xAccessor}
+          abcd={yAccessor}
+        //style={{ fill: `transparent` }}
+        />}
+      </Chart>
     </div>
   )
-}
-
-ScatterPlot.propTypes = {
-  xAxis: PropTypes.string,
-  yAxis: PropTypes.string,
-  xAxisParser: PropTypes.func,
-  yAxisParser: PropTypes.func,
-  xAxisFormatter: PropTypes.func,
-  yAxisFormatter: PropTypes.func,
 }
 
 export default ScatterPlot
