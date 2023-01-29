@@ -4,18 +4,18 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, a, ab, abc, outOfFocus, ...props }) => {
+const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue2Title, tooltipValue2Value, outOfFocus, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
   const handleMouseEnter = (e, d, i) => {
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
-      .text(a + ": " + [
+      .text(tooltipValue1Title + ": " + [
         d.x0,
         d.x1
       ].join(" - "))
       
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(ab + ": " + abc(d))
+      .text(tooltipValue2Title + ": " + tooltipValue2Value(d))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i) + (callAccessor(widthAccessor, d, i) / 2)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
@@ -57,9 +57,9 @@ Rectangles.propTypes = {
   yAccessor: accessorPropsType,
   widthAccessor: accessorPropsType,
   heightAccessor: accessorPropsType,
-  a: accessorPropsType,
-  ab: accessorPropsType,
-  abc: accessorPropsType,
+  tooltipValue1Title: accessorPropsType,
+  tooltipValue2Title: accessorPropsType,
+  tooltipValue2Value: accessorPropsType,
   outOfFocus: PropTypes.bool,
 }
 

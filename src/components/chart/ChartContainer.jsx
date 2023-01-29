@@ -95,7 +95,7 @@ const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data
   };
 
   return (
-    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
+    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${active ? 'active' : '' } ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
       <div className="ChartIconsContainer">
         <div className="ChartIcons">
           <IconButton onClick={onClick1}>

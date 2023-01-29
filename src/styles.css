@@ -342,6 +342,10 @@ h1 {
     visibility: visible;
 }
 
+.Chart__container.active .ChartIcons {
+    visibility: visible;
+}
+
 .ChartIcons {
     visibility: hidden;
     position: absolute;

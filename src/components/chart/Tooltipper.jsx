@@ -1,11 +1,8 @@
 import React from "react"
-import PropTypes from "prop-types"
 import * as d3 from "d3"
-import { accessorPropsType, callAccessor } from "./utils";
-import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yScale, a, ab, abc, abcd, ...props }) => {
+const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yScale, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
@@ -27,10 +24,10 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
     const closestYValue = yAccessor(closestDataPoint)
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
-      .text(a + ": " + abc(closestDataPoint))
+      .text(tooltipValue1Title + ": " + tooltipValue1Value(closestDataPoint))
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(ab + ": " + abcd(closestDataPoint))
+      .text(tooltipValue2Title + ": " + tooltipValue2Value(closestDataPoint))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)
@@ -83,20 +80,5 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
     />
   </React.Fragment>
 }
-
-Tooltipper.propTypes = {
-  zoomed: PropTypes.bool,
-  data: PropTypes.array,
-  dimensions: dimensionsPropsType,
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
-  xScale: accessorPropsType,
-  yScale: accessorPropsType,
-  a: accessorPropsType,
-  ab: accessorPropsType,
-  abc: accessorPropsType,
-  abcd: accessorPropsType,
-}
-
 
 export default Tooltipper

@@ -101,9 +101,9 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
           yAccessor={yAccessorScaled}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
-          a={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          ab={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          abc={yAccessorSummarization}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Value={yAccessorSummarization}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
           outOfFocus={outOfFocus}
         />}

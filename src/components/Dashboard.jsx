@@ -20,10 +20,12 @@ const Dashboard = (props) => {
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
         props.handleDrawerOpen(chart, index);
+        console.log('handleClick1')
     };
 
     const handleClick2 = (e, chart, index) => {
         setChosen(index);
+        console.log('handleClick2')
     };
 
     const handleOutsideClick = (e) => {

@@ -83,10 +83,10 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser,
           yAccessor={yAccessor}
           xScale={xScale}
           yScale={yScale}
-          a={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          ab={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          abc={xAccessor}
-          abcd={yAccessor}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1Value={xAccessor}
+          tooltipValue2Value={yAccessor}
         //style={{ fill: `transparent` }}
         />}
       </Chart>

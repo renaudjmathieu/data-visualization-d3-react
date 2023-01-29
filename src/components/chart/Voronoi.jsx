@@ -5,7 +5,7 @@ import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...props }) => {
+const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
@@ -21,10 +21,10 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, a, ab, abc, a
       .style("pointer-events", "none")
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
-      .text(a + ": " + abc(d))
+      .text(tooltipValue1Title + ": " + tooltipValue1Value(d))
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(ab + ": " + abcd(d))
+      .text(tooltipValue2Title + ": " + tooltipValue2Value(d))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
@@ -72,11 +72,10 @@ Voronoi.propTypes = {
   dimensions: dimensionsPropsType,
   xAccessor: accessorPropsType,
   yAccessor: accessorPropsType,
-  a: accessorPropsType,
-  ab: accessorPropsType,
-  abc: accessorPropsType,
-  abcd: accessorPropsType,
+  tooltipValue1Title: accessorPropsType,
+  tooltipValue1Value: accessorPropsType,
+  tooltipValue2Title: accessorPropsType,
+  tooltipValue2Value: accessorPropsType,
 }
-
 
 export default Voronoi
