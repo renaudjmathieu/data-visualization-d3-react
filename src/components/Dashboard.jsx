@@ -15,11 +15,15 @@ const Dashboard = (props) => {
 
     const [chosen, setChosen] = useState(null);
 
-    const handleClick = (e, chart, index) => {
+    const handleClick1 = (e, chart, index) => {
         setChosen(index);
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
         props.handleDrawerOpen(chart, index);
+    };
+
+    const handleClick2 = (e, chart, index) => {
+        setChosen(index);
     };
 
     const handleOutsideClick = (e) => {
@@ -64,7 +68,9 @@ const Dashboard = (props) => {
                 {charts
                     .map((chart, index) => {
                         return <ChartContainer
-                            onClick={(e) => handleClick(e, chart, index)}
+                            opened={props.opened}
+                            onClick1={(e) => handleClick1(e, chart, index)}
+                            onClick2={(e) => handleClick2(e, chart, index)}
                             chart={chart}
                             chosen={chosen}
                             index={index}

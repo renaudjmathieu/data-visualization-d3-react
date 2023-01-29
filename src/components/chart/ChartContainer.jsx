@@ -13,7 +13,7 @@ import Timeline from "../Timeline"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-const ChartContainer = ({ onClick, chart, chosen, index, data, fields }) => {
+const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data, fields }) => {
 
   const theme = useTheme();
 
@@ -95,10 +95,10 @@ const ChartContainer = ({ onClick, chart, chosen, index, data, fields }) => {
   };
 
   return (
-    <div onClick={outOfFocus ? onClick : null} className={`Chart__container ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
+    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
       <div className="ChartIconsContainer">
         <div className="ChartIcons">
-          <IconButton onClick={onClick}>
+          <IconButton onClick={onClick1}>
             <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
           </IconButton>
           <IconButton onClick={handleOpen}>

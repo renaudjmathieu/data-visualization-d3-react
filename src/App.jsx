@@ -315,6 +315,7 @@ const App = (props) => {
                         </Grid>
                     </Box>
                     <Dashboard ref={dashboardRef}
+                        opened={open}
                         data={data}
                         charts={charts}
                         fields={fieldsAvailable}
