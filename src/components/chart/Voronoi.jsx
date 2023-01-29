@@ -5,8 +5,8 @@ import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...props }) => {
-  const tooltip = d3.select("#tooltipD3")
+const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...props }) => {
+  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
   const handleMouseEnter = (e, d, i) => {
@@ -20,10 +20,10 @@ const Voronoi = ({ data, dimensions, xAccessor, yAccessor, a, ab, abc, abcd, ...
       .style("fill", theme.vars.palette.primary.complementaryColor)
       .style("pointer-events", "none")
 
-    tooltip.select("#tooltipD3-value1")
+    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
       .text(a + ": " + abc(d))
 
-    tooltip.select("#tooltipD3-value2")
+    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
       .text(ab + ": " + abcd(d))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i)

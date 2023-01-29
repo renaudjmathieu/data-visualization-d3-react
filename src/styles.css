@@ -35,9 +35,9 @@ h1 {
     width: 350px;
 }
 
-.Chart__square__modal {
-    height: 700px;
-    width: 700px;
+.Chart__square.zoomed {
+    height: 100%;
+    width: 100%;
 }
 
 .App__charts {
@@ -316,23 +316,19 @@ h1 {
     fill: transparent;
 }
 
-.Chart__rectangle,
-.Chart__rectangle__large,
-.Chart__square {
+.ChartIconsContainer {
     position: relative;
 }
 
-.Chart__rectangle.inFocus:hover .ChartIcons,
-.Chart__rectangle__large.inFocus:hover .ChartIcons,
-.Chart__square.inFocus:hover .ChartIcons {
+.Chart__container.inFocus:hover .ChartIcons {
     visibility:visible;
 }
 
 .ChartIcons {
     visibility: hidden;
     position: absolute;
-    top: 4px;
-    right: 5px;
+    top: 10px;
+    right: 11px;
 }
 
 .ChartIcons button {
