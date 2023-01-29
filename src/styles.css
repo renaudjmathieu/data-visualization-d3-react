@@ -338,4 +338,5 @@ h1 {
 
 .ChartIcons svg:hover {
     cursor: pointer;
+    fill: var(--mui-palette-primary-complementaryColor);
 }
