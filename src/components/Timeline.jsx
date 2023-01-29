@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
@@ -7,13 +6,11 @@ import Polyline from "./chart/Polyline"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient";
 import Tooltipper from "./chart/Tooltipper";
-import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
+import { useChartDimensions, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 
-const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
+const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
+  
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
   const gradientColors = [theme.vars.palette.primary.light, theme.vars.palette.primary.contrastText]
@@ -44,15 +41,7 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
   const y0AccessorScaled = yScale(yScale.domain()[0])
 
   return (
-    <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__rectangle__large inFocus active" : outOfFocus ? "Chart__rectangle__large outOfFocus" : "Chart__rectangle__large inFocus"} ref={ref}>
-      <div className="ChartIcons">
-        <IconButton>
-          <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
-        </IconButton>
-        <IconButton onClick={onClick}>
-          <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
-        </IconButton>
-      </div>
+    <div className={`Chart__rectangle__large ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -87,6 +76,7 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
           yAccessor={yAccessorScaled}
         />
         {!outOfFocus && <Tooltipper
+          zoomed={zoomed}
           data={data}
           dimensions={dimensions}
           xAccessor={xAccessor}
@@ -102,15 +92,6 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
       </Chart>
     </div>
   )
-}
-
-Timeline.propTypes = {
-  xAxis: PropTypes.string,
-  yAxis: PropTypes.string,
-  xAxisParser: PropTypes.func,
-  yAxisParser: PropTypes.func,
-  xAxisFormatter: PropTypes.func,
-  yAxisFormatter: PropTypes.func,
 }
 
 export default Timeline

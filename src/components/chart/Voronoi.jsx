@@ -67,6 +67,7 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, a, ab, abc, a
 }
 
 Voronoi.propTypes = {
+  zoomed: PropTypes.bool,
   data: PropTypes.array,
   dimensions: dimensionsPropsType,
   xAccessor: accessorPropsType,

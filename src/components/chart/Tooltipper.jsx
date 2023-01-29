@@ -5,8 +5,8 @@ import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a, ab, abc, abcd, ...props }) => {
-  const tooltip = d3.select("#tooltipD3")
+const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yScale, a, ab, abc, abcd, ...props }) => {
+  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
   const handleMouseMove = (e, data) => {
@@ -26,10 +26,10 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
     const closestXValue = xAccessor(closestDataPoint)
     const closestYValue = yAccessor(closestDataPoint)
 
-    tooltip.select("#tooltipD3-value1")
+    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
       .text(a + ": " + abc(closestDataPoint))
 
-    tooltip.select("#tooltipD3-value2")
+    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
       .text(ab + ": " + abcd(closestDataPoint))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
@@ -85,6 +85,7 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
 }
 
 Tooltipper.propTypes = {
+  zoomed: PropTypes.bool,
   data: PropTypes.array,
   dimensions: dimensionsPropsType,
   xAccessor: accessorPropsType,

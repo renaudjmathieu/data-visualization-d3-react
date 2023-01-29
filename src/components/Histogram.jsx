@@ -6,13 +6,10 @@ import Chart from "./chart/Chart"
 import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient"
-import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
+import { useChartDimensions, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import SettingsIcon from '@mui/icons-material/Settings';
-import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 
-const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, xAxisFormatter, yAxisSummarization }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, xAxisFormatter, yAxisSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -72,15 +69,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
   const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
 
   return (
-    <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
-      <div className="ChartIcons">
-        <IconButton>
-          <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
-        </IconButton>
-        <IconButton onClick={onClick}>
-          <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
-        </IconButton>
-      </div>
+    <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : '' } ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -104,6 +93,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
           label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
         />
         {xAxis && <Rectangles
+          zoomed={zoomed}
           data={bins}
           dimensions={dimensions}
           keyAccessor={keyAccessor}
@@ -120,14 +110,6 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
       </Chart>
     </div>
   )
-}
-
-Histogram.propTypes = {
-  xAxis: PropTypes.string,
-  yAxis: PropTypes.string,
-  xAxisParser: PropTypes.func,
-  xAxisFormatter: PropTypes.func,
-  yAxisSummarization: PropTypes.string,
 }
 
 export default Histogram

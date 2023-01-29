@@ -2,12 +2,11 @@ import React from "react"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import { useChartDimensions, accessorPropsType } from "./chart/utils"
+import { useChartDimensions } from "./chart/utils"
 
 import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
-
 
 const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
 

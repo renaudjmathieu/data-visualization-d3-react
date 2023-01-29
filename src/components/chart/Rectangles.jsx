@@ -4,17 +4,17 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, a, ab, abc, outOfFocus, ...props }) => {
-  const tooltip = d3.select("#tooltipD3")
+const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, a, ab, abc, outOfFocus, ...props }) => {
+  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
   const handleMouseEnter = (e, d, i) => {
-    tooltip.select("#tooltipD3-value1")
+    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
       .text(a + ": " + [
         d.x0,
         d.x1
       ].join(" - "))
       
-    tooltip.select("#tooltipD3-value2")
+    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
       .text(ab + ": " + abc(d))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i) + (callAccessor(widthAccessor, d, i) / 2)
@@ -49,6 +49,7 @@ const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, width
 }
 
 Rectangles.propTypes = {
+  zoomed : PropTypes.bool,
   data: PropTypes.array,
   dimensions: dimensionsPropsType,
   keyAccessor: accessorPropsType,

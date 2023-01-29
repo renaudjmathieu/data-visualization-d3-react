@@ -27,19 +27,6 @@ const ChartContainer = ({ onClick, chart, chosen, index, data, fields }) => {
   const xAxisFormatter = fields.find(field => field.id === chart.xAxis).formatter
   const yAxisFormatter = fields.find(field => field.id === chart.yAxis).formatter
 
-  const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    height: window.innerHeight * 0.9,
-    width: window.innerHeight * 0.9,
-    transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
-    border: `2px solid ${theme.vars.palette.primary.main}`,
-    boxShadow: 24,
-    p: 4,
-  };
-
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -58,14 +45,57 @@ const ChartContainer = ({ onClick, chart, chosen, index, data, fields }) => {
         xAxisFormatter={xAxisFormatter}
         yAxisFormatter={yAxisFormatter}
       />;
-      case "histogram": return null;
-      case "timeline": return null;
+      case "histogram": return <Histogram
+        zoomed={zoomed}
+        active={active}
+        outOfFocus={outOfFocus}
+        data={data}
+        xAxis={xAxis}
+        yAxis={yAxis}
+        xAxisParser={xAxisParser}
+        xAxisFormatter={xAxisFormatter}
+        yAxisSummarization={yAxisSummarization}
+      />
+      case "timeline": return <Timeline
+        zoomed={zoomed}
+        active={active}
+        outOfFocus={outOfFocus}
+        data={data}
+        xAxis={xAxis}
+        yAxis={yAxis}
+        xAxisParser={xAxisParser}
+        yAxisParser={yAxisParser}
+        xAxisFormatter={xAxisFormatter}
+        yAxisFormatter={yAxisFormatter}
+      />
       default: return null;
     }
   }
 
+  const getChartClass = () => {
+    switch (chart.id) {
+      case "scatter": return 'Chart__square__container';
+      case "histogram": return 'Chart__rectangle__container';
+      case "timeline": return 'Chart__rectangle__large__container';
+      default: return null;
+    }
+  }
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    height: window.innerHeight * 0.9,
+    width: getChartClass() === "Chart__square__container" ? window.innerHeight * 0.9 : window.innerWidth * 0.9,
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    border: `2px solid ${theme.vars.palette.primary.main}`,
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
-    <div onClick={outOfFocus ? onClick : null} className={`Chart__container ${outOfFocus ? 'outOfFocus' : 'inFocus'}`}>
+    <div onClick={outOfFocus ? onClick : null} className={`Chart__container ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
       <div className="ChartIconsContainer">
         <div className="ChartIcons">
           <IconButton onClick={onClick}>
