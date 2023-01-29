@@ -10,8 +10,10 @@ const Tooltipper = ({ data, dimensions, xAccessor, yAccessor, xScale, yScale, a,
   const theme = useTheme();
 
   const handleMouseMove = (e, data) => {
-    const tooltipDot = d3.selectAll(".tooltip-circle")
 
+    const bounds = d3.select(e.target.parentElement)
+    const tooltipDot = bounds.selectAll(".tooltip-circle")
+    
     const mousePosition = d3.pointer(e)
     const hoveredDate = xScale.invert(mousePosition[0])
 
