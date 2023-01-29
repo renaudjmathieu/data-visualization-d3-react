@@ -338,12 +338,15 @@ h1 {
     position: relative;
 }
 
-.Chart__container.inFocus:hover .ChartIcons {
-    visibility: visible;
-}
+@media screen and (min-width: 764px) {
 
-.Chart__container.active .ChartIcons {
-    visibility: visible;
+    .Chart__container.inFocus:hover .ChartIcons {
+        visibility: visible;
+    }
+
+    .Chart__container.active .ChartIcons {
+        visibility: visible;
+    }
 }
 
 .ChartIcons {
