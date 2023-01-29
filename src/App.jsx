@@ -166,7 +166,8 @@ const getThemeExtender = (color) => {
                     background: {
                         default: "#eceff1",
                         primary: "#eceff1",
-                    }
+                    },
+                    divider: color.color,
                 },
             }
         }
