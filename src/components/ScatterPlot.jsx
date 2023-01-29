@@ -8,6 +8,7 @@ import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 import { useChartDimensions, accessorPropsType } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 
@@ -46,8 +47,12 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
   return (
     <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__square inFocus active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square inFocus"} ref={ref}>
       <div className="ChartIcons">
-        <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
-        <SettingsIcon onClick={onClick} style={{ color: theme.vars.palette.primary.main }} />
+        <IconButton>
+          <ZoomOutMapIcon color={theme.vars.palette.primary.main} />
+        </IconButton>
+        <IconButton onClick={onClick}>
+          <SettingsIcon color={theme.vars.palette.primary.main} />
+        </IconButton>
       </div>
       <Chart dimensions={dimensions}>
         <Axis

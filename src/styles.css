@@ -330,13 +330,6 @@ h1 {
     right: 5px;
 }
 
-.ChartIcons svg {
-    margin: 4px 4px 0px 0px;
-    width: 24px;
-    height: 24px;
-}
-
-.ChartIcons svg:hover {
-    cursor: pointer;
-    fill: var(--mui-palette-primary-complementaryColor);
+.ChartIcons button {
+    margin-left: -6px;
 }
