@@ -245,32 +245,33 @@ const App = (props) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
     };
 
-    const parsersAndFormatters = [
-        { id: 'date', parser: d3.timeParse("%Y-%m-%d"), formatter: d3.timeFormat("%b %Y") },
-        { id: 'time', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'sunriseTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'sunsetTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'temperatureHighTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'temperatureLowTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'apparentTemperatureHighTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'apparentTemperatureLowTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'windGustTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'uvIndexTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'temperatureMinTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'temperatureMaxTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'apparentTemperatureMinTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
-        { id: 'apparentTemperatureMaxTime', parser: d3.timeParse("%s"), formatter: d3.timeFormat("%H:%M") },
+    const parsersAndFormats = [
+        { id: 'date', parser: d3.timeParse("%Y-%m-%d"), format: 'date' },
+        { id: 'time', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'sunriseTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'sunsetTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'temperatureHighTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'temperatureLowTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'apparentTemperatureHighTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'apparentTemperatureLowTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'windGustTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'uvIndexTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'temperatureMinTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'temperatureMaxTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'apparentTemperatureMinTime', parser: d3.timeParse("%s"), format: 'time' },
+        { id: 'apparentTemperatureMaxTime', parser: d3.timeParse("%s"), format: 'time' },
     ]
 
     const fieldsAvailable = Object.keys(data.random[0])
+        .filter(id => !parsersAndFormats.find(f => f.id === id && f.format === 'time')) // todo - add time fields
         .map(id => (
             {
                 id,
                 type: typeof data.random[0][id],
                 name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
-                ...(parsersAndFormatters.find(f => f.id === id) ? {
-                    parser: parsersAndFormatters.find(f => f.id === id).parser,
-                    formatter: parsersAndFormatters.find(f => f.id === id).formatter
+                ...(parsersAndFormats.find(f => f.id === id) ? {
+                    parser: parsersAndFormats.find(f => f.id === id).parser,
+                    format: parsersAndFormats.find(f => f.id === id).format
                 } : {})
             }
         ))

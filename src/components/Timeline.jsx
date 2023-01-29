@@ -9,7 +9,7 @@ import Tooltipper from "./chart/Tooltipper";
 import { useChartDimensions, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
+const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
   
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
@@ -54,13 +54,13 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser,
         <Axis
           dimension="x"
           scale={xScale}
-          formatter={xAxisFormatter}
+          format={xAxisFormat}
         />
         <Axis
           dimension="y"
           scale={yScale}
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          formatter={yAxisFormatter}
+          format={yAxisFormat}
         />
         <Polyline
           type="area"
@@ -87,7 +87,8 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser,
           tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue1Value={xAccessor}
           tooltipValue2Value={yAccessor}
-        //style={{ fill: `transparent` }}
+          tooltipValue1ValueFormat={xAxisFormat}
+          tooltipValue2ValueFormat={yAxisFormat}
         />}
       </Chart>
     </div>

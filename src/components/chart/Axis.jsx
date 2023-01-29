@@ -26,23 +26,24 @@ Axis.propTypes = {
   dimensions: dimensionsPropsType,
   scale: PropTypes.func,
   label: PropTypes.string,
-  formatter: PropTypes.func,
+  format: PropTypes.string,
 }
 
 Axis.defaultProps = {
   dimension: "x",
   scale: null,
-  formatter: d3.format(","),
+  format: null,
 }
 
 export default Axis
 
-function AxisHorizontal({ dimensions, scale, label, formatter, ...props }) {
+function AxisHorizontal({ dimensions, scale, label, format, ...props }) {
   const numberOfTicks = dimensions.boundedWidth < 600
     ? dimensions.boundedWidth / 100
     : dimensions.boundedWidth / 250
 
   const ticks = scale.ticks(numberOfTicks)
+  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format ? d3.timeFormat("%H:%M") : d3.format(",")
 
   return (
     <g className="Axis AxisHorizontal" transform={`translate(0, ${dimensions.boundedHeight})`} {...props}>
@@ -73,10 +74,11 @@ function AxisHorizontal({ dimensions, scale, label, formatter, ...props }) {
   )
 }
 
-function AxisVertical({ dimensions, scale, label, formatter, ...props }) {
+function AxisVertical({ dimensions, scale, label, format, ...props }) {
   const numberOfTicks = dimensions.boundedHeight / 70
 
   const ticks = scale.ticks(numberOfTicks)
+  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format ? d3.timeFormat("%H:%M") : d3.format(",")
 
   return (
     <g className="Axis AxisVertical" {...props}>

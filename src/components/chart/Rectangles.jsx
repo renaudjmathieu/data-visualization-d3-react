@@ -4,14 +4,16 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue2Title, tooltipValue2Value, outOfFocus, ...props }) => {
+const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, outOfFocus, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
+
+  const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
   const handleMouseEnter = (e, d, i) => {
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
       .text(tooltipValue1Title + ": " + [
-        d.x0,
-        d.x1
+        tooltipValue1ValueFormatter(d.x0),
+        tooltipValue1ValueFormatter(d.x1)
       ].join(" - "))
       
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
@@ -46,24 +48,6 @@ const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccesso
       />
     ))}
   </React.Fragment>
-}
-
-Rectangles.propTypes = {
-  zoomed : PropTypes.bool,
-  data: PropTypes.array,
-  dimensions: dimensionsPropsType,
-  keyAccessor: accessorPropsType,
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
-  widthAccessor: accessorPropsType,
-  heightAccessor: accessorPropsType,
-  tooltipValue1Title: accessorPropsType,
-  tooltipValue2Title: accessorPropsType,
-  tooltipValue2Value: accessorPropsType,
-  outOfFocus: PropTypes.bool,
-}
-
-Rectangles.defaultProps = {
 }
 
 export default Rectangles

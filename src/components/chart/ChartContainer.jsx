@@ -24,8 +24,8 @@ const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data
   const yAxisSummarization = chart.yAxisSummarization
   const xAxisParser = fields.find(field => field.id === chart.xAxis).parser
   const yAxisParser = fields.find(field => field.id === chart.yAxis).parser
-  const xAxisFormatter = fields.find(field => field.id === chart.xAxis).formatter
-  const yAxisFormatter = fields.find(field => field.id === chart.yAxis).formatter
+  const xAxisFormat = fields.find(field => field.id === chart.xAxis).format
+  const yAxisFormat = fields.find(field => field.id === chart.yAxis).format
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -42,8 +42,8 @@ const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data
         yAxis={yAxis}
         xAxisParser={xAxisParser}
         yAxisParser={yAxisParser}
-        xAxisFormatter={xAxisFormatter}
-        yAxisFormatter={yAxisFormatter}
+        xAxisFormat={xAxisFormat}
+        yAxisFormat={yAxisFormat}
       />;
       case "histogram": return <Histogram
         zoomed={zoomed}
@@ -53,7 +53,7 @@ const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
-        xAxisFormatter={xAxisFormatter}
+        xAxisFormat={xAxisFormat}
         yAxisSummarization={yAxisSummarization}
       />
       case "timeline": return <Timeline
@@ -65,8 +65,8 @@ const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data
         yAxis={yAxis}
         xAxisParser={xAxisParser}
         yAxisParser={yAxisParser}
-        xAxisFormatter={xAxisFormatter}
-        yAxisFormatter={yAxisFormatter}
+        xAxisFormat={xAxisFormat}
+        yAxisFormat={yAxisFormat}
       />
       default: return null;
     }

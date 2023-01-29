@@ -5,7 +5,7 @@ import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, ...props }) => {
+const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
@@ -20,11 +20,14 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1
       .style("fill", theme.vars.palette.primary.complementaryColor)
       .style("pointer-events", "none")
 
+    const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+    const tooltipValue2ValueFormatter = tooltipValue2ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue2ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
-      .text(tooltipValue1Title + ": " + tooltipValue1Value(d))
+      .text(tooltipValue1Title + ": " + tooltipValue1ValueFormatter(tooltipValue1Value(d)))
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(tooltipValue2Title + ": " + tooltipValue2Value(d))
+      .text(tooltipValue2Title + ": " + tooltipValue1ValueFormatter(tooltipValue2Value(d)))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
@@ -56,7 +59,6 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1
   return <React.Fragment>
     {data.map((d, i) => (
       <path
-        {...props}
         className="voronoi"
         d={voronoi.renderCell(i)}
         onMouseEnter={e => handleMouseEnter(e, d, i)}
@@ -64,18 +66,6 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1
       />
     ))}
   </React.Fragment>
-}
-
-Voronoi.propTypes = {
-  zoomed: PropTypes.bool,
-  data: PropTypes.array,
-  dimensions: dimensionsPropsType,
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
-  tooltipValue1Title: accessorPropsType,
-  tooltipValue1Value: accessorPropsType,
-  tooltipValue2Title: accessorPropsType,
-  tooltipValue2Value: accessorPropsType,
 }
 
 export default Voronoi

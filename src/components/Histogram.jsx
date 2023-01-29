@@ -8,7 +8,7 @@ import Gradient from "./chart/Gradient"
 import { useChartDimensions, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, xAxisFormatter, yAxisSummarization }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, xAxisFormat, yAxisSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -83,7 +83,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
           dimension="x"
           scale={xScale}
           label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          formatter={xAxisFormatter}
+          format={xAxisFormat}
         />
         <Axis
           dimensions={dimensions}
@@ -103,6 +103,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
           tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Value={yAccessorSummarization}
+          tooltipValue1ValueFormat={xAxisFormat}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
           outOfFocus={outOfFocus}
         />}

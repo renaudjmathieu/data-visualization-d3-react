@@ -2,7 +2,7 @@ import React from "react"
 import * as d3 from "d3"
 import { useTheme } from '@mui/material/styles';
 
-const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yScale, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, ...props }) => {
+const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yScale, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
@@ -10,7 +10,7 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
 
     const bounds = d3.select(e.target.parentElement)
     const tooltipDot = bounds.selectAll(".tooltip-circle")
-    
+
     const mousePosition = d3.pointer(e)
     const hoveredDate = xScale.invert(mousePosition[0])
 
@@ -23,11 +23,14 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
     const closestXValue = xAccessor(closestDataPoint)
     const closestYValue = yAccessor(closestDataPoint)
 
+    const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+    const tooltipValue2ValueFormatter = tooltipValue2ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue2ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
-      .text(tooltipValue1Title + ": " + tooltipValue1Value(closestDataPoint))
+      .text(tooltipValue1Title + ": " + tooltipValue1ValueFormatter(tooltipValue1Value(closestDataPoint)))
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(tooltipValue2Title + ": " + tooltipValue2Value(closestDataPoint))
+      .text(tooltipValue2Title + ": " + tooltipValue2ValueFormatter(tooltipValue2Value(closestDataPoint)))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)
@@ -62,7 +65,7 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
   voronoi.ymax = dimensions.boundedHeight
 
   return <React.Fragment>
-    <rect {...props}
+    <rect
       className="listening-rect"
       width={dimensions.boundedWidth}
       height={dimensions.boundedHeight}

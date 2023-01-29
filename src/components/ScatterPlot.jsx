@@ -8,7 +8,7 @@ import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 
-const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
@@ -47,14 +47,14 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           dimension="x"
           scale={xScale}
           label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          formatter={xAxisFormatter}
+          format={xAxisFormat}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          formatter={yAxisFormatter}
+          format={yAxisFormat}
         />
         <Circles
           data={data}
@@ -72,6 +72,8 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue1Value={xAccessor}
           tooltipValue2Value={yAccessor}
+          tooltipValue1ValueFormat={xAxisFormat}
+          tooltipValue2ValueFormat={yAxisFormat}
         />}
       </Chart>
     </div>
