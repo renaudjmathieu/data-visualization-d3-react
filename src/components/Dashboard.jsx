@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import Container from "./Chart/Container"
+import Container from "./chart/Container"
 
 const Dashboard = (props) => {
 
