@@ -310,3 +310,32 @@ h1 {
 .listening-rect {
     fill: transparent;
 }
+
+.Chart__rectangle,
+.Chart__rectangle__large,
+.Chart__square {
+    position: relative;
+}
+
+.Chart__rectangle.inFocus:hover .ChartIcons,
+.Chart__rectangle__large.inFocus:hover .ChartIcons,
+.Chart__square.inFocus:hover .ChartIcons {
+    visibility:visible;
+}
+
+.ChartIcons {
+    visibility: hidden;
+    position: absolute;
+    top: 4px;
+    right: 5px;
+}
+
+.ChartIcons svg {
+    margin: 4px 4px 0px 0px;
+    width: 24px;
+    height: 24px;
+}
+
+.ChartIcons svg:hover {
+    cursor: pointer;
+}

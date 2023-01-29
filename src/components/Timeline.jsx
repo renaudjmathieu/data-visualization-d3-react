@@ -9,6 +9,8 @@ import Gradient from "./chart/Gradient";
 import Tooltipper from "./chart/Tooltipper";
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 
 const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
   const [ref, dimensions] = useChartDimensions()
@@ -41,7 +43,11 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
   const y0AccessorScaled = yScale(yScale.domain()[0])
 
   return (
-    <div onClick={onClick} className={active ? "Chart__rectangle__large inFocus active" : outOfFocus ? "Chart__rectangle__large outOfFocus" : "Chart__rectangle__large inFocus"} ref={ref}>
+    <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__rectangle__large inFocus active" : outOfFocus ? "Chart__rectangle__large outOfFocus" : "Chart__rectangle__large inFocus"} ref={ref}>
+      <div className="ChartIcons">
+        <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
+        <SettingsIcon onClick={onClick} style={{ color: theme.vars.palette.primary.main }} />
+      </div>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -86,7 +92,7 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
           ab={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           abc={xAccessor}
           abcd={yAccessor}
-          //style={{ fill: `transparent` }}
+        //style={{ fill: `transparent` }}
         />}
       </Chart>
     </div>

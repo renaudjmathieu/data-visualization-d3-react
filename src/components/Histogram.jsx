@@ -8,6 +8,8 @@ import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient"
 import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 
 const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, xAxisFormatter, yAxisSummarization }) => {
 
@@ -69,7 +71,11 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
   const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
 
   return (
-    <div onClick={onClick} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
+    <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
+      <div className="ChartIcons">
+        <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
+        <SettingsIcon onClick={onClick} style={{ color: theme.vars.palette.primary.main }} />
+      </div>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient

@@ -7,11 +7,16 @@ import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 import { useChartDimensions, accessorPropsType } from "./chart/utils"
+import { useTheme } from '@mui/material/styles';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 
 const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormatter, yAxisFormatter }) => {
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
   })
+
+  const theme = useTheme();
 
   let xAccessor = d => d[xAxis]
   let yAccessor = d => d[yAxis]
@@ -39,7 +44,11 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
   const keyAccessor = (d, i) => i
 
   return (
-    <div onClick={onClick} className={active ? "Chart__square inFocus active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square inFocus"} ref={ref}>
+    <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__square inFocus active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square inFocus"} ref={ref}>
+      <div className="ChartIcons">
+        <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
+        <SettingsIcon onClick={onClick} style={{ color: theme.vars.palette.primary.main }} />
+      </div>
       <Chart dimensions={dimensions}>
         <Axis
           dimensions={dimensions}
@@ -70,7 +79,7 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
           ab={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           abc={xAccessor}
           abcd={yAccessor}
-          //style={{ fill: `transparent` }}
+        //style={{ fill: `transparent` }}
         />}
       </Chart>
     </div>
