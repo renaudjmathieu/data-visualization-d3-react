@@ -35,6 +35,11 @@ h1 {
     width: 350px;
 }
 
+.Chart__square__modal {
+    height: 700px;
+    width: 700px;
+}
+
 .App__charts {
     display: flex;
     align-items: center;
