@@ -47,10 +47,10 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
     <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__rectangle__large inFocus active" : outOfFocus ? "Chart__rectangle__large outOfFocus" : "Chart__rectangle__large inFocus"} ref={ref}>
       <div className="ChartIcons">
         <IconButton>
-          <ZoomOutMapIcon color={theme.vars.palette.primary.main} />
+          <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
         </IconButton>
         <IconButton onClick={onClick}>
-          <SettingsIcon color={theme.vars.palette.primary.main} />
+          <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
         </IconButton>
       </div>
       <Chart dimensions={dimensions}>

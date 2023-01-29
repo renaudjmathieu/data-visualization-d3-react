@@ -75,10 +75,10 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
     <div onClick={outOfFocus ? onClick : null} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
       <div className="ChartIcons">
         <IconButton>
-          <ZoomOutMapIcon color={theme.vars.palette.primary.main} />
+          <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
         </IconButton>
         <IconButton onClick={onClick}>
-          <SettingsIcon color={theme.vars.palette.primary.main} />
+          <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
         </IconButton>
       </div>
       <Chart dimensions={dimensions}>
