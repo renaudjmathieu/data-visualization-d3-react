@@ -71,7 +71,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
   }
 
   return (
-    <div onClick={onClick} className={active ? "Chart__rectangle active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -106,6 +106,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
           ab={yAxisSummarization.charAt(0).toUpperCase() + yAxisSummarization.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           abc={yAccessorSummarization}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
+          outOfFocus={outOfFocus}
         />}
       </Chart>
     </div>

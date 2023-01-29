@@ -46,7 +46,7 @@ const Pie = ({ outOfFocus, active, onClick, data, valueAccessor, entityAccessor,
     .range(interpolateWithSteps(dataByEntity.length).map(d3.interpolateLab("#f3a683", "#3dc1d3")))
 
   return (
-    <div onClick={onClick} className={active ? "Chart__square active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__square inFocus active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square inFocus"} ref={ref}>
       <Chart dimensions={dimensions}>
         <g transform={`translate(${dimensions.boundedWidth / 2}, ${dimensions.boundedHeight / 2})`}>
           <defs>

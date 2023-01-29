@@ -279,7 +279,7 @@ const App = (props) => {
         <CssVarsProvider theme={theme}>
             <CssBaseline />
             <div className="App">
-                <AppBar position="fixed" open={open} style={{ background: open ? "mode" === "light" ? '#EAA2D0' : '#242323' : '' }}>
+                <AppBar position="fixed" open={open} style={{ opacity: open ? 0.5 : 1 }}>
                     <Toolbar className="close_me">
                         <Typography className="close_me" variant="h6" noWrap sx={{ flexGrow: 1 }} component="div" style={{ color: open && "mode" === "dark" ? '#8B8E91' : '' }}>
                             D3 Dashboard

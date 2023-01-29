@@ -262,11 +262,7 @@ h1 {
     fill: #FABFE2;
 }
 
-.Rectangles__rect:hover {
-    fill: var(--mui-palette-primary-complementaryColor) !important;
-}
-
-.tooltipDot:hover {
+.inFocus .Rectangles__rect:hover {
     fill: var(--mui-palette-primary-complementaryColor) !important;
 }
 

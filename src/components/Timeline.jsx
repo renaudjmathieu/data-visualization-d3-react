@@ -41,7 +41,7 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
   const y0AccessorScaled = yScale(yScale.domain()[0])
 
   return (
-    <div onClick={onClick} className={active ? "Chart__rectangle__large active" : outOfFocus ? "Chart__rectangle__large outOfFocus" : "Chart__rectangle__large"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__rectangle__large inFocus active" : outOfFocus ? "Chart__rectangle__large outOfFocus" : "Chart__rectangle__large inFocus"} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -75,7 +75,7 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
         />
-        <Tooltipper
+        {!outOfFocus && <Tooltipper
           data={data}
           dimensions={dimensions}
           xAccessor={xAccessor}
@@ -87,7 +87,7 @@ const Timeline = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParser
           abc={xAccessor}
           abcd={yAccessor}
           //style={{ fill: `transparent` }}
-        />
+        />}
       </Chart>
     </div>
   )

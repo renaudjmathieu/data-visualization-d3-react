@@ -53,7 +53,7 @@ const Treemap = ({ outOfFocus, active, onClick, data, valueAccessor, entityAcces
   const keyAccessor = (d, i) => i
 
   return (
-    <div onClick={onClick} className={active ? "Chart__rectangle active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
       <Chart dimensions={dimensions}>
         <Rectangles
           data={root.leaves()}

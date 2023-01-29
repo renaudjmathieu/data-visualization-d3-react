@@ -39,7 +39,7 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
   const keyAccessor = (d, i) => i
 
   return (
-    <div onClick={onClick} className={active ? "Chart__square active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square"} ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__square inFocus active" : outOfFocus ? "Chart__square outOfFocus" : "Chart__square inFocus"} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimensions={dimensions}
@@ -61,7 +61,7 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
         />
-        <Voronoi
+        {!outOfFocus && <Voronoi
           data={data}
           dimensions={dimensions}
           xAccessor={xAccessorScaled}
@@ -71,7 +71,7 @@ const ScatterPlot = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisPar
           abc={xAccessor}
           abcd={yAccessor}
           //style={{ fill: `transparent` }}
-        />
+        />}
       </Chart>
     </div>
   )

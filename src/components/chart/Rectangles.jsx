@@ -4,18 +4,18 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, a, ab, abc, ...props }) => {
+const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, a, ab, abc, outOfFocus, ...props }) => {
   const tooltip = d3.select("#tooltipD3")
 
   const handleMouseEnter = (e, d, i) => {
     tooltip.select("#tooltipD3-value1")
-      .text(a + ": " + abc(d))
-      
-    tooltip.select("#tooltipD3-value2")
-      .text(ab + ": " + [
+      .text(a + ": " + [
         d.x0,
         d.x1
       ].join(" - "))
+      
+    tooltip.select("#tooltipD3-value2")
+      .text(ab + ": " + abc(d))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i) + (callAccessor(widthAccessor, d, i) / 2)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
@@ -41,7 +41,7 @@ const Rectangles = ({ data, dimensions, keyAccessor, xAccessor, yAccessor, width
         y={callAccessor(yAccessor, d, i)}
         width={d3.max([callAccessor(widthAccessor, d, i), 0])}
         height={d3.max([callAccessor(heightAccessor, d, i), 0])}
-        onMouseEnter={e => handleMouseEnter(e, d, i)}
+        onMouseEnter={!outOfFocus ? e => handleMouseEnter(e, d, i): null}
         onMouseLeave={handleMouseLeave}
       />
     ))}
@@ -59,6 +59,7 @@ Rectangles.propTypes = {
   a: accessorPropsType,
   ab: accessorPropsType,
   abc: accessorPropsType,
+  outOfFocus: PropTypes.bool,
 }
 
 Rectangles.defaultProps = {
