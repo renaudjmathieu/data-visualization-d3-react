@@ -1,103 +1,85 @@
 import React, { useState, useEffect, useRef } from "react"
-import * as d3 from "d3"
-import { getTimelineData, getScatterData } from "./../utils/dummyData"
-
-import Timeline from "./Timeline"
-import ScatterPlot from "./ScatterPlot"
-import Histogram from "./Histogram"
-import Treemap from "./Treemap"
-
-const parseDate = d3.timeParse("%m/%d/%Y")
-const formatMonth = d3.timeFormat("%b")
-const dateAccessor = d => parseDate(d.date)
-const monthAccessor = d => formatMonth(parseDate(d.date))
-const temperatureAccessor = d => d.temperature
-const humidityAccessor = d => d.humidity
-const numberAccessor = d => d.number
-
-const chartsAvailable = [
-    'Timeline',
-    'ScatterPlot',
-    'Histogram',
-    'Treemap',
-];
-
-const getData = () => ({
-    timeline: getTimelineData(),
-    scatter: getScatterData(),
-})
+import ChartContainer from "./Chart/ChartContainer"
 
 const Dashboard = (props) => {
-    const [data, setData] = useState(getData())
 
-    const selectedCharts = props.selectedCharts
-    const [charts, setCharts] = useState(selectedCharts)
+    const ref = useRef();
+
+    const [charts, setCharts] = useState(props.charts);
 
     useEffect(() => {
-        const reorderedCharts = chartsAvailable.filter(chart => selectedCharts.includes(chart))
-        setCharts(reorderedCharts)
-    }, [selectedCharts])
+        setCharts(props.charts);
+    }, [props.charts]);
 
-    useInterval(() => {
-        setData(getData())
-    }, 4000)
+    const [chosen, setChosen] = useState(null);
+
+    const handleClick1 = (e, chart, index) => {
+        setChosen(index);
+        document.body.classList.add("config-open")
+        document.body.classList.remove("config-closed")
+        props.handleDrawerOpen(chart, index);
+    };
+
+    const handleClick2 = (e, chart, index) => {
+        setChosen(index);
+    };
+
+    const handleOutsideClick = (e) => {
+        if (e.target.tagName === "DIV" && (!e.target.classList.contains("Chart__rectangle")) && (!e.target.classList.contains("Chart__rectangle__large")) && (!e.target.classList.contains("Chart__square"))) {
+            setChosen(null);
+            document.body.classList.add("config-closed")
+            document.body.classList.remove("config-open")
+            props.handleDrawerClose();
+        }
+    };
+
+    const handleOutsideOusideClick = (e) => {
+        if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
+            setChosen(null);
+            document.body.classList.add("config-closed")
+            document.body.classList.remove("config-open")
+            props.handleDrawerClose();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("click", handleOutsideOusideClick);
+
+        return () => {
+            document.removeEventListener("click", handleOutsideOusideClick);
+        };
+    });
 
     return (
-        <div className="App__charts">
-            {charts
-                .map(chart => {
-                    switch (chart) {
-                        case "Timeline": return <Timeline
-                            data={data.timeline}
-                            xAccessor={dateAccessor}
-                            yAccessor={temperatureAccessor}
-                            label="Temperature"
+        <div className="App__charts__dashboard" ref={ref} onClick={handleOutsideClick}>
+            <div className="App__charts__config">
+            </div>
+            <div id="tooltipD3" className="tooltipD3">
+                <div className="tooltipD3-value1">
+                    <span id="tooltipD3-value1"></span>
+                </div>
+                <div className="tooltipD3-value2">
+                    <span id="tooltipD3-value2"></span>
+                </div>
+            </div>
+            <div className="App__charts">
+                {charts
+                    .map((chart, index) => {
+                        return <ChartContainer
+                            opened={props.opened}
+                            onClick1={(e) => handleClick1(e, chart, index)}
+                            onClick2={(e) => handleClick2(e, chart, index)}
+                            chart={chart}
+                            chosen={chosen}
+                            index={index}
+                            data={props.data.random}
+                            fields={props.fields}
                         />
-                        case "ScatterPlot": return <ScatterPlot
-                            data={data.scatter}
-                            xAccessor={humidityAccessor}
-                            yAccessor={temperatureAccessor}
-                            xLabel="Humidity"
-                            yLabel="Temperature"
-                        />
-                        case "Histogram": return <Histogram
-                            data={data.scatter}
-                            xAccessor={humidityAccessor}
-                            xLabel="Humidity"
-                        />
-                        case "Treemap": return <Treemap
-                            data={data.timeline}
-                            valueAccessor={numberAccessor}
-                            entityAccessor={monthAccessor}
-                            valueLabel="Number"
-                            entityLabel="Month"
-                        />
-                        default: return null
                     }
-                }) 
-            }
+                    )}
+            </div>
         </div>
     )
 }
 
 export default Dashboard
-
-function useInterval(callback, delay) {
-    const savedCallback = useRef()
-
-    // Remember the latest callback.
-    useEffect(() => {
-        savedCallback.current = callback
-    })
-
-    // Set up the interval.
-    useEffect(() => {
-        function tick() {
-            savedCallback.current()
-        }
-        if (delay !== null) {
-            let id = setInterval(tick, delay)
-            return () => clearInterval(id)
-        }
-    }, [delay])
-}

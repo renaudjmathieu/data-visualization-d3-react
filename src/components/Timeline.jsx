@@ -1,21 +1,31 @@
 import React from "react"
-import PropTypes from "prop-types"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import Line from "./chart/Line"
+import Polyline from "./chart/Polyline"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient";
-import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
+import Tooltipper from "./chart/Tooltipper";
+import { useChartDimensions, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const formatDate = d3.timeFormat("%-b %-d")
-
-const Timeline = ({ data, xAccessor, yAccessor, label }) => {
+const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
+  
   const [ref, dimensions] = useChartDimensions()
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.light, theme.palette.primary.contrastText]
+  const gradientColors = [theme.vars.palette.primary.light, theme.vars.palette.primary.contrastText]
   const gradientId = useUniqueId("Timeline-gradient")
+
+  let xAccessor = d => d[xAxis]
+  let yAccessor = d => d[yAxis]
+
+  if (xAxisParser) {
+    xAccessor = d => xAxisParser(d[xAxis])
+  }
+
+  if (yAxisParser) {
+    yAccessor = d => yAxisParser(d[yAxis])
+  }
 
   const xScale = d3.scaleTime()
     .domain(d3.extent(data, xAccessor))
@@ -31,7 +41,7 @@ const Timeline = ({ data, xAccessor, yAccessor, label }) => {
   const y0AccessorScaled = yScale(yScale.domain()[0])
 
   return (
-    <div className="Timeline" ref={ref}>
+    <div className={`Chart__rectangle__large ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -44,39 +54,45 @@ const Timeline = ({ data, xAccessor, yAccessor, label }) => {
         <Axis
           dimension="x"
           scale={xScale}
-          formatTick={formatDate}
+          format={xAxisFormat}
         />
         <Axis
           dimension="y"
           scale={yScale}
-          label={label}
+          label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={yAxisFormat}
         />
-        <Line
+        <Polyline
           type="area"
           data={data}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           y0Accessor={y0AccessorScaled}
-          style={{fill: `url(#${gradientId})`}}
+          style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
         />
-        <Line
+        <Polyline
           data={data}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
         />
+        {!outOfFocus && <Tooltipper
+          zoomed={zoomed}
+          data={data}
+          dimensions={dimensions}
+          xAccessor={xAccessor}
+          yAccessor={yAccessor}
+          xScale={xScale}
+          yScale={yScale}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1Value={xAccessor}
+          tooltipValue2Value={yAccessor}
+          tooltipValue1ValueFormat={xAxisFormat}
+          tooltipValue2ValueFormat={yAxisFormat}
+        />}
       </Chart>
     </div>
   )
 }
 
-Timeline.propTypes = {
-    xAccessor: accessorPropsType,
-    yAccessor: accessorPropsType,
-    label: PropTypes.string,
-}
-
-Timeline.defaultProps = {
-    xAccessor: d => d.x,
-    yAccessor: d => d.y,
-}
 export default Timeline

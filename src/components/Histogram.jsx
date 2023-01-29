@@ -1,23 +1,30 @@
 import React from "react"
-import PropTypes from "prop-types"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
 import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import Gradient from "./chart/Gradient"
-import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
+import { useChartDimensions, useUniqueId } from "./chart/utils"
 import { useTheme } from '@mui/material/styles';
 
-const Histogram = ({ data, xAccessor, xLabel }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, xAxisFormat, yAxisSummarization }) => {
+
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
   const theme = useTheme();
-  const gradientColors = [theme.palette.primary.main, theme.palette.primary.contrastText]
+  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
   const gradientId = useUniqueId("Histogram-gradient")
-  
+
   const numberOfThresholds = 9
+
+  let xAccessor = d => d[xAxis]
+  let yAccessor = d => d[yAxis]
+
+  if (xAxisParser) {
+    xAccessor = d => xAxisParser(d[xAxis])
+  }
 
   const xScale = d3.scaleLinear()
     .domain(d3.extent(data, xAccessor))
@@ -31,22 +38,37 @@ const Histogram = ({ data, xAccessor, xLabel }) => {
 
   const bins = binsGenerator(data)
 
-  const yAccessor = d => d.length
+  bins.forEach(bin => {
+    switch (yAxisSummarization) {
+      case "sum": bin[yAxisSummarization] = d3.sum(bin, yAccessor); break;
+      case "average": bin[yAxisSummarization] = d3.sum(d3.rollup(bin, v => d3.sum(v, yAccessor), yAccessor).values()) / bin.length; break;
+      case "min": bin[yAxisSummarization] = d3.min(bin, yAccessor); break;
+      case "max": bin[yAxisSummarization] = d3.max(bin, yAccessor); break;
+      case "distinct": bin[yAxisSummarization] = d3.group(bin, yAccessor).size; break;
+      case "count": bin[yAxisSummarization] = bin.length; break;
+      case "median": bin[yAxisSummarization] = d3.median(bin, yAccessor); break;
+      default: null;
+    }
+  })
+
+  const yAccessorSummarization = d => d[yAxisSummarization]
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(bins, yAccessor)])
+    .domain([0, d3.max(bins, yAccessorSummarization)])
     .range([dimensions.boundedHeight, 0])
     .nice()
 
   const barPadding = 2
 
   const xAccessorScaled = d => xScale(d.x0) + barPadding
-  const yAccessorScaled = d => yScale(yAccessor(d))
+  const yAccessorScaled = d => yScale(yAccessorSummarization(d))
   const widthAccessorScaled = d => xScale(d.x1) - xScale(d.x0) - barPadding
-  const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessor(d))
+  const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
   const keyAccessor = (d, i) => i
 
+  const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
+
   return (
-    <div className="Histogram" ref={ref}>
+    <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : '' } ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <defs>
           <Gradient
@@ -60,34 +82,34 @@ const Histogram = ({ data, xAccessor, xLabel }) => {
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xLabel}
+          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={xAxisFormat}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label="Count"
+          label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
         />
-        <Rectangles
+        {xAxis && <Rectangles
+          zoomed={zoomed}
           data={bins}
+          dimensions={dimensions}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
-          style={{fill: `url(#${gradientId})`}}
-        />
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Value={yAccessorSummarization}
+          tooltipValue1ValueFormat={xAxisFormat}
+          style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
+          outOfFocus={outOfFocus}
+        />}
       </Chart>
     </div>
   )
 }
 
-Histogram.propTypes = {
-  xAccessor: accessorPropsType,
-  xLabel: PropTypes.string,
-}
-
-Histogram.defaultProps = {
-  xAccessor: d => d.x,
-}
 export default Histogram

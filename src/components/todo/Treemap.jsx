@@ -7,7 +7,7 @@ import Rectangles from "./chart/Rectangles"
 import Texts from "./chart/Texts"
 import { useChartDimensions, accessorPropsType } from "./chart/utils"
 
-const Treemap = ({ data, valueAccessor, entityAccessor, valueLabel, entityLabel }) => {
+const Treemap = ({ outOfFocus, active, onClick, data, valueAccessor, entityAccessor, valueLabel, entityLabel, entityFormat }) => {
   const [ref, dimensions] = useChartDimensions({
     marginTop: 0,
     marginRight: 20,
@@ -53,7 +53,7 @@ const Treemap = ({ data, valueAccessor, entityAccessor, valueLabel, entityLabel 
   const keyAccessor = (d, i) => i
 
   return (
-    <div className="Treemap" ref={ref}>
+    <div onClick={onClick} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
       <Chart dimensions={dimensions}>
         <Rectangles
           data={root.leaves()}
@@ -80,5 +80,6 @@ Treemap.propTypes = {
   entityAccessor: accessorPropsType,
   valueLabel: PropTypes.string,
   entityLabel: PropTypes.string,
+  entityFormat: PropTypes.func,
 }
 export default Treemap

@@ -1,16 +1,29 @@
 import React from "react"
-import PropTypes from "prop-types"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import Circles from "./chart/Circles"
-import Axis from "./chart/Axis"
-import { useChartDimensions, accessorPropsType } from "./chart/utils"
+import { useChartDimensions } from "./chart/utils"
 
-const ScatterPlot = ({ data, xAccessor, yAccessor, xLabel, yLabel }) => {
+import Circles from "./chart/Circles"
+import Voronoi from "./chart/Voronoi"
+import Axis from "./chart/Axis"
+
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
+
   const [ref, dimensions] = useChartDimensions({
-    marginBottom: 77,
+    marginBottom: 77
   })
+
+  let xAccessor = d => d[xAxis]
+  let yAccessor = d => d[yAxis]
+
+  if (xAxisParser) {
+    xAccessor = d => xAxisParser(d[xAxis])
+  }
+
+  if (yAxisParser) {
+    yAccessor = d => yAxisParser(d[yAxis])
+  }
 
   const xScale = d3.scaleLinear()
     .domain(d3.extent(data, xAccessor))
@@ -27,19 +40,21 @@ const ScatterPlot = ({ data, xAccessor, yAccessor, xLabel, yLabel }) => {
   const keyAccessor = (d, i) => i
 
   return (
-    <div className="ScatterPlot" ref={ref}>
+    <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xLabel}
+          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={xAxisFormat}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label={yLabel}
+          label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={yAxisFormat}
         />
         <Circles
           data={data}
@@ -47,20 +62,22 @@ const ScatterPlot = ({ data, xAccessor, yAccessor, xLabel, yLabel }) => {
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
         />
+        {!outOfFocus && <Voronoi
+          zoomed={zoomed}
+          data={data}
+          dimensions={dimensions}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1Value={xAccessor}
+          tooltipValue2Value={yAccessor}
+          tooltipValue1ValueFormat={xAxisFormat}
+          tooltipValue2ValueFormat={yAxisFormat}
+        />}
       </Chart>
     </div>
   )
 }
 
-ScatterPlot.propTypes = {
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
-  xLabel: PropTypes.string,
-  yLabel: PropTypes.string,
-}
-
-ScatterPlot.defaultProps = {
-  xAccessor: d => d.x,
-  yAccessor: d => d.y,
-}
 export default ScatterPlot

@@ -1,24 +1,3 @@
-:root {
-    --theme-light-color-primary: #ec008c;
-    --theme-light-color-primary-dark: #d4007e;
-    --theme-light-color-primary-darker: #c90077;
-    --theme-light-color-primary-darkest: #a50062;
-    --theme-light-color-primary-light: #ff0599;
-    --theme-light-color-primary-lighter: #ff109e;
-    --theme-light-color-primary-lightest: #ff34ac;
-
-    --theme-dark-color-primary: #edd018;
-    --theme-dark-color-primary-dark: #dabf11;
-    --theme-dark-color-primary-darker: #ceb410;
-    --theme-dark-color-primary-darkest: #a9940d;
-    --theme-dark-color-primary-light: #efd530;
-    --theme-dark-color-primary-lighter: #f0d73c;
-    --theme-dark-color-primary-lightest: #f3df61;
-
-    --dark-color: #212529;
-    --light-color: #f8f9fa;
-}
-
 body {
     letter-spacing: -0.011em;
     font-family: 'Inter var', sans-serif;
@@ -30,7 +9,7 @@ body {
 /* adjustment for sidebar */
 #root,
 .App {
-    margin-left: 7.5em
+    margin-right: 7.5em
 }
 
 h1 {
@@ -43,33 +22,6 @@ h1 {
     background: #ecf0f1;
 }
 
-.Timeline {
-    height: 300px;
-    min-width: 400px;
-    width: calc(100% + 1em);
-    margin-bottom: 2em;
-}
-
-.ScatterPlot {
-    height: 400px;
-    width: 400px;
-    margin-right: 2em;
-}
-
-.Histogram {
-    height: 400px;
-    flex: 1;
-    min-width: 250px;
-    overflow: hidden;
-}
-
-.Treemap {
-    height: 400px;
-    min-width: 400px;
-    width: calc(100% + 1em);
-    margin-bottom: 2em;
-}
-
 .App__charts {
     display: flex;
     align-items: center;
@@ -77,12 +29,47 @@ h1 {
     margin: -0.5em;
 }
 
-.Timeline,
-.ScatterPlot,
-.Histogram,
-.Treemap {
-    padding: 0.6em 1em;
+.Chart__square__container {
+    height: 350px;
+    width: 350px;
+}
+
+.Chart__rectangle__container,
+.Chart__rectangle__large__container {
+    height: 350px;
+    min-width: 350px;
+    width: calc(100% + 1em);
+    flex: 1;
+}
+
+.Chart__rectangle,
+.Chart__rectangle__large {
+    width: 100%;
+    height: 100%;
+}
+
+.Chart__square {
+    width: 100%;
+    height: 100%;
+}
+
+.Chart__rectangle.zoomed,
+.Chart__rectangle__large.zoomed,
+.Chart__square.zoomed {
+    height: 100%;
+    width: 100%;
+}
+
+.Chart__rectangle__container,
+.Chart__rectangle__large__container,
+.Chart__square__container {
     margin: 0.5em;
+}
+
+.Chart__rectangle,
+.Chart__rectangle__large,
+.Chart__square {
+    padding: 0.6em 1em;
 }
 
 .resize-animation-stopper .Chart * {
@@ -93,161 +80,79 @@ h1 {
     .open main {
         margin-left: 0 !important;
     }
-}
 
-@media screen and (min-width: 601px) and (max-width: 765px) {
-    .ScatterPlot {
-        max-height: 717;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
+    .Chart__rectangle__container {
+        min-width: 550px;
     }
 
-    .ScatterPlot .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
+    .Chart__rectangle__large__container {
+        min-width: 750px;
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 763px) {
 
-    .formOnDesktop {
+    .containerOnDesktop {
         display: none;
         visibility: hidden;
     }
 
-    .formOnDesktop * {
+    .containerOnDesktop * {
         display: none;
         visibility: hidden;
     }
 
-    main {
-        margin-top: -75px;
-    }
-
-    .Timeline {
+    .Chart__rectangle__container,
+    .Chart__rectangle__large__container,
+    .Chart__square__container {
         min-width: calc(100vw - 48px);
-        max-height: 300px;
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
 
-    .ScatterPlot {
-        max-height: 450px;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Histogram {
-        min-width: calc(100vw - 48px);
-        max-height: 450px;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Treemap {
-        min-width: calc(100vw - 48px);
-        max-height: 300px;
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Timeline .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .ScatterPlot .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Histogram .Chart {
-        width: calc(100vw - 48px);
-        height: calc(100vw - 48px);
-    }
-
-    .Treemap .Chart {
+    .Chart__rectangle__container .Chart,
+    .Chart__rectangle__large__container .Chart,
+    .Chart__square__container .Chart {
         width: calc(100vw - 48px);
         height: calc(100vw - 48px);
     }
 }
 
-.dark .Timeline,
-.dark .ScatterPlot,
-.dark .Histogram,
-.dark .Treemap {
-    background: #252423;
-}
-
-.light .Timeline,
-.light .ScatterPlot,
-.light .Histogram,
-.light .Treemap {
+.Chart__rectangle__container,
+.Chart__rectangle__large__container,
+.Chart__square__container {
     background: #fff
 }
 
-
-.dark .Circles__circle {
-    fill: var(--theme-dark-color-primary);
+.Circle--type-circle {
+    fill: var(--mui-palette-primary-main);
 }
 
-.light .Circles__circle {
-    fill: var(--theme-light-color-primary);
+.Rectangles__rect {
+    fill: var(--mui-palette-primary-main);
 }
 
-.dark .Rectangles__rect {
-    fill: var(--theme-dark-color-primary);
+.Polyline--type-line {
+    stroke: var(--mui-palette-primary-main);
 }
 
-.light .Rectangles__rect {
-    fill: var(--theme-light-color-primary);
+.Polyline--type-area {
+    fill: var(--mui-palette-primary-main);
 }
 
-.dark .Line--type-line {
-    stroke: var(--theme-dark-color-primary);
-}
-
-.light .Line--type-line {
-    stroke: var(--theme-light-color-primary);
-}
-
-.dark .Line--type-area {
-    fill: var(--theme-dark-color-primary);
-}
-
-.light .Line--type-area {
-    fill: var(--theme-light-color-primary);
-}
-
-.dark .Axis__line {
-    stroke: var(--light-color)
-}
-
-.light .Axis__line {
+.Axis__line {
     stroke: #bdc3c7;
 }
 
-.dark .Chart text {
-    fill: var(--light-color)
-}
-
-.light .Chart text {
+.Chart text {
     fill: #95a5a6;
 }
 
-.dark .domain line {
+.domain line {
     stroke: #dadada;
 }
 
-.light .domain line {
-    stroke: #dadada;
-}
-
-.dark .tick line {
-    stroke: #dadada;
-}
-
-.light .tick line {
+.tick line {
     stroke: #dadada;
 }
 
@@ -258,4 +163,199 @@ h1 {
 
 .formOnMobile {
     margin-top: 30px !important;
+}
+
+.gridOnDesktop__left,
+.gridOnDesktop__right {
+    padding-bottom: 15px !important;
+}
+
+.gridOnDesktop__right {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+}
+
+.gridOnDesktop__right div {
+    text-align: right;
+}
+
+.Chart__rectangle__large.active,
+.Chart__rectangle.active,
+.Chart__square.active {
+    border: 1px solid var(--mui-palette-primary-main);
+}
+
+.Chart__rectangle__large.outOfFocus .Axis__line,
+.Chart__rectangle.outOfFocus .Axis__line,
+.Chart__square.outOfFocus .Axis__line {
+    stroke: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Circles,
+.Chart__rectangle.outOfFocus .Circles,
+.Chart__square.outOfFocus .Circles {
+    fill: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Rectangles__rect,
+.Chart__rectangle.outOfFocus .Rectangles__rect,
+.Chart__square.outOfFocus .Rectangles__rect {
+    fill: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Polyline--type-line,
+.Chart__rectangle.outOfFocus .Polyline--type-line,
+.Chart__square.outOfFocus .Polyline--type-line {
+    stroke: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Polyline--type-area,
+.Chart__rectangle.outOfFocus .Polyline--type-area,
+.Chart__square.outOfFocus .Polyline--type-area {
+    fill: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Arc--type-pie,
+.Chart__rectangle.outOfFocus .Arc--type-pie,
+.Chart__square.outOfFocus .Arc--type-pie {
+    fill: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Arc--type-donut,
+.Chart__rectangle.outOfFocus .Arc--type-donut,
+.Chart__square.outOfFocus .Arc--type-donut {
+    fill: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Axis__tick,
+.Chart__rectangle.outOfFocus .Axis__tick,
+.Chart__square.outOfFocus .Axis__tick {
+    fill: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Axis__label,
+.Chart__rectangle.outOfFocus .Axis__label,
+.Chart__square.outOfFocus .Axis__label {
+    fill: var(--mui-palette-background-primary);
+}
+
+.config-closed .App__charts__config {
+    display: none;
+}
+
+.config-open .App__charts__config {
+    display: block;
+}
+
+.config__select {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.config__button {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
+.config__divider {
+    margin-top: 15px !important;
+    margin-bottom: 20px !important;
+}
+
+.config__select * {
+    color: var(--mui-palette-primary-main);
+}
+
+.imgLink {
+    margin: 5px 0 0 10px;
+}
+
+.headerSvg {
+    height: 28px;
+    width: 28px;
+}
+
+.headerSvg [fill='#123456'] {
+    fill: #f8f9fa;
+}
+
+.headerSvg:hover [fill='#123456'] {
+    fill: #eceff1;
+}
+
+.inFocus .Rectangles__rect:hover {
+    fill: var(--mui-palette-primary-complementaryColor) !important;
+}
+
+.tooltipD3 {
+    opacity: 0;
+    position: absolute;
+    top: -12px;
+    left: 0;
+    padding: 0.6em 1em;
+    background: #fff;
+    text-align: center;
+    border: 1px solid #ddd;
+    z-index: 10;
+    transition: all 0.2s ease-out;
+    pointer-events: none;
+}
+
+.tooltipD3:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border: 1px solid #ddd;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    transform: translate(-50%, 50%) rotate(45deg);
+    transform-origin: center center;
+    z-index: 10;
+}
+
+.tooltipD3-value1 {
+    margin-bottom: 0.2em;
+    /*
+    font-weight: 600;
+    */
+}
+
+.voronoi {
+    fill: transparent;
+}
+
+.listening-rect {
+    fill: transparent;
+}
+
+.ChartIconsContainer {
+    position: relative;
+}
+
+@media screen and (min-width: 764px) {
+
+    .Chart__container.inFocus:hover .ChartIcons {
+        visibility: visible;
+    }
+
+    .Chart__container.active .ChartIcons {
+        visibility: visible;
+    }
+}
+
+.ChartIcons {
+    visibility: hidden;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.ChartIcons button {
+    margin-left: -6px;
 }
