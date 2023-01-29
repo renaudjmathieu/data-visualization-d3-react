@@ -2,6 +2,8 @@
 
 A web app for Data Vizualization with D3 + React
 
+![image](https://raw.githubusercontent.com/renaudjmathieu/my-web-app/main/www/src/img/project1.png)
+
 ## :technologist: Available Script Commands
 
 In the project directory, you can run:
