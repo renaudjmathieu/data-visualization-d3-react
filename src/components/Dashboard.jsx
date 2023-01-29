@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react"
-import * as d3 from "d3"
-
 import ChartContainer from "./Chart/ChartContainer"
 
 const Dashboard = (props) => {
@@ -20,12 +18,10 @@ const Dashboard = (props) => {
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
         props.handleDrawerOpen(chart, index);
-        console.log('handleClick1')
     };
 
     const handleClick2 = (e, chart, index) => {
         setChosen(index);
-        console.log('handleClick2')
     };
 
     const handleOutsideClick = (e) => {

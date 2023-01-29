@@ -179,9 +179,7 @@ const getThemeExtender = (color) => {
 
 const App = (props) => {
     const { window } = props;
-
     const [data, setData] = React.useState(getData())
-
     const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {
@@ -402,23 +400,3 @@ const App = (props) => {
 }
 
 export default App;
-
-function useInterval(callback, delay) {
-    const savedCallback = useRef()
-
-    // Remember the latest callback.
-    useEffect(() => {
-        savedCallback.current = callback
-    })
-
-    // Set up the interval.
-    useEffect(() => {
-        function tick() {
-            savedCallback.current()
-        }
-        if (delay !== null) {
-            let id = setInterval(tick, delay)
-            return () => clearInterval(id)
-        }
-    }, [delay])
-}
