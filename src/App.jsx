@@ -5,6 +5,7 @@ import {
     Experimental_CssVarsProvider as CssVarsProvider,
     experimental_extendTheme as extendTheme,
     useColorScheme,
+    useTheme,
 } from '@mui/material/styles';
 import Drawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -24,6 +25,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import GitHubSvg from './github.svg';
+import { red, pink, purple, deepPurple, indigo, blue, lightBlue, cyan, teal, green, lightGreen, lime, yellow, amber, orange, deepOrange, brown, grey, blueGrey } from '@mui/material/colors';
 
 import Dashboard from "./components/Dashboard"
 
@@ -127,25 +129,25 @@ function ModeToggle() {
 }
 
 const themeColors = [
-    { id: 'red', color: '#f44336', complementaryColor: '#36E7F4' },
-    { id: 'pink', color: '#e91e63', complementaryColor: '#1EE9A4' },
-    { id: 'purple', color: '#9c27b0', complementaryColor: '#3BB027' },
-    { id: 'deepPurple', color: '#673ab7', complementaryColor: '#8AB73A' },
-    { id: 'indigo', color: '#3f51b5', complementaryColor: '#B5A33F' },
-    { id: 'blue', color: '#2196f3', complementaryColor: '#F37E21' },
-    { id: 'lightBlue', color: '#03a9f4', complementaryColor: '#F44E03' },
-    { id: 'cyan', color: '#00bcd4', complementaryColor: '#D41800' },
-    { id: 'teal', color: '#009688', complementaryColor: '#96000E' },
-    { id: 'green', color: '#4caf50', complementaryColor: '#AF4CAB' },
-    { id: 'lightGreen', color: '#8bc34a', complementaryColor: '#824AC3' },
-    { id: 'lime', color: '#cddc39', complementaryColor: '#4839DC' },
-    { id: 'yellow', color: '#ffeb3b', complementaryColor: '#3B4FFF' },
-    { id: 'amber', color: '#ffc107', complementaryColor: '#0745FF' },
-    { id: 'orange', color: '#ff9800', complementaryColor: '#0067FF' },
-    { id: 'deepOrange', color: '#ff5722', complementaryColor: '#22CAFF' },
-    { id: 'brown', color: '#795548', complementaryColor: '#486C79' },
-    { id: 'grey', color: '#9e9e9e', complementaryColor: '#9E9E9E' },
-    { id: 'blueGrey', color: '#607d8b', complementaryColor: '#8B6E60' },
+    { id: 'red', color: red[500], complementaryColor: '#36E7F4' },
+    { id: 'pink', color: pink[500], complementaryColor: '#1EE9A4' },
+    { id: 'purple', color: purple[500], complementaryColor: '#3BB027' },
+    { id: 'deepPurple', color: deepPurple[500], complementaryColor: '#8AB73A' },
+    { id: 'indigo', color: indigo[500], complementaryColor: '#B5A33F' },
+    { id: 'blue', color: blue[500], complementaryColor: '#F37E21' },
+    { id: 'lightBlue', color: lightBlue[500], complementaryColor: '#F44E03' },
+    { id: 'cyan', color: cyan[500], complementaryColor: '#D41800' },
+    { id: 'teal', color: teal[500], complementaryColor: '#96000E' },
+    { id: 'green', color: green[500], complementaryColor: '#AF4CAB' },
+    { id: 'lightGreen', color: lightGreen[500], complementaryColor: '#824AC3' },
+    { id: 'lime', color: lime[500], complementaryColor: '#4839DC' },
+    { id: 'yellow', color: yellow[500], complementaryColor: '#3B4FFF' },
+    { id: 'amber', color: amber[500], complementaryColor: '#0745FF' },
+    { id: 'orange', color: orange[500], complementaryColor: '#0067FF' },
+    { id: 'deepOrange', color: deepOrange[500], complementaryColor: '#22CAFF' },
+    { id: 'brown', color: brown[500], complementaryColor: '#486C79' },
+    { id: 'grey', color: grey[500], complementaryColor: '#9E9E9E' },
+    { id: 'blueGrey', color: blueGrey[500], complementaryColor: '#8B6E60' },
 ]
 
 const getRandomColor = () => {
@@ -278,7 +280,7 @@ const App = (props) => {
         <CssVarsProvider theme={theme}>
             <CssBaseline />
             <div className="App">
-                <AppBar position="fixed" open={open} style={{ opacity: open ? 0.5 : 1 }}>
+                <AppBar position="fixed" open={open} style={{ backgroundColor: open ? "#D0D2D4" : null }}>
                     <Toolbar className="close_me">
                         <Typography className="close_me" variant="h6" noWrap sx={{ flexGrow: 1 }} component="div" style={{ color: open && "mode" === "dark" ? '#8B8E91' : '' }}>
                             D3 Dashboard

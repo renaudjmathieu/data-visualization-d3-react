@@ -282,7 +282,7 @@ h1 {
 }
 
 .headerSvg:hover [fill='#123456'] {
-    fill: #FABFE2;
+    fill: #eceff1;
 }
 
 .inFocus .Rectangles__rect:hover {
@@ -352,7 +352,7 @@ h1 {
 .ChartIcons {
     visibility: hidden;
     position: absolute;
-    top: 4px;
+    top: 5px;
     right: 5px;
 }
 
