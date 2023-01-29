@@ -182,7 +182,7 @@ const getThemeExtender = (color) => {
 const App = (props) => {
     const { window } = props;
     const [data, setData] = React.useState(getData())
-    const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
+    const [theme, setTheme] = React.useState(getThemeExtender(themeColors[0]))
 
     const handleThemeChange = () => {
         let resizeTimer;
