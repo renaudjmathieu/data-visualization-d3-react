@@ -66,9 +66,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
   const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
   const keyAccessor = (d, i) => i
 
-  if (yAxisSummarization === 'distinct') {
-    yAxisSummarization = 'count'
-  }
+  const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
 
   return (
     <div onClick={onClick} className={active ? "Chart__rectangle inFocus active" : outOfFocus ? "Chart__rectangle outOfFocus" : "Chart__rectangle inFocus"} ref={ref}>
@@ -92,7 +90,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label={yAxisSummarization.charAt(0).toUpperCase() + yAxisSummarization.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
         />
         {xAxis && <Rectangles
           data={bins}
@@ -103,7 +101,7 @@ const Histogram = ({ outOfFocus, active, onClick, data, xAxis, yAxis, xAxisParse
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
           a={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          ab={yAxisSummarization.charAt(0).toUpperCase() + yAxisSummarization.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          ab={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           abc={yAccessorSummarization}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
           outOfFocus={outOfFocus}
