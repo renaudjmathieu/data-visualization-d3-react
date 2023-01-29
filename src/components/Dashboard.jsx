@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import ChartContainer from "./Chart/ChartContainer"
+import Container from "./chart/Container"
 
 const Dashboard = (props) => {
 
@@ -65,7 +65,7 @@ const Dashboard = (props) => {
             <div className="App__charts">
                 {charts
                     .map((chart, index) => {
-                        return <ChartContainer
+                        return <Container
                             opened={props.opened}
                             onClick1={(e) => handleClick1(e, chart, index)}
                             onClick2={(e) => handleClick2(e, chart, index)}

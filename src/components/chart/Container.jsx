@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -13,7 +12,7 @@ import Timeline from "../Timeline"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fields }) => {
 
   const theme = useTheme();
 
@@ -130,4 +129,4 @@ const ChartContainer = ({ opened, onClick1, onClick2, chart, chosen, index, data
   )
 }
 
-export default ChartContainer
+export default Container
