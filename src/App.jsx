@@ -25,7 +25,6 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import GitHubSvg from './github.svg';
-import { red, pink, purple, deepPurple, indigo, blue, lightBlue, cyan, teal, green, lightGreen, lime, yellow, amber, orange, deepOrange, brown, grey, blueGrey } from '@mui/material/colors';
 
 import Dashboard from "./components/Dashboard"
 
@@ -128,31 +127,14 @@ function ModeToggle() {
     );
 }
 
-const themeColors = [
-    { id: 'red', color: red[500], complementaryColor: '#36E7F4' },
-    { id: 'pink', color: pink[500], complementaryColor: '#1EE9A4' },
-    { id: 'purple', color: purple[500], complementaryColor: '#3BB027' },
-    { id: 'deepPurple', color: deepPurple[500], complementaryColor: '#8AB73A' },
-    { id: 'indigo', color: indigo[500], complementaryColor: '#B5A33F' },
-    { id: 'blue', color: blue[500], complementaryColor: '#F37E21' },
-    { id: 'lightBlue', color: lightBlue[500], complementaryColor: '#F44E03' },
-    { id: 'cyan', color: cyan[500], complementaryColor: '#D41800' },
-    { id: 'teal', color: teal[500], complementaryColor: '#96000E' },
-    { id: 'green', color: green[500], complementaryColor: '#AF4CAB' },
-    { id: 'lightGreen', color: lightGreen[500], complementaryColor: '#824AC3' },
-    { id: 'lime', color: lime[500], complementaryColor: '#4839DC' },
-    { id: 'yellow', color: yellow[500], complementaryColor: '#3B4FFF' },
-    { id: 'amber', color: amber[500], complementaryColor: '#0745FF' },
-    { id: 'orange', color: orange[500], complementaryColor: '#0067FF' },
-    { id: 'deepOrange', color: deepOrange[500], complementaryColor: '#22CAFF' },
-    { id: 'brown', color: brown[500], complementaryColor: '#486C79' },
-    { id: 'grey', color: grey[500], complementaryColor: '#9E9E9E' },
-    { id: 'blueGrey', color: blueGrey[500], complementaryColor: '#8B6E60' },
-]
-
 const getRandomColor = () => {
-    const randomIndex = Math.floor(Math.random() * themeColors.length)
-    return themeColors[randomIndex]
+    //get a random hsl color with saturation between 80 and 100 and lightness between 40 and 60
+    let h = Math.floor(Math.random() * 360);
+    let s = Math.floor(Math.random() * (100 - 80 + 1) + 80);
+    let l = Math.floor(Math.random() * (60 - 40 + 1) + 40);
+    let color = `hsl(${h},${s}%,${l}%)`;
+    let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
+    return { color, complementaryColor }
 }
 
 const getThemeExtender = (color) => {
@@ -182,7 +164,7 @@ const getThemeExtender = (color) => {
 const App = (props) => {
     const { window } = props;
     const [data, setData] = React.useState(getData())
-    const [theme, setTheme] = React.useState(getThemeExtender(themeColors[0]))
+    const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {
         let resizeTimer;
