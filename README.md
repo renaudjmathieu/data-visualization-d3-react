@@ -1,6 +1,6 @@
-#  Data Visualization with D3 + React
+#  Data Dashboard with D3 + React
 
-A web app for Data Vizualization with D3 + React
+A dynamic and configurable data dashboard build with D3 + React
 
 ![image](https://raw.githubusercontent.com/renaudjmathieu/my-web-app/main/www/src/img/project1.png)
 
