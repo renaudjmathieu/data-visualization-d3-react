@@ -19,8 +19,8 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
 
   const numberOfThresholds = 9
 
-  let xAccessor = d => d[xAxis]
-  let yAccessor = d => d[yAxis]
+  const xAccessor = d => d[xAxis]
+  const yAccessor = d => d[yAxis]
 
   if (xAxisParser) {
     xAccessor = d => xAxisParser(d[xAxis])
@@ -52,6 +52,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
   })
 
   const yAccessorSummarization = d => d[yAxisSummarization]
+  
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(bins, yAccessorSummarization)])
     .range([dimensions.boundedHeight, 0])

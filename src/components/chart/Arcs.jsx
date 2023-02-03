@@ -2,13 +2,13 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as d3 from "d3"
 import { accessorPropsType } from "./utils";
-import Texts from "../todo/Texts"
+import Texts from "./Texts"
 import { useTheme } from '@mui/material/styles';
 
-const Arcs = ({ type, data, keyAccessor, radius, radiusAdjust, ...props }) => {
+const Arcs = ({ type, data, keyAccessor, value, radius, radiusAdjust, ...props }) => {
 
   const theme = useTheme();
-  
+
   if (type === "pie") {
     radiusAdjust = 0
   }
@@ -16,6 +16,10 @@ const Arcs = ({ type, data, keyAccessor, radius, radiusAdjust, ...props }) => {
   const arc = d3.arc()
     .innerRadius(radius * radiusAdjust)
     .outerRadius(radius)
+
+  const valueAccessor = d => d.data[1][value]
+  const sumOfValues = d3.sum(data, valueAccessor)
+  const valueAccessor10PercentOrAbove = d => d.data[1][value] / sumOfValues >= 0.1 ? d.data[1][value] : ''
 
   return (
     <React.Fragment>
@@ -26,13 +30,14 @@ const Arcs = ({ type, data, keyAccessor, radius, radiusAdjust, ...props }) => {
           d={arc(d)}
         />
       ))}
+
       <Texts
         data={data}
         keyAccessor={keyAccessor}
         xAccessor={d => (arc.centroid(d)[0])}
         yAccessor={d => (arc.centroid(d)[1])}
-        textAccessor={d => d.data[1].length}
-        style={{fill: theme.vars.palette.background.primary, textAnchor: "middle", alignmentBaseline: "middle"}}
+        textAccessor={valueAccessor10PercentOrAbove}
+        style={{ fill: theme.vars.palette.background.primary, textAnchor: "middle", alignmentBaseline: "middle" }}
       />
     </React.Fragment>
   )
@@ -42,6 +47,7 @@ Arcs.propTypes = {
   type: PropTypes.oneOf(["pie", "donut"]),
   data: PropTypes.array,
   keyAccessor: accessorPropsType,
+  value: PropTypes.string,
   radius: accessorPropsType,
   radiusAdjust: accessorPropsType,
 }

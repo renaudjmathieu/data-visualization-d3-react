@@ -97,7 +97,7 @@ const chartsAvailable = [
     { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
     { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', value: '', valueSummarization: '', playAxis: '' },
     { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
-    { id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'humidity', value: 'icon', valueSummarization: 'count', playAxis: '' },
+    { id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'icon', value: 'humidity', valueSummarization: 'distinct', playAxis: '' },
 ]
 
 function ModeToggle() {
@@ -200,7 +200,7 @@ const App = (props) => {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const [charts, setCharts] = React.useState(
-        chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline'].includes(chart.id))
+        chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'pie'].includes(chart.id))
     );
 
     const handleReplaceChart = (event) => {

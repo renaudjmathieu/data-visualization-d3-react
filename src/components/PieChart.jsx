@@ -20,12 +20,11 @@ const PieChart = ({ zoomed, active, outOfFocus, data, category, value, categoryP
   const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
   const gradientId = useUniqueId("Histogram-gradient")
 
-  const numberOfThresholds = 4
+  const categoryAccessor = d => d[category]
+  const valueAccessor = d => d[value]
 
-  let categoryAccessor = d => d[category]
-
+  const numberOfThresholds = 8
   const dataByCategory = Array.from(d3.group(data, categoryAccessor))
-    .sort((a, b) => b[1].length - a[1].length)
   const combinedDataByCategory = [
     ...dataByCategory.slice(0, numberOfThresholds),
     [
@@ -34,19 +33,28 @@ const PieChart = ({ zoomed, active, outOfFocus, data, category, value, categoryP
     ]
   ]
 
-  const barPadding = 2
-  const keyAccessor = (d, i) => i
+  dataByCategory.forEach(categoryData => {
+    switch (valueSummarization) {
+      case "sum": categoryData[1][valueSummarization] = d3.sum(categoryData[1], valueAccessor); break;
+      case "average": categoryData[1][valueSummarization] = d3.sum(d3.rollup(categoryData[1], v => d3.sum(v, valueAccessor), valueAccessor).values()) / categoryData[1].length; break;
+      case "min": categoryData[1][valueSummarization] = d3.min(categoryData[1], valueAccessor); break;
+      case "max": categoryData[1][valueSummarization] = d3.max(categoryData[1], valueAccessor); break;
+      case "distinct": categoryData[1][valueSummarization] = d3.group(categoryData[1], valueAccessor).size; break;
+      case "count": categoryData[1][valueSummarization] = categoryData[1].length; break;
+      case "median": categoryData[1][valueSummarization] = d3.median(categoryData[1], valueAccessor); break;
+      default: null;
+    }
+  })
+
+  const valueSummarizationAccessor = ([key, values]) => values[valueSummarization]
 
   const arcGenerator = d3.pie()
     .padAngle(0.005)
-    .value(([key, values]) => values.length)
+    .value(valueSummarizationAccessor)
 
   const arcs = arcGenerator(combinedDataByCategory)
 
-  const interpolateWithSteps = numberOfSteps => new Array(numberOfSteps).fill(null).map((d, i) => i / (numberOfSteps - 1))
-  const colorScale = d3.scaleOrdinal()
-    .domain(arcs.sort((a, b) => a.data[1].length - b.data[1].length).map(d => d.data[0]))
-    .range(interpolateWithSteps(dataByCategory.length).map(d3.interpolateLab("#f3a683", "#3dc1d3")))
+  const keyAccessor = (d, i) => i
 
   return (
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
@@ -62,8 +70,9 @@ const PieChart = ({ zoomed, active, outOfFocus, data, category, value, categoryP
             type="donut"
             data={arcs}
             keyAccessor={keyAccessor}
+            value={valueSummarization}
             radius={dimensions.boundedWidth / 2}
-            style={outOfFocus ? {} : {fill: `url(#${gradientId})`}}
+            style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
           />
         </g>
       </Chart>
