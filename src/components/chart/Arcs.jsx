@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 import * as d3 from "d3"
 import { accessorPropsType } from "./utils";
-import Texts from "./Texts"
+import Texts from "../todo/Texts"
 import { useTheme } from '@mui/material/styles';
 
 const Arcs = ({ type, data, keyAccessor, radius, radiusAdjust, ...props }) => {

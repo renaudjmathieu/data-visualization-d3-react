@@ -8,6 +8,7 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import Histogram from "../Histogram"
 import ScatterPlot from "../ScatterPlot"
 import Timeline from "../Timeline"
+import PieChart from "../PieChart"
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -21,10 +22,17 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
   const xAxis = chart.xAxis
   const yAxis = chart.yAxis
   const yAxisSummarization = chart.yAxisSummarization
+  const category = chart.category
+  const value = chart.value
+  const valueSummarization = chart.valueSummarization
   const xAxisParser = fields.find(field => field.id === chart.xAxis).parser
   const yAxisParser = fields.find(field => field.id === chart.yAxis).parser
+  const categoryParser = fields.find(field => field.id === chart.category).parser
+  const valueParser = fields.find(field => field.id === chart.value).parser
   const xAxisFormat = fields.find(field => field.id === chart.xAxis).format
   const yAxisFormat = fields.find(field => field.id === chart.yAxis).format
+  const categoryFormat = fields.find(field => field.id === chart.category).format
+  const valueFormat = fields.find(field => field.id === chart.value).format
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -43,7 +51,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         yAxisParser={yAxisParser}
         xAxisFormat={xAxisFormat}
         yAxisFormat={yAxisFormat}
-      />;
+      />
       case "histogram": return <Histogram
         zoomed={zoomed}
         active={active}
@@ -67,6 +75,19 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         xAxisFormat={xAxisFormat}
         yAxisFormat={yAxisFormat}
       />
+      case "pie": return <PieChart
+        zoomed={zoomed}
+        active={active}
+        outOfFocus={outOfFocus}
+        data={data}
+        category={category}
+        value={value}
+        categoryParser={categoryParser}
+        valueParser={valueParser}
+        categoryFormat={categoryFormat}
+        valueFormat={valueFormat}
+        valueSummarization={valueSummarization}
+      />
       default: return null;
     }
   }
@@ -76,6 +97,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
       case "scatter": return 'Chart__square__container';
       case "histogram": return 'Chart__rectangle__container';
       case "timeline": return 'Chart__rectangle__large__container';
+      case "pie": return 'Chart__square__container';
       default: return null;
     }
   }

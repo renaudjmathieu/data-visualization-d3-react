@@ -8,7 +8,7 @@ import Lines from "./chart/Lines"
 import Texts from "./chart/Texts"
 import Polyline from "./chart/Polyline"
 import Gradient from "./chart/Gradient"
-import { useChartDimensions, accessorPropsType, useUniqueId } from "./chart/utils"
+import { useChartDimensions, accessorPropsType, useUniqueId } from "../chart/utils"
 import { useTheme } from '@mui/material/styles';
 
 const Radar = ({ data, valueAccessor, entityAccessor }) => {
