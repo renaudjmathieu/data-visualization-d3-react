@@ -51,6 +51,18 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
     }
   })
 
+  let yAccessorSummarizationFormatter = null
+  switch (yAxisSummarization) {
+    case "sum": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "average": yAccessorSummarizationFormatter = d3.format(",.2f"); break;
+    case "min": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "max": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "distinct": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "count": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "median": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    default: yAccessorSummarizationFormatter = d3.format(",");
+  }
+
   const yAccessorSummarization = d => d[yAxisSummarization]
   
   const yScale = d3.scaleLinear()
@@ -102,9 +114,10 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
           tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1ValueFormat={xAxisFormat}
           tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Value={yAccessorSummarization}
-          tooltipValue1ValueFormat={xAxisFormat}
+          tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
           style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
           outOfFocus={outOfFocus}
         />}

@@ -78,7 +78,7 @@ function AxisVertical({ dimensions, scale, label, format, ...props }) {
   const numberOfTicks = dimensions.boundedHeight / 70
 
   const ticks = scale.ticks(numberOfTicks)
-  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format ? d3.timeFormat("%H:%M") : d3.format(",")
+  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format === 'time' ? d3.timeFormat("%H:%M") : format === 'number' ? d3.format(".2~f") : d3.format(",")
 
   return (
     <g className="Axis AxisVertical" {...props}>

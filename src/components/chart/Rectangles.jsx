@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, outOfFocus, ...props }) => {
+const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue1ValueFormat, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, style, outOfFocus, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
   const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
@@ -17,7 +17,7 @@ const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccesso
       ].join(" - "))
       
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(tooltipValue2Title + ": " + tooltipValue2Value(d))
+      .text(tooltipValue2Title + ": " + tooltipValue2ValueFormat(tooltipValue2Value(d)))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i) + (callAccessor(widthAccessor, d, i) / 2)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
@@ -36,7 +36,7 @@ const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccesso
 
   return <React.Fragment>
     {data.map((d, i) => (
-      <rect {...props}
+      <rect style={style}
         className="Rectangles__rect"
         key={keyAccessor(d, i)}
         x={callAccessor(xAccessor, d, i)}

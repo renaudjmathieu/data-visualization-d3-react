@@ -19,7 +19,7 @@ const Arcs = ({ type, data, keyAccessor, value, radius, radiusAdjust, ...props }
 
   const valueAccessor = d => d.data[1][value]
   const sumOfValues = d3.sum(data, valueAccessor)
-  const valueAccessor10PercentOrAbove = d => d.data[1][value] / sumOfValues >= 0.1 ? d.data[1][value] : ''
+  const valueAccessor10PercentOrAbove = d => d.data[1][value] / sumOfValues >= 0.1 ? d3.format(".2~f")(d.data[1][value]) : ''
 
   return (
     <React.Fragment>
