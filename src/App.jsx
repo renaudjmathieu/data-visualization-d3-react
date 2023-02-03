@@ -200,7 +200,7 @@ const App = (props) => {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const [charts, setCharts] = React.useState(
-        chartsAvailable.filter((chart) => ['scatter', 'histogram', 'timeline'].includes(chart.id))
+        chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'pie'].includes(chart.id))
     );
 
     const handleReplaceChart = (event) => {
@@ -364,7 +364,10 @@ const App = (props) => {
                                                 summarizationAvailable
                                                     .filter(
                                                         summarization => summarization.numberOnly === false ||
-                                                            (fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')]))[0].type === 'number'
+                                                            (
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0] !== undefined &&
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0].type === 'number'
+                                                            )
                                                     )
                                                     .map(summarization => (
                                                         <MenuItem value={summarization.id}>{summarization.name}</MenuItem>

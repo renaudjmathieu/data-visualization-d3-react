@@ -25,14 +25,16 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
   const category = chart.category
   const value = chart.value
   const valueSummarization = chart.valueSummarization
-  const xAxisParser = fields.find(field => field.id === chart.xAxis).parser
-  const yAxisParser = fields.find(field => field.id === chart.yAxis).parser
-  const categoryParser = fields.find(field => field.id === chart.category).parser
-  const valueParser = fields.find(field => field.id === chart.value).parser
-  const xAxisFormat = fields.find(field => field.id === chart.xAxis).format
-  const yAxisFormat = fields.find(field => field.id === chart.yAxis).format
-  const categoryFormat = fields.find(field => field.id === chart.category).format
-  const valueFormat = fields.find(field => field.id === chart.value).format
+
+  const xAxisParser = xAxis ? fields.find(field => field.id === xAxis).parser : null
+  const yAxisParser = yAxis ? fields.find(field => field.id === yAxis).parser : null
+  const categoryParser = category ? fields.find(field => field.id === category).parser : null
+  const valueParser = value ? fields.find(field => field.id === value).parser : null
+
+  const xAxisFormat = xAxis ? fields.find(field => field.id === xAxis).format : null
+  const yAxisFormat = yAxis ? fields.find(field => field.id === yAxis).format : null
+  const categoryFormat = category ? fields.find(field => field.id === category).format : null
+  const valueFormat = value ? fields.find(field => field.id === value).format : null
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
