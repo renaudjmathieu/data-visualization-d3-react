@@ -200,7 +200,7 @@ const App = (props) => {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const [charts, setCharts] = React.useState(
-        chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'pie'].includes(chart.id))
+        chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline'].includes(chart.id))
     );
 
     const handleReplaceChart = (event) => {
