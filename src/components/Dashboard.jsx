@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 import Container from "./chart/Container"
 
-const Dashboard = (props) => {
-
-    const ref = useRef();
+const Dashboard = (props, ref) => {
 
     const [charts, setCharts] = useState(props.charts);
 
@@ -21,7 +19,7 @@ const Dashboard = (props) => {
     };
 
     const handleClick2 = (e, chart, index) => {
-        setChosen(index);
+
     };
 
     const handleOutsideClick = (e) => {
@@ -42,6 +40,12 @@ const Dashboard = (props) => {
         }
     };
 
+    const doSomething = () => {
+        setChosen(null);
+    };
+
+    useImperativeHandle(ref, () => ({ doSomething }));
+
     useEffect(() => {
         document.addEventListener("click", handleOutsideOusideClick);
 
@@ -51,7 +55,7 @@ const Dashboard = (props) => {
     });
 
     return (
-        <div className="App__charts__dashboard" ref={ref} onClick={handleOutsideClick}>
+        <div className="App__charts__dashboard" onClick={handleOutsideClick}>
             <div className="App__charts__config">
             </div>
             <div id="tooltipD3" className="tooltipD3">
@@ -82,4 +86,4 @@ const Dashboard = (props) => {
     )
 }
 
-export default Dashboard
+export default forwardRef(Dashboard)

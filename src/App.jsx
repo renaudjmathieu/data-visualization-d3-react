@@ -187,6 +187,8 @@ const App = (props) => {
         setOpen(true);
         document.body.classList.add("open")
         document.body.classList.remove("closed")
+
+        console.log('handleDrawerOpen')
     };
 
     const handleDrawerClose = () => {
@@ -195,6 +197,16 @@ const App = (props) => {
         setOpen(false);
         document.body.classList.add("closed")
         document.body.classList.remove("open")
+
+        console.log('handleDrawerClose')
+
+        if (dashboardRef.current) {
+            
+            console.log(dashboardRef.current)
+            dashboardRef.current.doSomething();
+        }
+
+        
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -221,7 +233,7 @@ const App = (props) => {
         setCharts(charts.slice(0, charts.length - 1));
     };
 
-    const dashboardRef = React.useRef();
+    const dashboardRef = React.useRef(null);
 
     const handleFieldChange = (event, keyName) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
