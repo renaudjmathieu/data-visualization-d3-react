@@ -1,0 +1,161 @@
+.DogNames__item {
+    margin: 2em;
+    font-size: 0.8em;
+    line-height: 1.3em;
+}
+
+.DogNames__item__name {
+    font-weight: 900;
+}
+
+.SelectableList {
+    position: relative;
+    flex: 1;
+    font-size: 0.9em;
+}
+
+@media (max-width: 1500px) {
+    .SelectableList {
+        font-size: 0.8em;
+    }
+}
+
+.SelectableList__input {
+    width: 100%;
+    padding: 0.3em 0.4em;
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 0.2em;
+    border-radius: 2px;
+    font-size: 1.1em;
+    appearance: none;
+    outline: none;
+    box-shadow: none;
+    border: 1px solid gray;
+}
+
+.SelectableList__input::placeholder {
+    font-size: 0.9em;
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.SelectableList__column-headers {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    right: 0;
+    top: 0.2em;
+}
+
+.SelectableList__column-header {
+    width: 5.9em;
+    font-size: 0.7em;
+}
+
+.SelectableList__items {
+    height: 250px;
+    overflow: auto;
+}
+
+/* width */
+.SelectableList__items::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.SelectableList__items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+/* Handle */
+.SelectableList__items::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+.SelectableList__items::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.SelectableList__item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 0.3em 0.6em;
+    transition: all 0.3s ease-out;
+    font-size: 0.8em;
+    border: 1px solid transparent;
+    max-width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.SelectableList__item:hover {
+    background: gray;
+}
+
+.SelectableList__item--is-selected {
+    border-color: red;
+    font-weight: 900;
+}
+
+.SelectableList__item--is-next-to-selected {
+    opacity: 0.4;
+}
+
+.SelectableList__item__bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -0.2em;
+    background: blue;
+    opacity: 0.3;
+    z-index: 0;
+    transition: all 0.3s ease-out;
+}
+
+.SelectableList__item__index {
+    flex: 0 0 2em;
+    opacity: 0.3;
+}
+
+.SelectableList__item__label {
+    flex: 1;
+    height: 1.3em;
+    line-height: 1.3em;
+    z-index: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.SelectableList__item__value {
+    flex: 0 0 4em;
+    margin-left: auto;
+    text-align: right;
+}
+
+.SelectableList__note {
+    font-size: 0.7em;
+    background: gray;
+    padding: 0.8em 0.8em;
+    font-style: italic;
+    color: #343434;
+    line-height: 1em;
+}
+
+@media (max-width: 950px) {
+    .DogNames .SelectableList {
+        flex: none;
+        width: 100%;
+        margin-top: 1em;
+    }
+
+    .DogNames .SelectableList__items {
+        max-height: 20em;
+    }
+}

@@ -8,7 +8,7 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import Histogram from "../Histogram"
 import ScatterPlot from "../ScatterPlot"
 import Timeline from "../Timeline"
-import PieChart from "../PieChart"
+import List from "../List/List"
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -39,6 +39,26 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [selectedItem, setSelectedItem] = React.useState(null)
+  const [selectedColumn, setSelectedColumn] = React.useState(null)
+  const [totals, setTotals] = React.useState({
+    metric: {},
+    segment: {},
+    date: {},
+  })
+
+  const doStuff = (column, item) => {
+    console.log('doStuff')
+  }
+
+  const onDoStuff = (e, column, item) => {
+    doStuff(column, item)
+  }
+
+  React.useEffect(() => {
+    doStuff(selectedColumn, selectedItem)
+  }, [])
 
   const renderChart = (zoomed) => {
     switch (chart.id) {
@@ -77,18 +97,19 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         xAxisFormat={xAxisFormat}
         yAxisFormat={yAxisFormat}
       />
-      case "pie": return <PieChart
+      case "list": return <List
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
-        category={category}
-        value={value}
-        categoryParser={categoryParser}
-        valueParser={valueParser}
-        categoryFormat={categoryFormat}
-        valueFormat={valueFormat}
-        valueSummarization={valueSummarization}
+        items={data}
+        selectedItem={null}
+        selectedColumn="metric"
+        onMouseDown={onDoStuff}
+        xAxis={xAxis}
+        yAxis={yAxis}
+        xAxisParser={xAxisParser}
+        xAxisFormat={xAxisFormat}
+        yAxisSummarization={yAxisSummarization}
       />
       default: return null;
     }
@@ -99,7 +120,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
       case "scatter": return 'Chart__square__container';
       case "histogram": return 'Chart__rectangle__container';
       case "timeline": return 'Chart__rectangle__large__container';
-      case "pie": return 'Chart__square__container';
+      case "list": return 'Chart__rectangle__container';
       default: return null;
     }
   }
@@ -118,7 +139,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
   };
 
   return (
-    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${active ? 'active' : '' } ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
+    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
       <div className="ChartIconsContainer">
         <div className="ChartIcons">
           <IconButton onClick={onClick1}>
