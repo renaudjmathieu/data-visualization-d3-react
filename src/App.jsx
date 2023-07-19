@@ -97,7 +97,7 @@ const chartsAvailable = [
     { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
     { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', value: '', valueSummarization: '', playAxis: '' },
     { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
-    { id: 'list', name: "List", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', value: '', valueSummarization: '', playAxis: '' },
+    { id: 'list', name: "List", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'icon', value: 'humidity', valueSummarization: 'distinct', playAxis: '' },
     //{ id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'icon', value: 'humidity', valueSummarization: 'distinct', playAxis: '' },
 ]
 

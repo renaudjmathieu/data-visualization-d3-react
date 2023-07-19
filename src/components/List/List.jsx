@@ -12,39 +12,54 @@ import "./List.css"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, items, selectedItem, selectedColumn, onMouseDown, xAxis, yAxis, xAxisParser, xAxisFormat, yAxisSummarization }) => {
+const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, onMouseDown, category, value, categoryParser, valueParser, categoryFormat, valueFormat, valueSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
   const theme = useTheme();
+
   const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
+  const gradientId = useUniqueId("Histogram-gradient")
+
+  const categoryAccessor = d => d[category]
+  const valueAccessor = d => d[value]
+
+  const numberOfThresholds = 8
+  const dataByCategory = Array.from(d3.group(data, categoryAccessor))
+  const combinedDataByCategory = [
+    ...dataByCategory.slice(0, numberOfThresholds),
+    [
+      "other",
+      d3.merge(dataByCategory.slice(numberOfThresholds).map(d => d[1]))
+    ]
+  ]
+
+  dataByCategory.forEach(categoryData => {
+    switch (valueSummarization) {
+      case "sum": categoryData[1][valueSummarization] = d3.sum(categoryData[1], valueAccessor); break;
+      case "average": categoryData[1][valueSummarization] = d3.sum(d3.rollup(categoryData[1], v => d3.sum(v, valueAccessor), valueAccessor).values()) / categoryData[1].length; break;
+      case "min": categoryData[1][valueSummarization] = d3.min(categoryData[1], valueAccessor); break;
+      case "max": categoryData[1][valueSummarization] = d3.max(categoryData[1], valueAccessor); break;
+      case "distinct": categoryData[1][valueSummarization] = d3.group(categoryData[1], valueAccessor).size; break;
+      case "count": categoryData[1][valueSummarization] = categoryData[1].length; break;
+      case "median": categoryData[1][valueSummarization] = d3.median(categoryData[1], valueAccessor); break;
+      default: null;
+    }
+  })
+
+  const valueSummarizationAccessor = ([key, values]) => values[valueSummarization]
 
 
-  const [filterValue, setFilterValue] = React.useState("")
-	const [filteredItems, setFilteredItems] = React.useState([])
-	const [filteredTotal, setFilteredTotal] = React.useState(0)
-
-	const filterList = (value) => {
-		let x = items
-		const total = _.sumBy(x, "count")
-		if (!_.isEmpty(value)) x = _.filter(x, d => d.key.toLowerCase().includes(value))
-		x = _.take(x, 100)
-
-		setFilterValue(value)
-		setFilteredItems(x)
-		setFilteredTotal(total)
+  const onInputChange = e => {
+		console.log('todo')
 	}
 
-	const onInputChange = e => {
-		filterList(e.target.value)
-	}
+  const keyAccessor = (d, i) => i
 
-	React.useEffect(() => {
-		filterList(filterValue)
-	}, [items])
+  console.log('dataByCategory', dataByCategory)
 
-
+  const filterValue = "euhhhh"
 
   return (
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
@@ -59,35 +74,35 @@ const List = ({ zoomed, active, outOfFocus, items, selectedItem, selectedColumn,
           </div>
         </div>
         <div className="SelectableList__items">
-          {_.map(filteredItems, (item, i) => (
+          {_.map(dataByCategory, (item, i) => (
             <div
               className={[
                 "SelectableList__item",
-                `SelectableList__item--is-${item.key == selectedItem ? "selected" :
+                `SelectableList__item--is-${item[0] == selectedItem ? "selected" :
                   selectedItem ? "next-to-selected" :
                     "not-selected"
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={(e) => onMouseDown(e, selectedColumn, item.key)}>
+              onMouseDown={(e) => onMouseDown(e, selectedColumn, item[0])}>
               <div className="SelectableList__item__index">
-                {item.index}
+                0
               </div>
               <div className="SelectableList__item__label">
-                {item.key}
+                {item[0]}
               </div>
               <div className="SelectableList__item__value">
-                {formatNumber(item.count)}
+                {formatNumber(item[1][valueSummarization])}
               </div>
               <div className="SelectableList__item__value">
-                {formatPercent(item.count / filteredTotal)}
+                100
               </div>
               <div className="SelectableList__item__bar" style={{
-                width: `${item.count * 100 / filteredItems[0].count}%`,
+                width: `70%`,
               }} />
             </div>
           ))}
-          {(items || []).length > (filteredItems || []).length && (
+          {(data || []).length > (dataByCategory || []).length && (
             <div className="SelectableList__note">
               Change search for more results
             </div>

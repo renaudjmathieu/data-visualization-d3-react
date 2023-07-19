@@ -40,20 +40,21 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [selectedItem, setSelectedItem] = React.useState(null)
-  const [selectedColumn, setSelectedColumn] = React.useState(null)
-  const [totals, setTotals] = React.useState({
-    metric: {},
-    segment: {},
-    date: {},
-  })
+  const [selectedColumn, setSelectedColumn] = React.useState('icon')
+  const [selectedItem, setSelectedItem] = React.useState('rain')
+  const [filteredData, setFilteredData] = React.useState(data)
 
   const doStuff = (column, item) => {
-    console.log('doStuff')
+    const filteredData = item ? _.filter(data, { [column]: item }) : data
+
+    setFilteredData(filteredData)
+    setSelectedColumn(column)
+    setSelectedItem(item)
   }
 
   const onDoStuff = (e, column, item) => {
-    doStuff(column, item)
+    //doStuff(column, item)
+    doStuff('icon', 'rain')
   }
 
   React.useEffect(() => {
@@ -66,7 +67,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
+        data={filteredData}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -78,7 +79,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
+        data={filteredData}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -89,7 +90,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
+        data={filteredData}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -101,15 +102,17 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        items={data}
+        data={filteredData}
         selectedItem={null}
         selectedColumn="metric"
         onMouseDown={onDoStuff}
-        xAxis={xAxis}
-        yAxis={yAxis}
-        xAxisParser={xAxisParser}
-        xAxisFormat={xAxisFormat}
-        yAxisSummarization={yAxisSummarization}
+        category={category}
+        value={value}
+        categoryParser={categoryParser}
+        valueParser={valueParser}
+        categoryFormat={categoryFormat}
+        valueFormat={valueFormat}
+        valueSummarization={valueSummarization}
       />
       default: return null;
     }
