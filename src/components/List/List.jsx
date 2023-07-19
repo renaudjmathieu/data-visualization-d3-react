@@ -50,21 +50,22 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
 
   const valueSummarizationAccessor = ([key, values]) => values[valueSummarization]
 
+  const total = _.sumBy(dataByCategory, valueSummarizationAccessor)
+  const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
+
 
   const onInputChange = e => {
-		console.log('todo')
-	}
+    console.log('todo')
+  }
 
   const keyAccessor = (d, i) => i
-
-  console.log('dataByCategory', dataByCategory)
 
   const filterValue = "euhhhh"
 
   return (
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <div className="SelectableList">
-        <input className="SelectableList__input" value={filterValue} placeholder={`Search for a ${selectedColumn}`} onChange={onInputChange} />
+        <input className="SelectableList__input" value={filterValue} placeholder={`Search for a ${category}`} onChange={onInputChange} />
         <div className="SelectableList__column-headers">
           <div className="SelectableList__column-header">
             Count
@@ -74,7 +75,7 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
           </div>
         </div>
         <div className="SelectableList__items">
-          {_.map(dataByCategory, (item, i) => (
+          {_.map(orderedDataByCategory, (item, i) => (
             <div
               className={[
                 "SelectableList__item",
@@ -84,7 +85,10 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={(e) => onMouseDown(e, selectedColumn, item[0])}>
+              onMouseDown={(e) => onMouseDown(e, category, item[0])}>
+              <div className="SelectableList__item__bar" style={{
+                width: `${item[1][valueSummarization] * 100 / orderedDataByCategory[0][1][valueSummarization]}%`,
+              }} />
               <div className="SelectableList__item__index">
                 0
               </div>
@@ -95,14 +99,12 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
                 {formatNumber(item[1][valueSummarization])}
               </div>
               <div className="SelectableList__item__value">
-                100
+                {formatPercent(item[1][valueSummarization] / total)}
               </div>
-              <div className="SelectableList__item__bar" style={{
-                width: `70%`,
-              }} />
+
             </div>
           ))}
-          {(data || []).length > (dataByCategory || []).length && (
+          {(data || []).length > (orderedDataByCategory || []).length && (
             <div className="SelectableList__note">
               Change search for more results
             </div>
