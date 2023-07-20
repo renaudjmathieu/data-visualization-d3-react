@@ -5,8 +5,6 @@ import _ from "lodash"
 import Chart from "../chart/Chart"
 import { useChartDimensions, useUniqueId } from "../chart/utils"
 
-import { useTheme } from '@mui/material/styles';
-
 import "./List.css"
 
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
@@ -17,23 +15,15 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
-  const theme = useTheme();
 
-  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
-  const gradientId = useUniqueId("Histogram-gradient")
+  const [filterValue, setFilterValue] = React.useState("")
+  const [filteredItems, setFilteredItems] = React.useState([])
+  const [filteredTotal, setFilteredTotal] = React.useState(0)
 
   const categoryAccessor = d => d[category]
   const valueAccessor = d => d[value]
 
-  const numberOfThresholds = 8
   const dataByCategory = Array.from(d3.group(data, categoryAccessor))
-  const combinedDataByCategory = [
-    ...dataByCategory.slice(0, numberOfThresholds),
-    [
-      "other",
-      d3.merge(dataByCategory.slice(numberOfThresholds).map(d => d[1]))
-    ]
-  ]
 
   dataByCategory.forEach(categoryData => {
     switch (valueSummarization) {
@@ -48,20 +38,33 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
     }
   })
 
+
   const valueSummarizationAccessor = ([key, values]) => values[valueSummarization]
 
-  const total = _.sumBy(dataByCategory, valueSummarizationAccessor)
   const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
-
-
-  const onInputChange = e => {
-    console.log('todo')
-  }
 
   const keyAccessor = (d, i) => i
 
-  const filterValue = "euhhhh"
+  const filterList = (value) => {
+    console.log('orderedDataByCategory', orderedDataByCategory)
+    console.log('value', value)
+    let x = orderedDataByCategory
+    const total = _.sumBy(x, valueSummarizationAccessor)
+    if (!_.isEmpty(value)) x = _.filter(x, d => (d[0]).toLowerCase().includes(value.toLowerCase()))
+    x = _.take(x, 100)
 
+    setFilterValue(value)
+    setFilteredItems(x)
+    setFilteredTotal(total)
+  }
+
+  const onInputChange = e => {
+    filterList(e.target.value)
+  }
+
+  const items = filterValue ? filteredItems : orderedDataByCategory
+  const total = filteredTotal ? filteredTotal : _.sumBy(orderedDataByCategory, valueSummarizationAccessor)
+  
   return (
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <div className="SelectableList">
@@ -75,7 +78,7 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
           </div>
         </div>
         <div className="SelectableList__items">
-          {_.map(orderedDataByCategory, (item, i) => (
+          {_.map(items, (item, i) => (
             <div
               className={[
                 "SelectableList__item",
@@ -85,9 +88,9 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={(e) => onMouseDown(e, category, item[0])}>
+              onMouseDown={selectedColumn == category && selectedItem == item[0] ? (e) => onMouseDown(e, null, null) : (e) => onMouseDown(e, category, item[0])}>
               <div className="SelectableList__item__bar" style={{
-                width: `${item[1][valueSummarization] * 100 / orderedDataByCategory[0][1][valueSummarization]}%`,
+                width: `${item[1][valueSummarization] * 100 / items[0][1][valueSummarization]}%`,
               }} />
               <div className="SelectableList__item__index">
                 0
@@ -104,7 +107,7 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
 
             </div>
           ))}
-          {(data || []).length > (orderedDataByCategory || []).length && (
+          {(data || []).length > (items || []).length && (
             <div className="SelectableList__note">
               Change search for more results
             </div>

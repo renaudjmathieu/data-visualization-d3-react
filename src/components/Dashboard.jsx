@@ -24,7 +24,7 @@ const Dashboard = (props, ref) => {
 
     const handleOutsideClick = (e) => {
         if (e.target.tagName === "DIV" && (!e.target.classList.contains("Chart__rectangle")) && (!e.target.classList.contains("Chart__rectangle__large")) && (!e.target.classList.contains("Chart__square"))) {
-            setChosen(null);
+            setChosen(null)
             document.body.classList.add("config-closed")
             document.body.classList.remove("config-open")
             props.handleDrawerClose();
@@ -33,7 +33,7 @@ const Dashboard = (props, ref) => {
 
     const handleOutsideOusideClick = (e) => {
         if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
-            setChosen(null);
+            setChosen(null)
             document.body.classList.add("config-closed")
             document.body.classList.remove("config-open")
             props.handleDrawerClose();
@@ -53,6 +53,39 @@ const Dashboard = (props, ref) => {
             document.removeEventListener("click", handleOutsideOusideClick);
         };
     });
+
+
+
+
+
+
+
+    const [selectedColumn, setSelectedColumn] = React.useState(null)
+    const [selectedItem, setSelectedItem] = React.useState(null)
+    const [filteredData, setFilteredData] = React.useState(props.data.random)
+
+    const doStuff = (column, item) => {
+        const filteredData = item ? _.filter(props.data.random, { [column]: item }) : props.data.random
+        //const filteredData = data
+
+        setFilteredData(filteredData)
+        setSelectedColumn(column)
+        setSelectedItem(item)
+
+        console.log('data', props.data.random)
+        console.log('filteredData', filteredData)
+    }
+
+    const onDoStuff = (e, column, item) => {
+        doStuff(column, item)
+        //doStuff('icon', 'rain')
+        console.log('onDoStuff', column, item)
+    }
+
+    React.useEffect(() => {
+        doStuff(selectedColumn, selectedItem)
+    }, [])
+
 
     return (
         <div className="App__charts__dashboard" onClick={handleOutsideClick}>
@@ -77,6 +110,10 @@ const Dashboard = (props, ref) => {
                             chosen={chosen}
                             index={index}
                             data={props.data.random}
+                            filteredData={filteredData}
+                            selectedColumn={selectedColumn}
+                            selectedItem={selectedItem}
+                            onDoStuff={onDoStuff}
                             fields={props.fields}
                         />
                     }

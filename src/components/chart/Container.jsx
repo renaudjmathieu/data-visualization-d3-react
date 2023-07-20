@@ -13,7 +13,7 @@ import List from "../List/List"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, filteredData, selectedColumn, selectedItem, onDoStuff, fields }) => {
 
   const theme = useTheme();
 
@@ -39,32 +39,6 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const [selectedColumn, setSelectedColumn] = React.useState(null)
-  const [selectedItem, setSelectedItem] = React.useState(null)
-  const [filteredData, setFilteredData] = React.useState(data)
-
-  const doStuff = (column, item) => {
-    const filteredData = item ? _.filter(data, { [column]: item }) : data
-    //const filteredData = data
-
-    setFilteredData(filteredData)
-    setSelectedColumn(column)
-    setSelectedItem(item)
-
-    console.log('data', data)
-    console.log('filteredData', filteredData)
-  }
-
-  const onDoStuff = (e, column, item) => {
-    doStuff(column, item)
-    //doStuff('icon', 'rain')
-    console.log('onDoStuff', column, item)
-  }
-
-  React.useEffect(() => {
-    doStuff(selectedColumn, selectedItem)
-  }, [])
 
   const renderChart = (zoomed) => {
     switch (chart.id) {
