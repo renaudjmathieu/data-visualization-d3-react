@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { accessorPropsType, callAccessor } from "./utils";
+import { accessorPropsType, callAccessor } from "../chart/utils";
 
 const Texts = ({ data, keyAccessor, xAccessor, yAccessor, textAccessor, anchorAccessor, ...props }) => {
 

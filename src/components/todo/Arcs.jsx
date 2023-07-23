@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import * as d3 from "d3"
-import { accessorPropsType } from "./utils";
+import { accessorPropsType } from "../chart/utils";
 import Texts from "./Texts"
 import { useTheme } from '@mui/material/styles';
 

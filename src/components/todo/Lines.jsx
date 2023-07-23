@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { accessorPropsType } from "./utils";
+import { accessorPropsType } from "../chart/utils";
 
 const Lines = ({ data, keyAccessor, x1Accessor, x2Accessor, y1Accessor, y2Accessor }) => (
   <React.Fragment>
