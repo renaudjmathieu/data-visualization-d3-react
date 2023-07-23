@@ -4,18 +4,13 @@ import * as d3 from "d3"
 import Chart from "./chart/Chart"
 import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
-import Gradient from "./chart/Gradient"
-import { useChartDimensions, useUniqueId } from "./chart/utils"
-import { useTheme } from '@mui/material/styles';
+import { useChartDimensions } from "./chart/utils"
 
 const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, xAxisFormat, yAxisSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
-  const theme = useTheme();
-  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
-  const gradientId = useUniqueId("Histogram-gradient")
 
   const numberOfThresholds = 9
 
@@ -26,30 +21,62 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
     xAccessor = d => xAxisParser(d[xAxis])
   }
 
-  const xScale = d3.scaleLinear()
-    .domain(d3.extent(data, xAccessor))
-    .range([0, dimensions.boundedWidth])
-    .nice(numberOfThresholds)
 
-  const binsGenerator = d3.bin()
-    .domain(xScale.domain())
-    .value(xAccessor)
-    .thresholds(xScale.ticks(numberOfThresholds))
 
-  const bins = binsGenerator(data)
+  //get data type of x axis
+  const xDataType = typeof xAccessor(data[0])
 
-  bins.forEach(bin => {
-    switch (yAxisSummarization) {
-      case "sum": bin[yAxisSummarization] = d3.sum(bin, yAccessor); break;
-      case "average": bin[yAxisSummarization] = d3.sum(d3.rollup(bin, v => d3.sum(v, yAccessor), yAccessor).values()) / bin.length; break;
-      case "min": bin[yAxisSummarization] = d3.min(bin, yAccessor); break;
-      case "max": bin[yAxisSummarization] = d3.max(bin, yAccessor); break;
-      case "distinct": bin[yAxisSummarization] = d3.group(bin, yAccessor).size; break;
-      case "count": bin[yAxisSummarization] = bin.length; break;
-      case "median": bin[yAxisSummarization] = d3.median(bin, yAccessor); break;
-      default: null;
-    }
-  })
+  let items = null
+  let xScale = null
+
+  //if x axis can be bin, then bin it
+  if (xDataType === "number") {
+    xScale = d3.scaleLinear()
+      .domain(d3.extent(data, xAccessor))
+      .range([0, dimensions.boundedWidth])
+      .nice(numberOfThresholds)
+
+    const binsGenerator = d3.bin()
+      .domain(xScale.domain())
+      .value(xAccessor)
+      .thresholds(xScale.ticks(numberOfThresholds))
+
+    items = binsGenerator(data)
+
+    items.forEach(bin => {
+      switch (yAxisSummarization) {
+        case "sum": bin[yAxisSummarization] = d3.sum(bin, yAccessor); break;
+        case "average": bin[yAxisSummarization] = d3.sum(d3.rollup(bin, v => d3.sum(v, yAccessor), yAccessor).values()) / bin.length; break;
+        case "min": bin[yAxisSummarization] = d3.min(bin, yAccessor); break;
+        case "max": bin[yAxisSummarization] = d3.max(bin, yAccessor); break;
+        case "distinct": bin[yAxisSummarization] = d3.group(bin, yAccessor).size; break;
+        case "count": bin[yAxisSummarization] = bin.length; break;
+        case "median": bin[yAxisSummarization] = d3.median(bin, yAccessor); break;
+        default: null;
+      }
+    })
+  }
+  else if (xDataType === "string") {
+    items = Array.from(d3.group(data, xAccessor))
+
+    xScale = d3.scaleBand()
+      .domain(items.map(([key, values]) => key))
+      .range([0, dimensions.boundedWidth])
+      .padding(0.1)
+
+    items.forEach(categoryData => {
+      switch (yAxisSummarization) {
+        case "sum": categoryData[1][yAxisSummarization] = d3.sum(categoryData[1], yAccessor); break;
+        case "average": categoryData[1][yAxisSummarization] = d3.sum(d3.rollup(categoryData[1], v => d3.sum(v, yAccessor), yAccessor).values()) / categoryData[1].length; break;
+        case "min": categoryData[1][yAxisSummarization] = d3.min(categoryData[1], yAccessor); break;
+        case "max": categoryData[1][yAxisSummarization] = d3.max(categoryData[1], yAccessor); break;
+        case "distinct": categoryData[1][yAxisSummarization] = d3.group(categoryData[1], yAccessor).size; break;
+        case "count": categoryData[1][yAxisSummarization] = categoryData[1].length; break;
+        case "median": categoryData[1][yAxisSummarization] = d3.median(categoryData[1], yAccessor); break;
+        default: null;
+      }
+    })
+  }
 
   let yAccessorSummarizationFormatter = null
   switch (yAxisSummarization) {
@@ -63,10 +90,10 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
     default: yAccessorSummarizationFormatter = d3.format(",");
   }
 
-  const yAccessorSummarization = d => d[yAxisSummarization]
-  
+  const yAccessorSummarization = (xDataType === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
+
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(bins, yAccessorSummarization)])
+    .domain([0, d3.max(items, yAccessorSummarization)])
     .range([dimensions.boundedHeight, 0])
     .nice()
 
@@ -81,32 +108,12 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
   const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
 
   return (
-    <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : '' } ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
-        <defs>
-          <Gradient
-            id={gradientId}
-            colors={gradientColors}
-            x2="0"
-            y2="100%"
-          />
-        </defs>
-        <Axis
-          dimensions={dimensions}
-          dimension="x"
-          scale={xScale}
-          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={xAxisFormat}
-        />
-        <Axis
-          dimensions={dimensions}
-          dimension="y"
-          scale={yScale}
-          label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-        />
         {xAxis && <Rectangles
+          scale={xDataType === "string" ? xScale : null}
           zoomed={zoomed}
-          data={bins}
+          data={items}
           dimensions={dimensions}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
@@ -118,7 +125,6 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
           tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Value={yAccessorSummarization}
           tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
-          style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
           outOfFocus={outOfFocus}
         />}
       </Chart>
@@ -127,3 +133,4 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
 }
 
 export default Histogram
+//theme.vars.palette.primary.main

@@ -2,8 +2,7 @@ import React from "react"
 import * as d3 from "d3"
 import _ from "lodash"
 
-import Chart from "../chart/Chart"
-import { useChartDimensions, useUniqueId } from "../chart/utils"
+import { useChartDimensions } from "../chart/utils"
 
 import "./List.css"
 
@@ -42,8 +41,6 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
   const valueSummarizationAccessor = ([key, values]) => values[valueSummarization]
 
   const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
-
-  const keyAccessor = (d, i) => i
 
   const filterList = (value) => {
     console.log('orderedDataByCategory', orderedDataByCategory)

@@ -2,10 +2,8 @@ import React from "react"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import { useChartDimensions, useUniqueId } from "./chart/utils"
+import { useChartDimensions } from "./chart/utils"
 
-import { useTheme } from '@mui/material/styles';
-import Gradient from "./chart/Gradient"
 import Arcs from "./chart/Arcs"
 
 const PieChart = ({ zoomed, active, outOfFocus, data, category, value, categoryParser, valueParser, categoryFormat, valueFormat, valueSummarization }) => {
@@ -16,9 +14,6 @@ const PieChart = ({ zoomed, active, outOfFocus, data, category, value, categoryP
     marginBottom: 20,
     marginLeft: 20,
   })
-  const theme = useTheme();
-  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
-  const gradientId = useUniqueId("Histogram-gradient")
 
   const categoryAccessor = d => d[category]
   const valueAccessor = d => d[value]
@@ -60,19 +55,12 @@ const PieChart = ({ zoomed, active, outOfFocus, data, category, value, categoryP
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <g transform={`translate(${dimensions.boundedWidth / 2}, ${dimensions.boundedHeight / 2})`}>
-          <defs>
-            <Gradient
-              id={gradientId}
-              colors={gradientColors}
-            />
-          </defs>
           <Arcs
             type="donut"
             data={arcs}
             keyAccessor={keyAccessor}
             value={valueSummarization}
             radius={dimensions.boundedWidth / 2}
-            style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
           />
         </g>
       </Chart>

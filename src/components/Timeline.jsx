@@ -4,17 +4,12 @@ import * as d3 from "d3"
 import Chart from "./chart/Chart"
 import Polyline from "./chart/Polyline"
 import Axis from "./chart/Axis"
-import Gradient from "./chart/Gradient";
 import Tooltipper from "./chart/Tooltipper";
-import { useChartDimensions, useUniqueId } from "./chart/utils"
-import { useTheme } from '@mui/material/styles';
+import { useChartDimensions } from "./chart/utils"
 
 const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
   
   const [ref, dimensions] = useChartDimensions()
-  const theme = useTheme();
-  const gradientColors = [theme.vars.palette.primary.light, theme.vars.palette.primary.contrastText]
-  const gradientId = useUniqueId("Timeline-gradient")
 
   let xAccessor = d => d[xAxis]
   let yAccessor = d => d[yAxis]
@@ -43,14 +38,6 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser,
   return (
     <div className={`Chart__rectangle__large ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
-        <defs>
-          <Gradient
-            id={gradientId}
-            colors={gradientColors}
-            x2="0"
-            y2="100%"
-          />
-        </defs>
         <Axis
           dimension="x"
           scale={xScale}
@@ -68,7 +55,6 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser,
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
           y0Accessor={y0AccessorScaled}
-          style={outOfFocus ? {} : { fill: `url(#${gradientId})` }}
         />
         <Polyline
           data={data}

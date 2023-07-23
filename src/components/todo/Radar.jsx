@@ -7,9 +7,7 @@ import Circles from "./chart/Circles"
 import Lines from "./chart/Lines"
 import Texts from "./chart/Texts"
 import Polyline from "./chart/Polyline"
-import Gradient from "./chart/Gradient"
-import { useChartDimensions, accessorPropsType, useUniqueId } from "../chart/utils"
-import { useTheme } from '@mui/material/styles';
+import { useChartDimensions, accessorPropsType } from "../chart/utils"
 
 const Radar = ({ data, valueAccessor, entityAccessor }) => {
   const [ref, dimensions] = useChartDimensions({
@@ -18,9 +16,6 @@ const Radar = ({ data, valueAccessor, entityAccessor }) => {
     marginBottom: 20,
     marginLeft: 20,
   })
-  const theme = useTheme();
-  const gradientColors = [theme.vars.palette.primary.main, theme.vars.palette.primary.contrastText]
-  const gradientId = useUniqueId("Histogram-gradient")
 
   const radius = dimensions.boundedWidth / 2
 
