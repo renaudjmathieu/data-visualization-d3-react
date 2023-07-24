@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ scale, zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue1ValueFormat, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, style, outOfFocus, ...props }) => {
+const Rectangles = ({ zoomed, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue1ValueFormat, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, style, outOfFocus, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
   const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
@@ -34,18 +34,14 @@ const Rectangles = ({ scale, zoomed, data, dimensions, keyAccessor, xAccessor, y
     tooltip.style("opacity", 0)
   }
 
-  {data.map((d, i) => (
-    console.log('d', d[0])
-  ))}
-
   return <React.Fragment>
     {data.map((d, i) => (
       <rect style={style}
         className="Rectangles__rect"
         key={keyAccessor(d, i)}
-        x={scale ? scale(d[0]) : callAccessor(xAccessor, d, i)}
+        x={callAccessor(xAccessor, d, i)}
         y={callAccessor(yAccessor, d, i)}
-        width={scale ? scale.bandwidth() : d3.max([callAccessor(widthAccessor, d, i), 0])}
+        width={d3.max([callAccessor(widthAccessor, d, i), 0])}
         height={d3.max([callAccessor(heightAccessor, d, i), 0])}
         onMouseEnter={!outOfFocus ? e => handleMouseEnter(e, d, i): null}
         onMouseLeave={handleMouseLeave}

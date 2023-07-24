@@ -43,8 +43,6 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
   const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
 
   const filterList = (value) => {
-    console.log('orderedDataByCategory', orderedDataByCategory)
-    console.log('value', value)
     let x = orderedDataByCategory
     const total = _.sumBy(x, valueSummarizationAccessor)
     if (!_.isEmpty(value)) x = _.filter(x, d => (d[0]).toLowerCase().includes(value.toLowerCase()))

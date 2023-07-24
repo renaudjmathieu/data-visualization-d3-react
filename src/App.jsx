@@ -188,8 +188,6 @@ const App = (props) => {
         setOpen(true);
         document.body.classList.add("open")
         document.body.classList.remove("closed")
-
-        console.log('handleDrawerOpen')
     };
 
     const handleDrawerClose = () => {
@@ -199,11 +197,7 @@ const App = (props) => {
         document.body.classList.add("closed")
         document.body.classList.remove("open")
 
-        console.log('handleDrawerClose')
-
         if (dashboardRef.current) {
-            
-            console.log(dashboardRef.current)
             dashboardRef.current.doSomething();
         }
 

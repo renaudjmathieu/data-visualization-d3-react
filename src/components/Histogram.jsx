@@ -6,7 +6,7 @@ import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import { useChartDimensions } from "./chart/utils"
 
-const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, xAxisFormat, yAxisSummarization }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisFormat, yAxisSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -14,70 +14,55 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
 
   const numberOfThresholds = 9
 
-  const xAccessor = d => d[xAxis]
-  const yAccessor = d => d[yAxis]
-
-  if (xAxisParser) {
-    xAccessor = d => xAxisParser(d[xAxis])
+  const calculateXScale = (data, dataType, numberOfThresholds) => {
+    switch (dataType) {
+      case "number":
+        return d3.scaleLinear()
+          .domain(d3.extent(data, xAccessor))
+          .range([0, dimensions.boundedWidth])
+          .nice(numberOfThresholds)
+      default:
+        return d3.scaleBand()
+          .domain(Array.from(d3.group(data, xAccessor)).map(([key, values]) => key))
+          .range([0, dimensions.boundedWidth])
+          .padding(0.1)
+    }
   }
 
+  const calculateItems = (data, dataType, xScale, numberOfThresholds) => {
+    switch (dataType) {
+      case "number":
+        const binsGenerator = d3.bin()
+          .domain(xScale.domain())
+          .value(xAccessor)
+          .thresholds(xScale.ticks(numberOfThresholds))
 
+        return binsGenerator(data)
+      default:
+        return Array.from(d3.group(data, xAccessor))
+    }
+  }
 
-  //get data type of x axis
-  const xDataType = typeof xAccessor(data[0])
-
-  let items = null
-  let xScale = null
-
-  //if x axis can be bin, then bin it
-  if (xDataType === "number") {
-    xScale = d3.scaleLinear()
-      .domain(d3.extent(data, xAccessor))
-      .range([0, dimensions.boundedWidth])
-      .nice(numberOfThresholds)
-
-    const binsGenerator = d3.bin()
-      .domain(xScale.domain())
-      .value(xAccessor)
-      .thresholds(xScale.ticks(numberOfThresholds))
-
-    items = binsGenerator(data)
-
-    items.forEach(bin => {
+  const calculateYAxisSummarization = (items, dataType, summarization) => {
+    items.forEach(item => {
+      const currentItem = dataType === "number" ? item : item[1]
       switch (yAxisSummarization) {
-        case "sum": bin[yAxisSummarization] = d3.sum(bin, yAccessor); break;
-        case "average": bin[yAxisSummarization] = d3.sum(d3.rollup(bin, v => d3.sum(v, yAccessor), yAccessor).values()) / bin.length; break;
-        case "min": bin[yAxisSummarization] = d3.min(bin, yAccessor); break;
-        case "max": bin[yAxisSummarization] = d3.max(bin, yAccessor); break;
-        case "distinct": bin[yAxisSummarization] = d3.group(bin, yAccessor).size; break;
-        case "count": bin[yAxisSummarization] = bin.length; break;
-        case "median": bin[yAxisSummarization] = d3.median(bin, yAccessor); break;
+        case "sum": currentItem[yAxisSummarization] = d3.sum(currentItem, yAccessor); break;
+        case "average": currentItem[yAxisSummarization] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length; break;
+        case "min": currentItem[yAxisSummarization] = d3.min(currentItem, yAccessor); break;
+        case "max": currentItem[yAxisSummarization] = d3.max(currentItem, yAccessor); break;
+        case "distinct": currentItem[yAxisSummarization] = d3.group(currentItem, yAccessor).size; break;
+        case "count": currentItem[yAxisSummarization] = currentItem.length; break;
+        case "median": currentItem[yAxisSummarization] = d3.median(currentItem, yAccessor); break;
         default: null;
       }
     })
-  }
-  else if (xDataType === "string") {
-    items = Array.from(d3.group(data, xAccessor))
-
-    xScale = d3.scaleBand()
-      .domain(items.map(([key, values]) => key))
-      .range([0, dimensions.boundedWidth])
-      .padding(0.1)
-
-    items.forEach(categoryData => {
-      switch (yAxisSummarization) {
-        case "sum": categoryData[1][yAxisSummarization] = d3.sum(categoryData[1], yAccessor); break;
-        case "average": categoryData[1][yAxisSummarization] = d3.sum(d3.rollup(categoryData[1], v => d3.sum(v, yAccessor), yAccessor).values()) / categoryData[1].length; break;
-        case "min": categoryData[1][yAxisSummarization] = d3.min(categoryData[1], yAccessor); break;
-        case "max": categoryData[1][yAxisSummarization] = d3.max(categoryData[1], yAccessor); break;
-        case "distinct": categoryData[1][yAxisSummarization] = d3.group(categoryData[1], yAccessor).size; break;
-        case "count": categoryData[1][yAxisSummarization] = categoryData[1].length; break;
-        case "median": categoryData[1][yAxisSummarization] = d3.median(categoryData[1], yAccessor); break;
-        default: null;
-      }
-    })
+    return items
   }
 
+  const xScale = calculateXScale(data, xAxisFormat, numberOfThresholds)
+  const items = calculateYAxisSummarization(calculateItems(data, xAxisFormat, xScale, numberOfThresholds), xAxisFormat, yAxisSummarization)
+  
   let yAccessorSummarizationFormatter = null
   switch (yAxisSummarization) {
     case "sum": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
@@ -90,7 +75,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
     default: yAccessorSummarizationFormatter = d3.format(",");
   }
 
-  const yAccessorSummarization = (xDataType === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
+  const yAccessorSummarization = (xAxisFormat === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
 
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(items, yAccessorSummarization)])
@@ -99,19 +84,20 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser
 
   const barPadding = 2
 
-  const xAccessorScaled = d => xScale(d.x0) + barPadding
+  const xAccessorScaled = xAxisFormat === "number" ? d => xScale(d.x0) + barPadding : d => xScale(d[0])
   const yAccessorScaled = d => yScale(yAccessorSummarization(d))
-  const widthAccessorScaled = d => xScale(d.x1) - xScale(d.x0) - barPadding
+  const widthAccessorScaled = xAxisFormat === "number" ? d => xScale(d.x1) - xScale(d.x0) - barPadding : d => xScale.bandwidth()
   const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
   const keyAccessor = (d, i) => i
 
   const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
 
+  console.log("!")
+
   return (
     <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         {xAxis && <Rectangles
-          scale={xDataType === "string" ? xScale : null}
           zoomed={zoomed}
           data={items}
           dimensions={dimensions}

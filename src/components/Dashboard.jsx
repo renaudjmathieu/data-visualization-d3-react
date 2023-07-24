@@ -71,15 +71,11 @@ const Dashboard = (props, ref) => {
         setFilteredData(filteredData)
         setSelectedColumn(column)
         setSelectedItem(item)
-
-        console.log('data', props.data.random)
-        console.log('filteredData', filteredData)
     }
 
     const onDoStuff = (e, column, item) => {
         doStuff(column, item)
         //doStuff('icon', 'rain')
-        console.log('onDoStuff', column, item)
     }
 
     React.useEffect(() => {

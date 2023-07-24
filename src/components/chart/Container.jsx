@@ -31,7 +31,12 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fil
   const categoryParser = category ? fields.find(field => field.id === category).parser : null
   const valueParser = value ? fields.find(field => field.id === value).parser : null
 
-  const xAxisFormat = xAxis ? fields.find(field => field.id === xAxis).format : null
+  const xAccessor = xAxisParser ? d => xAxisParser(d[xAxis]) : d => d[xAxis]
+  const yAccessor = yAxisParser ? d => yAxisParser(d[yAxis]) : d => d[yAxis]
+  const categoryAccessor = categoryParser ? d => categoryParser(d[category]) : d => d[category]
+  const valueAccessor = valueParser ? d => valueParser(d[value]) : d => d[value]
+
+  const xAxisFormat = xAxis && fields.find(field => field.id === xAxis).format ? fields.find(field => field.id === xAxis).format : typeof xAccessor(filteredData[0])
   const yAxisFormat = yAxis ? fields.find(field => field.id === yAxis).format : null
   const categoryFormat = category ? fields.find(field => field.id === category).format : null
   const valueFormat = value ? fields.find(field => field.id === value).format : null
@@ -61,6 +66,8 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fil
         data={filteredData}
         xAxis={xAxis}
         yAxis={yAxis}
+        xAccessor={xAccessor}
+        yAccessor={yAccessor}
         xAxisParser={xAxisParser}
         xAxisFormat={xAxisFormat}
         yAxisSummarization={yAxisSummarization}
