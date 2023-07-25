@@ -101,6 +101,10 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           scale={xScale}
           label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           format={xAxisFormat}
+          data={items}
+          keyAccessor={keyAccessor}
+          xAccessor={xAccessorScaled}
+          widthAccessor={widthAccessorScaled}
         />
         <Axis
           dimensions={dimensions}

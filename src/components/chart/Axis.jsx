@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import * as d3 from 'd3'
-import { dimensionsPropsType } from "./utils";
+import { dimensionsPropsType, callAccessor } from "./utils";
 import { useChartDimensions } from "./Chart";
 
 const axisComponentsByDimension = {
@@ -37,13 +37,13 @@ Axis.defaultProps = {
 
 export default Axis
 
-function AxisHorizontal({ dimensions, scale, label, format, ...props }) {
+function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, xAccessor, widthAccessor, ...props }) {
   const numberOfTicks = dimensions.boundedWidth < 600
     ? dimensions.boundedWidth / 100
     : dimensions.boundedWidth / 250
 
   const ticks = format === 'number' ? scale.ticks(numberOfTicks) : scale.domain()
-  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format === 'time' ? d3.timeFormat("%H:%M") : d => d.length > 15 ? d.slice(0, 15) + '...' : d
+  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format === 'time' ? d3.timeFormat("%H:%M") : d => d.length > 12 ? d.slice(0, 12) + '...' : d
 
   return (
     <g className="Axis AxisHorizontal" transform={`translate(0, ${dimensions.boundedHeight})`} {...props}>
@@ -52,15 +52,28 @@ function AxisHorizontal({ dimensions, scale, label, format, ...props }) {
         x2={dimensions.boundedWidth}
       />
 
-      {ticks.map((tick, i) => (
-        <text
-          key={tick}
-          className="Axis__tick"
-          transform={`translate(${scale(tick)}, 30) rotate(-30)`}
-        >
-          {formatter(tick)}
-        </text>
-      ))}
+      {(format === 'number') && (
+        ticks.map((tick, i) => (
+          <text
+            key={tick}
+            className="Axis__tick"
+            transform={`translate(${scale(tick)}, 30) rotate(-90)`}
+          >
+            {formatter(tick)}
+          </text>
+        ))
+      )}
+      {(format !== 'number' && data) && (
+        data.map((d, i) => (
+          <text
+            key={keyAccessor(d, i)}
+            className="Axis__tick"
+            transform={`translate(${callAccessor(xAccessor, d, i) + (d3.max([callAccessor(widthAccessor, d, i), 0]) / 2) - 20}, 30) rotate(-30)`}
+          >
+            {formatter(d[0])}
+          </text>
+        ))
+      )}
 
       {label && (
         <text
