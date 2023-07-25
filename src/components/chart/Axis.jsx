@@ -42,8 +42,8 @@ function AxisHorizontal({ dimensions, scale, label, format, ...props }) {
     ? dimensions.boundedWidth / 100
     : dimensions.boundedWidth / 250
 
-  const ticks = scale.ticks(numberOfTicks)
-  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format ? d3.timeFormat("%H:%M") : d3.format(",")
+  const ticks = format === 'number' ? scale.ticks(numberOfTicks) : scale.domain()
+  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format === 'time' ? d3.timeFormat("%H:%M") : d => d.length > 15 ? d.slice(0, 15) + '...' : d
 
   return (
     <g className="Axis AxisHorizontal" transform={`translate(0, ${dimensions.boundedHeight})`} {...props}>
@@ -56,7 +56,7 @@ function AxisHorizontal({ dimensions, scale, label, format, ...props }) {
         <text
           key={tick}
           className="Axis__tick"
-          transform={`translate(${scale(tick)}, 25)`}
+          transform={`translate(${scale(tick)}, 30) rotate(-30)`}
         >
           {formatter(tick)}
         </text>

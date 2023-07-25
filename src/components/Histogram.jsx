@@ -62,7 +62,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
 
   const xScale = calculateXScale(data, xAxisFormat, numberOfThresholds)
   const items = calculateYAxisSummarization(calculateItems(data, xAxisFormat, xScale, numberOfThresholds), xAxisFormat, yAxisSummarization)
-  
+
   let yAccessorSummarizationFormatter = null
   switch (yAxisSummarization) {
     case "sum": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
@@ -95,6 +95,19 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
   return (
     <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
+        <Axis
+          dimensions={dimensions}
+          dimension="x"
+          scale={xScale}
+          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={xAxisFormat}
+        />
+        <Axis
+          dimensions={dimensions}
+          dimension="y"
+          scale={yScale}
+          label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+        />
         {xAxis && <Rectangles
           zoomed={zoomed}
           active={active}

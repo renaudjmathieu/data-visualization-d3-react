@@ -143,6 +143,7 @@ h1 {
 
 .Polyline--type-area {
     fill: var(--mui-palette-primary-main);
+    opacity: 0.6;
 }
 
 .Axis__line {
