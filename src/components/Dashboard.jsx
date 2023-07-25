@@ -60,26 +60,29 @@ const Dashboard = (props, ref) => {
 
 
 
+    const [selectedChart, setSelectedChart] = React.useState(null)
     const [selectedColumn, setSelectedColumn] = React.useState(null)
     const [selectedItem, setSelectedItem] = React.useState(null)
     const [filteredData, setFilteredData] = React.useState(props.data.random)
 
-    const doStuff = (column, item) => {
+    const doStuff = (chartIndex, column, item) => {
         const filteredData = item ? _.filter(props.data.random, { [column]: item }) : props.data.random
         //const filteredData = data
 
         setFilteredData(filteredData)
+        setSelectedChart(chartIndex)
         setSelectedColumn(column)
         setSelectedItem(item)
     }
 
-    const onDoStuff = (e, column, item) => {
-        doStuff(column, item)
+    const onDoStuff = (e, chartIndex, column, item) => {
+        doStuff(chartIndex, column, item)
         //doStuff('icon', 'rain')
+        console.log('onDoStuff', chartIndex, column, item)
     }
 
     React.useEffect(() => {
-        doStuff(selectedColumn, selectedItem)
+        doStuff(selectedChart, selectedColumn, selectedItem)
     }, [])
 
 
@@ -104,9 +107,10 @@ const Dashboard = (props, ref) => {
                             onClick2={(e) => handleClick2(e, chart, index)}
                             chart={chart}
                             chosen={chosen}
-                            index={index}
+                            chartIndex={index}
                             data={props.data.random}
                             filteredData={filteredData}
+                            selectedChart={selectedChart}
                             selectedColumn={selectedColumn}
                             selectedItem={selectedItem}
                             onDoStuff={onDoStuff}

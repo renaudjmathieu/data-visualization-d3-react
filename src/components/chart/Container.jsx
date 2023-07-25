@@ -13,12 +13,12 @@ import List from "../List/List"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, filteredData, selectedColumn, selectedItem, onDoStuff, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data, filteredData, selectedChart, selectedColumn, selectedItem, onDoStuff, fields }) => {
 
   const theme = useTheme();
 
-  const outOfFocus = chosen !== null && index !== chosen
-  const active = index === chosen
+  const outOfFocus = chosen !== null && chartIndex !== chosen
+  const active = chartIndex === chosen
   const xAxis = chart.xAxis
   const yAxis = chart.yAxis
   const yAxisSummarization = chart.yAxisSummarization
@@ -51,7 +51,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fil
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={filteredData}
+        data={selectedChart == chartIndex ? data : filteredData}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -63,7 +63,8 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fil
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={filteredData}
+        data={selectedChart == chartIndex ? data : filteredData}
+        onMouseDown={onDoStuff}
         xAxis={xAxis}
         yAxis={yAxis}
         xAccessor={xAccessor}
@@ -71,12 +72,16 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fil
         xAxisParser={xAxisParser}
         xAxisFormat={xAxisFormat}
         yAxisSummarization={yAxisSummarization}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
+        selectedColumn={selectedColumn}
+        selectedItem={selectedItem}
       />
       case "timeline": return <Timeline
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={filteredData}
+        data={selectedChart == chartIndex ? data : filteredData}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -88,7 +93,9 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fil
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
+        data={selectedChart == chartIndex ? data : filteredData}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
         selectedItem={selectedItem}
         selectedColumn={selectedColumn}
         onMouseDown={onDoStuff}

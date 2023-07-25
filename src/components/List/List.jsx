@@ -9,7 +9,7 @@ import "./List.css"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, onMouseDown, category, value, categoryParser, valueParser, categoryFormat, valueFormat, valueSummarization }) => {
+const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedItem, selectedColumn, onMouseDown, category, value, categoryParser, valueParser, categoryFormat, valueFormat, valueSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -59,7 +59,7 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
 
   const items = filterValue ? filteredItems : orderedDataByCategory
   const total = filteredTotal ? filteredTotal : _.sumBy(orderedDataByCategory, valueSummarizationAccessor)
-  
+
   return (
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <div className="SelectableList">
@@ -77,13 +77,13 @@ const List = ({ zoomed, active, outOfFocus, data, selectedItem, selectedColumn, 
             <div
               className={[
                 "SelectableList__item",
-                `SelectableList__item--is-${item[0] == selectedItem ? "selected" :
-                  selectedItem ? "next-to-selected" :
+                `SelectableList__item--is-${selectedChart == chartIndex && item[0] == selectedItem ? "selected" :
+                  selectedChart == chartIndex && selectedItem ? "next-to-selected" :
                     "not-selected"
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={selectedColumn == category && selectedItem == item[0] ? (e) => onMouseDown(e, null, null) : (e) => onMouseDown(e, category, item[0])}>
+              onMouseDown={(selectedColumn == category && selectedItem == item[0]) ? (e) => onMouseDown(e, null, null, null) : (e) => onMouseDown(e, chartIndex, category, item[0])}>
               <div className="SelectableList__item__bar" style={{
                 width: `${item[1][valueSummarization] * 100 / items[0][1][valueSummarization]}%`,
               }} />

@@ -6,7 +6,7 @@ import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import { useChartDimensions } from "./chart/utils"
 
-const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisFormat, yAxisSummarization }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisFormat, yAxisSummarization, selectedChart, chartIndex, selectedColumn, selectedItem }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -92,13 +92,12 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAccessor, 
 
   const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
 
-  console.log("!")
-
   return (
     <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         {xAxis && <Rectangles
           zoomed={zoomed}
+          active={active}
           data={items}
           dimensions={dimensions}
           keyAccessor={keyAccessor}
@@ -112,6 +111,12 @@ const Histogram = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAccessor, 
           tooltipValue2Value={yAccessorSummarization}
           tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
           outOfFocus={outOfFocus}
+          onMouseDown={onMouseDown}
+          column={xAxis}
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumn={selectedColumn}
+          selectedItem={selectedItem}
         />}
       </Chart>
     </div>
