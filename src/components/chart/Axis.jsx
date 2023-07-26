@@ -43,7 +43,7 @@ function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, x
     : dimensions.boundedWidth / 250
 
   const ticks = format === 'number' ? scale.ticks(numberOfTicks) : scale.domain()
-  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format === 'time' ? d3.timeFormat("%H:%M") : d => d.length > 12 ? d.slice(0, 12) + '...' : d
+  const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format === 'time' ? d3.timeFormat("%H:%M") : d => d.length > 18 ? d.slice(0, 18) + '...' : d
 
   return (
     <g className="Axis AxisHorizontal" transform={`translate(0, ${dimensions.boundedHeight})`} {...props}>
@@ -68,7 +68,8 @@ function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, x
           <text
             key={keyAccessor(d, i)}
             className="Axis__tick"
-            transform={`translate(${callAccessor(xAccessor, d, i) + (d3.max([callAccessor(widthAccessor, d, i), 0]) / 2) - 20}, 30) rotate(-30)`}
+            font-size={d3.min([d3.max([Math.floor((dimensions.boundedWidth / data.length) / 2), 6]), 10])}
+            transform={`translate(${callAccessor(xAccessor, d, i) + (d3.max([callAccessor(widthAccessor, d, i), 0]) / 2)}, 8) rotate(-35)`}
           >
             {formatter(d[0])}
           </text>
@@ -78,7 +79,7 @@ function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, x
       {label && (
         <text
           className="Axis__label"
-          transform={`translate(${dimensions.boundedWidth / 2}, 60)`}
+          transform={`translate(${dimensions.boundedWidth / 2}, 79)`}
         >
           {label}
         </text>
@@ -114,7 +115,7 @@ function AxisVertical({ dimensions, scale, label, format, ...props }) {
         <text
           className="Axis__label"
           style={{
-            transform: `translate(-56px, ${dimensions.boundedHeight / 2}px) rotate(-90deg)`
+            transform: `translate(-74px, ${dimensions.boundedHeight / 2}px) rotate(-90deg)`
           }}
         >
           {label}
