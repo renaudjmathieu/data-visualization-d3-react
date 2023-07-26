@@ -58,6 +58,11 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         yAxisParser={yAxisParser}
         xAxisFormat={xAxisFormat}
         yAxisFormat={yAxisFormat}
+        onMouseDown={onDoStuff}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
+        selectedColumn={selectedColumn}
+        selectedItem={selectedItem}
       />
       case "histogram": return <Histogram
         zoomed={zoomed}

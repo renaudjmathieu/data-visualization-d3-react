@@ -8,7 +8,7 @@ import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 
-const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat, onMouseDown, selectedChart, chartIndex, selectedColumn, selectedItem }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
@@ -56,12 +56,6 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           format={yAxisFormat}
         />
-        <Circles
-          data={data}
-          keyAccessor={keyAccessor}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
-        />
         {!outOfFocus && <Voronoi
           zoomed={zoomed}
           data={data}
@@ -75,6 +69,20 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue1ValueFormat={xAxisFormat}
           tooltipValue2ValueFormat={yAxisFormat}
         />}
+        <Circles
+          data={data}
+          keyAccessor={keyAccessor}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+          xValue={xAccessor}
+          yValue={yAccessor}
+          onMouseDown={onMouseDown}
+          column={xAxis}
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumn={selectedColumn}
+          selectedItem={selectedItem}
+        />
       </Chart>
     </div>
   )

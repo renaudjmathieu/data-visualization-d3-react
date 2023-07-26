@@ -128,6 +128,11 @@ h1 {
     fill: var(--mui-palette-primary-main);
 }
 
+.Circle--type-circle--is-next-to-selected {
+    fill: var(--mui-palette-primary-main);
+    opacity: 0.4;
+}
+
 .Rectangles__rect {
     fill: var(--mui-palette-primary-main);
 }
