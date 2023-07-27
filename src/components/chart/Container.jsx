@@ -143,12 +143,16 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
     <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
       <div className="ChartIconsContainer">
         <div className="ChartIcons">
-          <IconButton onClick={onClick1}>
-            <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
-          </IconButton>
-          <IconButton onClick={handleOpen}>
-            <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
-          </IconButton>
+          <div className="ChartIcon">
+            <IconButton onClick={onClick1}>
+              <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
+            </IconButton>
+          </div>
+          <div className="ChartIcon ChartIconRight">
+            <IconButton onClick={handleOpen}>
+              <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
+            </IconButton>
+          </div>
         </div>
       </div>
 

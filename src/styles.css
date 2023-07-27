@@ -369,10 +369,19 @@ h1 {
 .ChartIcons {
     visibility: hidden;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: -40px;
+    right: 0px;
 }
 
-.ChartIcons button {
-    margin-left: -6px;
+.ChartIcon {
+    display:inline-block;
+    background: #fff;
+}
+
+.ChartIconRight {
+    margin-left: 5px;
+}
+
+.ChartIcon button:hover {
+    background: #fff;
 }
