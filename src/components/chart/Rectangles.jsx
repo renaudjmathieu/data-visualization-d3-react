@@ -4,9 +4,10 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue1ValueFormat, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, style, outOfFocus, onMouseDown, column, selectedChart, chartIndex, selectedColumn, selectedItem, ...props }) => {
+const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue1ValueFormat, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, style, outOfFocus, onMouseDown, column, selectedChart, chartIndex, selectedColumn, selectedItem, color, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
+  console.log('data---red', color ? data : null)
   const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
   const handleMouseEnter = (e, d, i) => {
@@ -37,7 +38,8 @@ const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, 
   return <React.Fragment>
     {data.map((d, i) => (
       <rect style={style}
-        className={[
+        className={
+          color ? "Rectangles__marked" : [
           "Rectangles__rect",
           `Rectangles__rect--is-${selectedChart == chartIndex && d[0] == selectedItem ? "selected" :
             selectedChart == chartIndex && selectedItem ? "next-to-selected" :

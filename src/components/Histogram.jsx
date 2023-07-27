@@ -47,18 +47,25 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
     items.forEach(item => {
       const currentItem = dataType === "number" ? item : item[1]
       switch (yAxisSummarization) {
-        case "sum": currentItem[yAxisSummarization] = d3.sum(currentItem, yAccessor); break;
+        case "sum":
+          currentItem[yAxisSummarization] = d3.sum(currentItem, yAccessor);
+          currentItem[`marked ${yAxisSummarization}`] = currentItem['marked'] ? d3.sum(currentItem, yAccessor) : 0;
+          break;
         case "average": currentItem[yAxisSummarization] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length; break;
         case "min": currentItem[yAxisSummarization] = d3.min(currentItem, yAccessor); break;
         case "max": currentItem[yAxisSummarization] = d3.max(currentItem, yAccessor); break;
         case "distinct": currentItem[yAxisSummarization] = d3.group(currentItem, yAccessor).size; break;
-        case "count": currentItem[yAxisSummarization] = currentItem.length; break;
+        case "count":
+          currentItem[yAxisSummarization] = currentItem.length;
+          currentItem[`marked ${yAxisSummarization}`] = _.filter(currentItem, ['marked', true]).length;
+          break;
         case "median": currentItem[yAxisSummarization] = d3.median(currentItem, yAccessor); break;
         default: null;
       }
     })
     return items
   }
+
 
   const xScale = calculateXScale(data, xAxisFormat, numberOfThresholds)
   const items = calculateYAxisSummarization(calculateItems(data, xAxisFormat, xScale, numberOfThresholds), xAxisFormat, yAxisSummarization)
@@ -76,6 +83,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
   }
 
   const yAccessorSummarization = (xAxisFormat === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
+  const yAccessorSummarizationMarked = (xAxisFormat === "number") ? d => d[`marked ${yAxisSummarization}`] : d => d[1][`marked ${yAxisSummarization}`]
 
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(items, yAccessorSummarization)])
@@ -86,8 +94,10 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
 
   const xAccessorScaled = xAxisFormat === "number" ? d => xScale(d.x0) + barPadding : d => xScale(d[0])
   const yAccessorScaled = d => yScale(yAccessorSummarization(d))
+  const yAccessorScaledMarked = d => yScale(yAccessorSummarizationMarked(d))
   const widthAccessorScaled = xAxisFormat === "number" ? d => xScale(d.x1) - xScale(d.x0) - barPadding : d => xScale.bandwidth()
   const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
+  const heightAccessorScaledMarked = d => dimensions.boundedHeight - yScale(yAccessorSummarizationMarked(d))
   const keyAccessor = (d, i) => i
 
   const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
@@ -134,6 +144,30 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           chartIndex={chartIndex}
           selectedColumn={selectedColumn}
           selectedItem={selectedItem}
+        />}
+        {xAxis && <Rectangles
+          zoomed={zoomed}
+          active={active}
+          data={items}
+          dimensions={dimensions}
+          keyAccessor={keyAccessor}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaledMarked}
+          widthAccessor={widthAccessorScaled}
+          heightAccessor={heightAccessorScaledMarked}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1ValueFormat={xAxisFormat}
+          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Value={yAccessorSummarization}
+          tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
+          outOfFocus={outOfFocus}
+          onMouseDown={onMouseDown}
+          column={xAxis}
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumn={selectedColumn}
+          selectedItem={selectedItem}
+          color={'red'}
         />}
       </Chart>
     </div>

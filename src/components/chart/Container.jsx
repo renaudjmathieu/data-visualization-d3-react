@@ -45,15 +45,13 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  console.log('filteredData-', _.filter(filteredData, { marked: true }))
-
   const renderChart = (zoomed) => {
     switch (chart.id) {
       case "scatter": return <ScatterPlot
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chartIndex ? data : _.filter(filteredData, { marked: true })}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -70,7 +68,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chartIndex ? data : filteredData}
+        data={filteredData}
         onMouseDown={onDoStuff}
         xAxis={xAxis}
         yAxis={yAxis}
@@ -88,7 +86,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chartIndex ? data : _.filter(filteredData, { marked: true })}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -100,7 +98,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chartIndex ? data : _.filter(filteredData, { marked: true })}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         selectedChart={selectedChart}
         chartIndex={chartIndex}
         selectedItem={selectedItem}
