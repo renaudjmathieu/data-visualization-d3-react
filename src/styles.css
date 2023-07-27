@@ -134,12 +134,13 @@ h1 {
 }
 
 .Rectangles__marked {
-    fill: red;
+    fill: var(--mui-palette-primary-main);
 }
 
 
 .Rectangles__rect {
     fill: var(--mui-palette-primary-main);
+    opacity: 0.4;
 }
 
 .Rectangles__rect--is-next-to-selected {
@@ -299,10 +300,11 @@ h1 {
 .headerSvg:hover [fill='#123456'] {
     fill: #eceff1;
 }
-
+/*
 .inFocus .Rectangles__rect:hover {
     fill: var(--mui-palette-primary-complementaryColor) !important;
 }
+*/
 
 .tooltipD3 {
     opacity: 0;
