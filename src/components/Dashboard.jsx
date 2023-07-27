@@ -63,11 +63,31 @@ const Dashboard = (props, ref) => {
     const [selectedChart, setSelectedChart] = React.useState(null)
     const [selectedColumn, setSelectedColumn] = React.useState(null)
     const [selectedItem, setSelectedItem] = React.useState(null)
-    const [filteredData, setFilteredData] = React.useState(props.data.random)
+    const [filteredData, setFilteredData] = React.useState(
+        _.map(props.data.random, (d) => {
+            return {
+                ...d,
+                marked: true
+            }
+        })
+    )
 
     const doStuff = (chartIndex, column, item) => {
-        const filteredData = item ? _.filter(props.data.random, { [column]: item }) : props.data.random
-        //const filteredData = data
+        const filteredData = item ? _.map(props.data.random, (d) => {
+            return {
+                ...d,
+                marked: d[column] === item ? true : false
+            }
+        })
+            :
+            _.map(props.data.random, (d) => {
+                return {
+                    ...d,
+                    marked: true
+                }
+            })
+
+        console.log('doStuff', chartIndex, column, item)
 
         setFilteredData(filteredData)
         setSelectedChart(chartIndex)
