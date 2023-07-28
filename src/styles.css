@@ -246,6 +246,14 @@ h1 {
     stroke: var(--mui-palette-background-primary);
 }
 
+.yo-circle {
+    fill: var(--mui-palette-primary-main);
+}
+
+.outOfFocus .yo-circle {
+    fill: var(--mui-palette-background-primary);
+}
+
 .Chart__rectangle__large.outOfFocus .Polyline--type-area,
 .Chart__rectangle.outOfFocus .Polyline--type-area,
 .Chart__square.outOfFocus .Polyline--type-area {

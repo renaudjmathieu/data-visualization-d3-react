@@ -180,7 +180,6 @@ const Polyline = ({ type, zoomed, data, dimensions, xAccessorScaled, yAccessorSc
       <circle
         className="yo-circle"
         r={4}
-        fill={theme.vars.palette.primary.main}
         opacity={0}
       />
       <rect
