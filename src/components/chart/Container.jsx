@@ -13,7 +13,7 @@ import List from "../List/List"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data, filteredData, selectedChart, selectedColumn, selectedItem, onDoStuff, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data, filteredData, selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onDoStuff, fields }) => {
 
   const theme = useTheme();
 
@@ -61,8 +61,11 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         onMouseDown={onDoStuff}
         selectedChart={selectedChart}
         chartIndex={chartIndex}
-        selectedColumn={selectedColumn}
-        selectedItem={selectedItem}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
       />
       case "histogram": return <Histogram
         zoomed={zoomed}
@@ -79,8 +82,11 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         yAxisSummarization={yAxisSummarization}
         selectedChart={selectedChart}
         chartIndex={chartIndex}
-        selectedColumn={selectedColumn}
-        selectedItem={selectedItem}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
       />
       case "timeline": return <Timeline
         zoomed={zoomed}
@@ -101,8 +107,11 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         selectedChart={selectedChart}
         chartIndex={chartIndex}
-        selectedItem={selectedItem}
-        selectedColumn={selectedColumn}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
         onMouseDown={onDoStuff}
         category={category}
         value={value}

@@ -9,7 +9,7 @@ import "./List.css"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedItem, selectedColumn, onMouseDown, category, value, categoryParser, valueParser, categoryFormat, valueFormat, valueSummarization }) => {
+const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category, value, categoryParser, valueParser, categoryFormat, valueFormat, valueSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -58,13 +58,13 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
             <div
               className={[
                 "SelectableList__item",
-                `SelectableList__item--is-${selectedChart == chartIndex && item[0] == selectedItem ? "selected" :
-                  selectedChart == chartIndex && selectedItem ? "next-to-selected" :
+                `SelectableList__item--is-${selectedChart == chartIndex && item[0] == selectedItem1 ? "selected" :
+                  selectedChart == chartIndex && selectedItem1 ? "next-to-selected" :
                     "not-selected"
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={(selectedColumn == category && selectedItem == item[0]) ? (e) => onMouseDown(e, null, null, null) : (e) => onMouseDown(e, chartIndex, category, item[0])}>
+              onMouseDown={(selectedColumnType == 'SingleValue' && selectedColumn1 == category && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'SingleValue', category, null, item[0], null)}>
 
               <div className="SelectableList__item__left">
 

@@ -4,7 +4,7 @@ import * as d3 from "d3"
 import { accessorPropsType, callAccessor } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Circles = ({ zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, onMouseDown, column, selectedChart, chartIndex, selectedColumn, selectedItem, radius }) => {
+const Circles = ({ zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, onMouseDown, xAxis, yAxis, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, radius }) => {
 
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
@@ -53,8 +53,8 @@ const Circles = ({ zoomed, type, data, dimensions, keyAccessor, xAccessor, yAcce
         <circle
           className={[
             `Circles Circle--type-${type}`,
-            `Circles Circle--type-${type}--is-${selectedChart == chartIndex && xValue(d, i) == selectedItem ? "selected" :
-              selectedChart == chartIndex && selectedItem ? "next-to-selected" :
+            `Circles Circle--type-${type}--is-${selectedChart == chartIndex && selectedItem1 === xValue(d, i) && selectedItem2 === yValue(d, i) ? "selected" :
+              selectedChart == chartIndex && selectedItem1 ? "next-to-selected" :
                 "not-selected"
             }`
           ].join(" ")}
@@ -62,7 +62,7 @@ const Circles = ({ zoomed, type, data, dimensions, keyAccessor, xAccessor, yAcce
           cx={typeof xAccessor == "function" ? xAccessor(d, i) : xAccessor}
           cy={typeof yAccessor == "function" ? yAccessor(d, i) : yAccessor}
           r={typeof radius == "function" ? radius(d, i) : radius}
-          onMouseDown={(selectedColumn == column && selectedItem == xValue(d, i)) ? (e) => onMouseDown(e, null, null, null) : (e) => onMouseDown(e, chartIndex, column, xValue(d, i))}
+          onMouseDown={selectedColumn1 == xAxis && selectedItem1 == xValue(d, i) && selectedColumn2 == yAxis && selectedItem2 == yValue(d, i) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'MultipleValues', xAxis, yAxis, xValue(d, i), yValue(d, i))}
           onMouseEnter={e => handleMouseEnter(e, d, i)}
           onMouseLeave={handleMouseLeave}
         />

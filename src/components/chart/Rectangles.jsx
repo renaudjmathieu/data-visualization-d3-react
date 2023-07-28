@@ -4,17 +4,16 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, tooltipValue1ValueFormat, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, style, outOfFocus, onMouseDown, column, selectedChart, chartIndex, selectedColumn, selectedItem, color, ...props }) => {
+const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, xAxisFormat, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, style, outOfFocus, onMouseDown, column, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, color, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
-  console.log('data---red', color ? data : null)
-  const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+  const xAxisFormatter = xAxisFormat === 'date' ? d3.timeFormat("%B %d, %Y") : xAxisFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
   const handleMouseEnter = (e, d, i) => {
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
       .text(tooltipValue1Title + ": " + [
-        tooltipValue1ValueFormatter(d.x0),
-        tooltipValue1ValueFormatter(d.x1)
+        xAxisFormatter(d.x0),
+        xAxisFormatter(d.x1)
       ].join(" - "))
       
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
@@ -35,15 +34,19 @@ const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, 
     tooltip.style("opacity", 0)
   }
 
+  const isLastBin = (d, i) => {
+    return i === data.length - 2
+  }
+
   return <React.Fragment>
     {data.map((d, i) => (
       <rect style={style}
         className={
           color ? "Rectangles__marked" : [
           "Rectangles__rect",
-          `Rectangles__rect--is-${selectedChart == chartIndex && d[0] == selectedItem ? "selected" :
-            selectedChart == chartIndex && selectedItem ? "next-to-selected" :
-              "not-selected"
+          `Rectangles__rect--is-${selectedChart == chartIndex && xAxisFormat === 'number' && d.x0 == selectedItem1 && d.x1 == selectedItem2? "selected" :
+            selectedChart == chartIndex && xAxisFormat !== 'number' && d[0] == selectedItem1 ? "selected" :
+            selectedChart == chartIndex && selectedItem1 ? "next-to-selected" : "not-selected"
           }`
         ].join(" ")}
         key={keyAccessor(d, i)}
@@ -52,7 +55,7 @@ const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, 
         width={d3.max([callAccessor(widthAccessor, d, i), 0])}
         height={d3.max([callAccessor(heightAccessor, d, i), 0])}
         onMouseEnter={!outOfFocus ? e => handleMouseEnter(e, d, i): null}
-        onMouseDown={(selectedColumn == column && selectedItem == d[0]) ? (e) => onMouseDown(e, null, null, null) : (e) => onMouseDown(e, chartIndex, column, d[0])}
+        onMouseDown={((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && xAxisFormat === 'number' &&  selectedColumn1 == column && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && xAxisFormat !== 'number' &&  selectedColumn1 == column && selectedItem1 == d[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : xAxisFormat === 'number' ? (e) => onMouseDown(e, chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', column, null, d.x0, d.x1) : (e) => onMouseDown(e, chartIndex, 'SingleValue', column, null, d[0], null)}
       />
     ))}
   </React.Fragment>
