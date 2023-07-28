@@ -15,10 +15,6 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
     marginBottom: 77,
   })
 
-  const [filterValue, setFilterValue] = React.useState("")
-  const [filteredItems, setFilteredItems] = React.useState([])
-  const [filteredTotal, setFilteredTotal] = React.useState(0)
-
   const categoryAccessor = d => d[category]
   const valueAccessor = d => d[value]
 
@@ -42,34 +38,19 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
 
   const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
 
-  const filterList = (value) => {
-    let x = orderedDataByCategory
-    const total = _.sumBy(x, valueSummarizationAccessor)
-    if (!_.isEmpty(value)) x = _.filter(x, d => (d[0]).toLowerCase().includes(value.toLowerCase()))
-    x = _.take(x, 100)
 
-    setFilterValue(value)
-    setFilteredItems(x)
-    setFilteredTotal(total)
-  }
-
-  const onInputChange = e => {
-    filterList(e.target.value)
-  }
-
-  const items = filterValue ? filteredItems : orderedDataByCategory
-  const total = filteredTotal ? filteredTotal : _.sumBy(orderedDataByCategory, valueSummarizationAccessor)
+  const items = orderedDataByCategory
+  const total = _.sumBy(orderedDataByCategory, valueSummarizationAccessor)
 
   return (
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <div className="SelectableList">
-        <input className="SelectableList__input" value={filterValue} placeholder={`Search for a ${category}`} onChange={onInputChange} />
         <div className="SelectableList__column-headers">
           <div className="SelectableList__column-header">
-            Count
+            {valueSummarization}
           </div>
           <div className="SelectableList__column-header">
-            Percentage
+            %GT
           </div>
         </div>
         <div className="SelectableList__items">
@@ -84,29 +65,31 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
               ].join(" ")}
               key={i}
               onMouseDown={(selectedColumn == category && selectedItem == item[0]) ? (e) => onMouseDown(e, null, null, null) : (e) => onMouseDown(e, chartIndex, category, item[0])}>
-              <div className="SelectableList__item__bar" style={{
-                width: `${item[1][valueSummarization] * 100 / items[0][1][valueSummarization]}%`,
-              }} />
-              <div className="SelectableList__item__index">
-                0
+
+              <div className="SelectableList__item__left">
+
+                <div className="SelectableList__item__label">
+                  {item[0]}
+                </div>
+
               </div>
-              <div className="SelectableList__item__label">
-                {item[0]}
-              </div>
-              <div className="SelectableList__item__value">
-                {formatNumber(item[1][valueSummarization])}
-              </div>
-              <div className="SelectableList__item__value">
-                {formatPercent(item[1][valueSummarization] / total)}
+
+              <div className="SelectableList__item__right">
+
+                <div className="SelectableList__item__bar" style={{
+                  width: `${item[1][valueSummarization] * 100 / items[0][1][valueSummarization]}%`,
+                }} />
+                <div className="SelectableList__item__value">
+                  {formatNumber(item[1][valueSummarization])}
+                </div>
+                <div className="SelectableList__item__value">
+                  {formatPercent(item[1][valueSummarization] / total)}
+                </div>
+
               </div>
 
             </div>
           ))}
-          {(data || []).length > (items || []).length && (
-            <div className="SelectableList__note">
-              Change search for more results
-            </div>
-          )}
         </div>
       </div>
     </div>

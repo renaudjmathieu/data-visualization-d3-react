@@ -41,8 +41,8 @@
 }
 
 .SelectableList__column-headers {
-    position: absolute;
     display: flex;
+    justify-content: flex-end;
     align-items: center;
     right: 0;
     top: 0.2em;
@@ -50,7 +50,7 @@
 
 .SelectableList__column-header {
     width: 5.9em;
-    padding: 0.3em 0.3em 0 0;
+    padding: 0.3em 3.3em 0 0;
     font-size: 0.7em;
 }
 
@@ -108,6 +108,27 @@
     opacity: 0.4;
 }
 
+.SelectableList__item__left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.SelectableList__item__right {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 0.3em 0;
+    width: 200px;
+    transition: all 0.3s ease-out;
+    font-size: 0.8em;
+    border: 1px solid transparent;
+    max-width: 100%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
 .SelectableList__item__bar {
     position: absolute;
     top: 0;
@@ -118,10 +139,6 @@
     transition: all 0.3s ease-out;
 }
 
-.SelectableList__item__index {
-    flex: 0 0 2em;
-    opacity: 0.3;
-}
 
 .SelectableList__item__label {
     flex: 1;

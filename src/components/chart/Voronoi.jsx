@@ -16,8 +16,8 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1
       .attr("class", "tooltipDot")
       .attr("cx", callAccessor(xAccessor, d, i))
       .attr("cy", callAccessor(yAccessor, d, i))
-      .attr("r", 6)
-      .style("fill", theme.vars.palette.primary.complementaryColor)
+      .attr("r", 5)
+      .style("fill", theme.vars.palette.primary.main)
       .style("pointer-events", "none")
 
     const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")

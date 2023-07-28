@@ -385,3 +385,7 @@ h1 {
 .ChartIcon button:hover {
     background: #fff;
 }
+
+.tooltip-line {
+    fill: #292e31;
+}

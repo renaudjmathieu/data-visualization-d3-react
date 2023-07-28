@@ -70,10 +70,18 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue2ValueFormat={yAxisFormat}
         />}
         <Circles
+          zoomed={zoomed}
           data={data}
+          dimensions={dimensions}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1Value={xAccessor}
+          tooltipValue2Value={yAccessor}
+          tooltipValue1ValueFormat={xAxisFormat}
+          tooltipValue2ValueFormat={yAxisFormat}
           xValue={xAccessor}
           yValue={yAccessor}
           onMouseDown={onMouseDown}

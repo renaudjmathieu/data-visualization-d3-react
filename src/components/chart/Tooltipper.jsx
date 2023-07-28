@@ -10,6 +10,7 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
 
     const bounds = d3.select(e.target.parentElement)
     const tooltipDot = bounds.selectAll(".tooltip-circle")
+    const tooltipLine = bounds.selectAll(".tooltip-line")
 
     const mousePosition = d3.pointer(e)
     const hoveredDate = xScale.invert(mousePosition[0])
@@ -46,12 +47,19 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
       .attr("cx", xScale(closestXValue))
       .attr("cy", yScale(closestYValue))
       .style("opacity", 1)
+
+    tooltipLine
+      .attr("x", xScale(closestXValue))
+      .style("opacity", 1)
   }
 
   const handleMouseLeave = () => {
     tooltip.style("opacity", 0)
 
     d3.selectAll(".tooltip-circle")
+      .style("opacity", 0)
+
+    d3.selectAll(".tooltip-line")
       .style("opacity", 0)
   }
 
@@ -65,21 +73,27 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
   voronoi.ymax = dimensions.boundedHeight
 
   return <React.Fragment>
+
+    <rect
+      id="tooltipLine"
+      className="tooltip-line"
+      y={0}
+      width={1}
+      height={dimensions.boundedHeight}
+    />
+    <circle
+      id="tooltipDot"
+      className="tooltip-circle"
+      r={4}
+      fill={theme.vars.palette.primary.main}
+      opacity={0}
+    />
     <rect
       className="listening-rect"
       width={dimensions.boundedWidth}
       height={dimensions.boundedHeight}
       onMouseMove={e => handleMouseMove(e, data)}
       onMouseLeave={handleMouseLeave}
-    />
-    <circle
-      id="tooltipDot"
-      className="tooltip-circle"
-      r={6}
-      stroke={theme.vars.palette.primary.complementaryColor}
-      fill="white"
-      stroke-width={2}
-      opacity={0}
     />
   </React.Fragment>
 }
