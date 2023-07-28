@@ -2,9 +2,30 @@ import React from "react"
 import * as d3 from "d3"
 import { useTheme } from '@mui/material/styles';
 
-const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yScale, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
+const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yScale, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, onMouseDown, column, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, xAxisFormat}) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
+
+  const handleMouseDown = (e, data) => {
+    const mousePosition = d3.pointer(e)
+    const hoveredDate = xScale.invert(mousePosition[0])
+
+    const getDistanceFromHoveredDate = d => Math.abs(xAccessor(d) - hoveredDate)
+    const closestIndex = d3.leastIndex(data, (a, b) => (
+      getDistanceFromHoveredDate(a) - getDistanceFromHoveredDate(b)
+    ))
+    const closestDataPoint = data[closestIndex]
+
+    const closestXValue = xAccessor(closestDataPoint)
+
+    if (selectedColumnType == 'SingleValue' && selectedColumn1 === column && selectedItem1 === closestXValue) {
+      onMouseDown(e, null, null, null, null, null, null, null, null)
+    }
+    else {
+      onMouseDown(e, chartIndex, 'SingleValue', column, null, closestXValue, null, xAxisFormat, null)
+    }
+
+  }
 
   const handleMouseMove = (e, data) => {
 
@@ -94,6 +115,7 @@ const Tooltipper = ({ zoomed, data, dimensions, xAccessor, yAccessor, xScale, yS
       height={dimensions.boundedHeight}
       onMouseMove={e => handleMouseMove(e, data)}
       onMouseLeave={handleMouseLeave}
+      onMouseDown={e => handleMouseDown(e, data)}
     />
   </React.Fragment>
 }

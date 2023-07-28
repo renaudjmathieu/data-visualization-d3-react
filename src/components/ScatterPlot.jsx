@@ -8,7 +8,7 @@ import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 
-const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat, onMouseDown, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisType, yAxisType, onMouseDown, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
@@ -47,14 +47,14 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           dimension="x"
           scale={xScale}
           label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={xAxisFormat}
+          format={xAxisType}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={yAxisFormat}
+          format={yAxisType}
         />
         {!outOfFocus && <Voronoi
           zoomed={zoomed}
@@ -66,8 +66,8 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue1Value={xAccessor}
           tooltipValue2Value={yAccessor}
-          tooltipValue1ValueFormat={xAxisFormat}
-          tooltipValue2ValueFormat={yAxisFormat}
+          tooltipValue1ValueFormat={xAxisType}
+          tooltipValue2ValueFormat={yAxisType}
         />}
         <Circles
           zoomed={zoomed}
@@ -80,8 +80,8 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue1Value={xAccessor}
           tooltipValue2Value={yAccessor}
-          tooltipValue1ValueFormat={xAxisFormat}
-          tooltipValue2ValueFormat={yAxisFormat}
+          tooltipValue1ValueFormat={xAxisType}
+          tooltipValue2ValueFormat={yAxisType}
           xValue={xAccessor}
           yValue={yAccessor}
           onMouseDown={onMouseDown}

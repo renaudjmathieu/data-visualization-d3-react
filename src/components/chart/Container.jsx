@@ -13,6 +13,8 @@ import List from "../List/List"
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
+import * as d3 from 'd3'
+
 const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data, filteredData, selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onDoStuff, fields }) => {
 
   const theme = useTheme();
@@ -26,20 +28,24 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
   const value = chart.value
   const valueSummarization = chart.valueSummarization
 
-  const xAxisParser = xAxis ? fields.find(field => field.id === xAxis).parser : null
-  const yAxisParser = yAxis ? fields.find(field => field.id === yAxis).parser : null
-  const categoryParser = category ? fields.find(field => field.id === category).parser : null
-  const valueParser = value ? fields.find(field => field.id === value).parser : null
+  const xAxisFormat = xAxis ? fields.find(field => field.id === xAxis).format : null
+  const xAxisParser = xAxisFormat ? d3.timeParse(xAxisFormat) : null
+  const yAxisFormat = yAxis ? fields.find(field => field.id === yAxis).format : null
+  const yAxisParser = yAxisFormat ? d3.timeParse(yAxisFormat) : null
+  const categoryFormat = category ? fields.find(field => field.id === category).format : null
+  const categoryParser = categoryFormat ? d3.timeParse(categoryFormat) : null
+  const valueFormat = value ? fields.find(field => field.id === value).format : null
+  const valueParser = valueFormat ? d3.timeParse(valueFormat) : null
 
   const xAccessor = xAxisParser ? d => xAxisParser(d[xAxis]) : d => d[xAxis]
   const yAccessor = yAxisParser ? d => yAxisParser(d[yAxis]) : d => d[yAxis]
   const categoryAccessor = categoryParser ? d => categoryParser(d[category]) : d => d[category]
   const valueAccessor = valueParser ? d => valueParser(d[value]) : d => d[value]
 
-  const xAxisFormat = xAxis && fields.find(field => field.id === xAxis).format ? fields.find(field => field.id === xAxis).format : typeof xAccessor(filteredData[0])
-  const yAxisFormat = yAxis ? fields.find(field => field.id === yAxis).format : null
-  const categoryFormat = category ? fields.find(field => field.id === category).format : null
-  const valueFormat = value ? fields.find(field => field.id === value).format : null
+  const xAxisType = xAxis && fields.find(field => field.id === xAxis).type ? fields.find(field => field.id === xAxis).type : typeof xAccessor(filteredData[0])
+  const yAxisType = yAxis ? fields.find(field => field.id === yAxis).type : null
+  const categoryType = category ? fields.find(field => field.id === category).type : null
+  const valueType = value ? fields.find(field => field.id === value).type : null
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -56,8 +62,8 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         yAxis={yAxis}
         xAxisParser={xAxisParser}
         yAxisParser={yAxisParser}
-        xAxisFormat={xAxisFormat}
-        yAxisFormat={yAxisFormat}
+        xAxisType={xAxisType}
+        yAxisType={yAxisType}
         onMouseDown={onDoStuff}
         selectedChart={selectedChart}
         chartIndex={chartIndex}
@@ -78,7 +84,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         xAccessor={xAccessor}
         yAccessor={yAccessor}
         xAxisParser={xAxisParser}
-        xAxisFormat={xAxisFormat}
+        xAxisType={xAxisType}
         yAxisSummarization={yAxisSummarization}
         selectedChart={selectedChart}
         chartIndex={chartIndex}
@@ -95,10 +101,19 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         xAxis={xAxis}
         yAxis={yAxis}
+        xAxisFormat={xAxisFormat}
         xAxisParser={xAxisParser}
         yAxisParser={yAxisParser}
-        xAxisFormat={xAxisFormat}
-        yAxisFormat={yAxisFormat}
+        xAxisType={xAxisType}
+        yAxisType={yAxisType}
+        onMouseDown={onDoStuff}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
       />
       case "list": return <List
         zoomed={zoomed}
@@ -117,8 +132,8 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         value={value}
         categoryParser={categoryParser}
         valueParser={valueParser}
-        categoryFormat={categoryFormat}
-        valueFormat={valueFormat}
+        categoryType={categoryType}
+        valueType={valueType}
         valueSummarization={valueSummarization}
       />
       default: return null;

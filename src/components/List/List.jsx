@@ -9,7 +9,7 @@ import "./List.css"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category, value, categoryParser, valueParser, categoryFormat, valueFormat, valueSummarization }) => {
+const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category, value, categoryParser, valueParser, categoryType, valueType, valueSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,

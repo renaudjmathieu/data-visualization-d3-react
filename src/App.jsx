@@ -234,33 +234,32 @@ const App = (props) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
     };
 
-    const parsersAndFormats = [
-        { id: 'date', parser: d3.timeParse("%Y-%m-%d"), format: 'date' },
-        { id: 'time', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'sunriseTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'sunsetTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureHighTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureLowTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureHighTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureLowTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'windGustTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'uvIndexTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureMinTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureMaxTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureMinTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureMaxTime', parser: d3.timeParse("%s"), format: 'time' },
+    const typesAndFormats = [
+        { id: 'date', format:"%Y-%m-%d", type: 'date' },
+        { id: 'time', format:"%s", type: 'time' },
+        { id: 'sunriseTime', format:"%s", type: 'time' },
+        { id: 'sunsetTime', format:"%s", type: 'time' },
+        { id: 'temperatureHighTime', format:"%s", type: 'time' },
+        { id: 'temperatureLowTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureHighTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureLowTime', format:"%s", type: 'time' },
+        { id: 'windGustTime', format:"%s", type: 'time' },
+        { id: 'uvIndexTime', format:"%s", type: 'time' },
+        { id: 'temperatureMinTime', format:"%s", type: 'time' },
+        { id: 'temperatureMaxTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureMinTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureMaxTime', format:"%s", type: 'time' },
     ]
 
     const fieldsAvailable = Object.keys(data.random[0])
-        .filter(id => !parsersAndFormats.find(f => f.id === id && f.format === 'time')) // todo - add time fields
+        .filter(id => !typesAndFormats.find(f => f.id === id && f.type === 'time')) // todo - add time fields
         .map(id => (
             {
                 id,
                 type: typeof data.random[0][id],
                 name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
-                ...(parsersAndFormats.find(f => f.id === id) ? {
-                    parser: parsersAndFormats.find(f => f.id === id).parser,
-                    format: parsersAndFormats.find(f => f.id === id).format
+                ...(typesAndFormats.find(f => f.id === id) ? {
+                    format: typesAndFormats.find(f => f.id === id).format
                 } : {})
             }
         ))

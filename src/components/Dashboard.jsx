@@ -68,6 +68,8 @@ const Dashboard = (props, ref) => {
     const [selectedColumn2, setSelectedColumn2] = React.useState(null)
     const [selectedItem1, setSelectedItem1] = React.useState(null)
     const [selectedItem2, setSelectedItem2] = React.useState(null)
+    const [selectedFormat1, setSelectedFormat1] = React.useState(null)
+    const [selectedFormat2, setSelectedFormat2] = React.useState(null)
     const [filteredData, setFilteredData] = React.useState(
         _.map(props.data.random, (d) => {
             return {
@@ -77,18 +79,23 @@ const Dashboard = (props, ref) => {
         })
     )
 
-    const doStuff = (chartIndex, columnType, column1, column2, item1, item2) => {
+    const doStuff = (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
         console.log('chartIndex', chartIndex)
         console.log('columnType', columnType)
         console.log('column1', column1)
         console.log('column2', column2)
         console.log('item1', item1)
         console.log('item2', item2)
+        console.log('format1', format1)
+        console.log('format2', format2)
+
+        const formatter = format1 ? d3.timeFormat(format1) : null
+
         const filteredData =
             columnType === 'SingleValue' ? _.map(props.data.random, (d) => {
                 return {
                     ...d,
-                    marked: d[column1] === item1 ? true : false
+                    marked: (format1 ? formatter(item1) : item1) === d[column1] ? true : false
                 }
             }) :
                 columnType === 'MultipleValues' ? _.map(props.data.random, (d) => {
@@ -116,7 +123,7 @@ const Dashboard = (props, ref) => {
                                 }
                             })
 
-        console.log('columnType', columnType)
+        console.log('date?!?', _.filter(filteredData, { marked: true }))
 
         setFilteredData(filteredData)
         setSelectedChart(chartIndex)
@@ -125,14 +132,16 @@ const Dashboard = (props, ref) => {
         setSelectedColumn2(column2)
         setSelectedItem1(item1)
         setSelectedItem2(item2)
+        setSelectedFormat1(format1)
+        setSelectedFormat2(format2)
     }
 
-    const onDoStuff = (e, chartIndex, columnType, column1, column2, item1, item2) => {
-        doStuff(chartIndex, columnType, column1, column2, item1, item2)
+    const onDoStuff = (e, chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
+        doStuff(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
     }
 
     React.useEffect(() => {
-        doStuff(selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2)
+        doStuff(selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
     }, [])
 
 

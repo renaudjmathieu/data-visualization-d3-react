@@ -6,7 +6,7 @@ import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import { useChartDimensions } from "./chart/utils"
 
-const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisFormat, yAxisSummarization, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -66,9 +66,8 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
     return items
   }
 
-
-  const xScale = calculateXScale(data, xAxisFormat, numberOfThresholds)
-  const items = calculateYAxisSummarization(calculateItems(data, xAxisFormat, xScale, numberOfThresholds), xAxisFormat, yAxisSummarization)
+  const xScale = calculateXScale(data, xAxisType, numberOfThresholds)
+  const items = calculateYAxisSummarization(calculateItems(data, xAxisType, xScale, numberOfThresholds), xAxisType, yAxisSummarization)
 
   let yAccessorSummarizationFormatter = null
   switch (yAxisSummarization) {
@@ -82,8 +81,8 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
     default: yAccessorSummarizationFormatter = d3.format(",");
   }
 
-  const yAccessorSummarization = (xAxisFormat === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
-  const yAccessorSummarizationMarked = (xAxisFormat === "number") ? d => d[`marked ${yAxisSummarization}`] : d => d[1][`marked ${yAxisSummarization}`]
+  const yAccessorSummarization = (xAxisType === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
+  const yAccessorSummarizationMarked = (xAxisType === "number") ? d => d[`marked ${yAxisSummarization}`] : d => d[1][`marked ${yAxisSummarization}`]
 
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(items, yAccessorSummarization)])
@@ -92,10 +91,10 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
 
   const barPadding = 2
 
-  const xAccessorScaled = xAxisFormat === "number" ? d => xScale(d.x0) + barPadding : d => xScale(d[0])
+  const xAccessorScaled = xAxisType === "number" ? d => xScale(d.x0) + barPadding : d => xScale(d[0])
   const yAccessorScaled = d => yScale(yAccessorSummarization(d))
   const yAccessorScaledMarked = d => yScale(yAccessorSummarizationMarked(d))
-  const widthAccessorScaled = xAxisFormat === "number" ? d => xScale(d.x1) - xScale(d.x0) - barPadding : d => xScale.bandwidth()
+  const widthAccessorScaled = xAxisType === "number" ? d => xScale(d.x1) - xScale(d.x0) - barPadding : d => xScale.bandwidth()
   const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
   const heightAccessorScaledMarked = d => dimensions.boundedHeight - yScale(yAccessorSummarizationMarked(d))
   const keyAccessor = (d, i) => i
@@ -110,7 +109,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           dimension="x"
           scale={xScale}
           label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={xAxisFormat}
+          format={xAxisType}
           data={items}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
@@ -133,7 +132,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
           tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAxisFormat={xAxisFormat}
+          xAxisType={xAxisType}
           tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Value={yAccessorSummarization}
           tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
@@ -159,7 +158,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaledMarked}
           tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAxisFormat={xAxisFormat}
+          xAxisType={xAxisType}
           tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Value={yAccessorSummarization}
           tooltipValue2ValueFormat={yAccessorSummarizationFormatter}

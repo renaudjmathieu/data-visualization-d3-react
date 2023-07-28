@@ -7,8 +7,8 @@ import Axis from "./chart/Axis"
 import Tooltipper from "./chart/Tooltipper";
 import { useChartDimensions } from "./chart/utils"
 
-const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
-  
+const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, selectedChart, onMouseDown, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+
   const [ref, dimensions] = useChartDimensions()
 
   let xAccessor = d => d[xAxis]
@@ -41,13 +41,13 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser,
         <Axis
           dimension="x"
           scale={xScale}
-          format={xAxisFormat}
+          format={xAxisType}
         />
         <Axis
           dimension="y"
           scale={yScale}
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={yAxisFormat}
+          format={yAxisType}
         />
         <Polyline
           type="area"
@@ -73,8 +73,20 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser,
           tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue1Value={xAccessor}
           tooltipValue2Value={yAccessor}
-          tooltipValue1ValueFormat={xAxisFormat}
-          tooltipValue2ValueFormat={yAxisFormat}
+          tooltipValue1ValueFormat={xAxisType}
+          tooltipValue2ValueFormat={yAxisType}
+
+          onMouseDown={onMouseDown}
+          column={xAxis}
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumnType={selectedColumnType}
+          selectedColumn1={selectedColumn1}
+          selectedColumn2={selectedColumn2}
+          selectedItem1={selectedItem1}
+          selectedItem2={selectedItem2}
+          
+          xAxisFormat={xAxisFormat}
         />}
       </Chart>
     </div>
