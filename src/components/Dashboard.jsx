@@ -156,6 +156,9 @@ const Dashboard = (props, ref) => {
                 <div className="tooltipD3-value2">
                     <span id="tooltipD3-value2"></span>
                 </div>
+                <div className="tooltipD3-value3">
+                    <span id="tooltipD3-value3"></span>
+                </div>
             </div>
             <div className="App__charts">
                 {charts

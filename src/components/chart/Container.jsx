@@ -194,6 +194,9 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
             <div className="tooltipD3-value2">
               <span id="tooltipD3zoomed-value2"></span>
             </div>
+            <div className="tooltipD3-value3">
+              <span id="tooltipD3zoomed-value3"></span>
+            </div>
           </div>
           {renderChart(true)}
         </Box>

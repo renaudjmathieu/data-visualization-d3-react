@@ -128,32 +128,6 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           dimensions={dimensions}
           keyAccessor={keyAccessor}
           xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
-          widthAccessor={widthAccessorScaled}
-          heightAccessor={heightAccessorScaled}
-          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAxisType={xAxisType}
-          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Value={yAccessorSummarization}
-          tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
-          outOfFocus={outOfFocus}
-          onMouseDown={onMouseDown}
-          column={xAxis}
-          selectedChart={selectedChart}
-          chartIndex={chartIndex}
-          selectedColumnType={selectedColumnType}
-          selectedColumn1={selectedColumn1}
-          selectedColumn2={selectedColumn2}
-          selectedItem1={selectedItem1}
-          selectedItem2={selectedItem2}
-        />}
-        {xAxis && <Rectangles
-          zoomed={zoomed}
-          active={active}
-          data={items}
-          dimensions={dimensions}
-          keyAccessor={keyAccessor}
-          xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaledMarked}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaledMarked}
@@ -162,6 +136,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Value={yAccessorSummarization}
           tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
+          tooltipValue3Value={null}
           outOfFocus={outOfFocus}
           onMouseDown={onMouseDown}
           column={xAxis}
@@ -173,6 +148,33 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           selectedItem1={selectedItem1}
           selectedItem2={selectedItem2}
           color={'red'}
+        />}
+        {xAxis && <Rectangles
+          zoomed={zoomed}
+          active={active}
+          data={items}
+          dimensions={dimensions}
+          keyAccessor={keyAccessor}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+          widthAccessor={widthAccessorScaled}
+          heightAccessor={heightAccessorScaled}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          xAxisType={xAxisType}
+          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Value={yAccessorSummarization}
+          tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
+          tooltipValue3Value={yAccessorSummarizationMarked}
+          outOfFocus={outOfFocus}
+          onMouseDown={onMouseDown}
+          column={xAxis}
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumnType={selectedColumnType}
+          selectedColumn1={selectedColumn1}
+          selectedColumn2={selectedColumn2}
+          selectedItem1={selectedItem1}
+          selectedItem2={selectedItem2}
         />}
       </Chart>
     </div>
