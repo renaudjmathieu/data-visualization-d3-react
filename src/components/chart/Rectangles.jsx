@@ -59,7 +59,7 @@ const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, 
         height={d3.max([callAccessor(heightAccessor, d, i), 0])}
         onMouseEnter={!outOfFocus ? e => handleMouseEnter(e, d, i) : null}
         onMouseLeave={!outOfFocus ? handleMouseLeave : null}
-        onMouseDown={((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && xAxisType === 'number' && selectedColumn1 == column && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && xAxisType !== 'number' && selectedColumn1 == column && selectedItem1 == d[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : xAxisType === 'number' ? (e) => onMouseDown(e, chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', column, null, d.x0, d.x1) : (e) => onMouseDown(e, chartIndex, 'SingleValue', column, null, d[0], null)}
+        onMouseDown={!outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && xAxisType === 'number' && selectedColumn1 == column && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && xAxisType !== 'number' && selectedColumn1 == column && selectedItem1 == d[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : xAxisType === 'number' ? (e) => onMouseDown(e, chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', column, null, d.x0, d.x1) : (e) => onMouseDown(e, chartIndex, 'SingleValue', column, null, d[0], null) : null}
       />
     ))}
   </React.Fragment>

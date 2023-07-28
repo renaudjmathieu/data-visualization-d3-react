@@ -49,6 +49,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           format={yAxisType}
         />
         <Polyline
+          outOfFocus={outOfFocus}
           type="area"
           data={data}
           xAccessorScaled={xAccessorScaled}
@@ -62,6 +63,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           column={xAxis}
         />
         <Polyline
+          outOfFocus={outOfFocus}
           type={data.length === 1 ? "circle" : "line"}
           data={data}
           xAccessorScaled={xAccessorScaled}

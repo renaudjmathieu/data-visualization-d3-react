@@ -57,6 +57,7 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           format={yAxisType}
         />
         {!outOfFocus && <Voronoi
+          outOfFocus={outOfFocus}
           zoomed={zoomed}
           data={data}
           dimensions={dimensions}
@@ -70,6 +71,7 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue2ValueFormat={yAxisType}
         />}
         <Circles
+          outOfFocus={outOfFocus}
           zoomed={zoomed}
           data={data}
           dimensions={dimensions}

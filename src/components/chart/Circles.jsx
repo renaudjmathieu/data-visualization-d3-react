@@ -4,7 +4,7 @@ import * as d3 from "d3"
 import { accessorPropsType, callAccessor } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Circles = ({ zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, onMouseDown, xAxis, yAxis, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, radius }) => {
+const Circles = ({outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, onMouseDown, xAxis, yAxis, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, radius }) => {
 
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
@@ -62,9 +62,9 @@ const Circles = ({ zoomed, type, data, dimensions, keyAccessor, xAccessor, yAcce
           cx={typeof xAccessor == "function" ? xAccessor(d, i) : xAccessor}
           cy={typeof yAccessor == "function" ? yAccessor(d, i) : yAccessor}
           r={typeof radius == "function" ? radius(d, i) : radius}
-          onMouseDown={selectedColumn1 == xAxis && selectedItem1 == xValue(d, i) && selectedColumn2 == yAxis && selectedItem2 == yValue(d, i) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'MultipleValues', xAxis, yAxis, xValue(d, i), yValue(d, i))}
-          onMouseEnter={e => handleMouseEnter(e, d, i)}
-          onMouseLeave={handleMouseLeave}
+          onMouseDown={!outOfFocus ? (selectedColumn1 == xAxis && selectedItem1 == xValue(d, i) && selectedColumn2 == yAxis && selectedItem2 == yValue(d, i) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'MultipleValues', xAxis, yAxis, xValue(d, i), yValue(d, i))) : null}
+          onMouseEnter={!outOfFocus ? (e => handleMouseEnter(e, d, i)) : null}
+          onMouseLeave={!outOfFocus ? handleMouseLeave : null}
         />
       ))}
     </React.Fragment>
