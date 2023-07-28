@@ -46,6 +46,14 @@
     align-items: center;
     right: 0;
     top: 0.2em;
+    padding-bottom: 10px;
+    border-bottom-color: var(--mui-palette-primary-main);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.outOfFocus .SelectableList__column-headers {
+    border-bottom-color: var(--mui-palette-background-primary);
 }
 
 .SelectableList__column-header {
@@ -58,6 +66,14 @@
     height: 250px;
     overflow: auto;
 }
+
+div.SelectableList__items>div:nth-of-type(even) {
+    background: white;
+}
+div.SelectableList__items>div:nth-of-type(even) {
+    background: whitesmoke;
+}
+
 
 /* width */
 .outOfFocus .SelectableList__items::-webkit-scrollbar {
