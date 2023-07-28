@@ -33,7 +33,7 @@ const Dashboard = (props, ref) => {
         }
     };
 
-    const handleOutsideOusideClick = (e) => {
+    const handleOutsideOutsideClick = (e) => {
         if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
             setChosen(null)
             document.body.classList.add("config-closed")
@@ -49,10 +49,10 @@ const Dashboard = (props, ref) => {
     useImperativeHandle(ref, () => ({ doSomething }));
 
     useEffect(() => {
-        document.addEventListener("click", handleOutsideOusideClick);
+        document.addEventListener("click", handleOutsideOutsideClick);
 
         return () => {
-            document.removeEventListener("click", handleOutsideOusideClick);
+            document.removeEventListener("click", handleOutsideOutsideClick);
         };
     });
 
