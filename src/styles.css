@@ -302,6 +302,7 @@ h1 {
 .headerSvg:hover [fill='#123456'] {
     fill: #eceff1;
 }
+
 /*
 .inFocus .Rectangles__rect:hover {
     fill: var(--mui-palette-primary-complementaryColor) !important;
@@ -376,8 +377,15 @@ h1 {
 }
 
 .ChartIcon {
-    display:inline-block;
+    display: inline-block;
     background: #fff;
+    border:#fff solid 1px;
+}
+
+.active .ChartIcon {
+    border-left-color: var(--mui-palette-primary-main);
+    border-top-color: var(--mui-palette-primary-main);
+    border-right-color: var(--mui-palette-primary-main);
 }
 
 .ChartIconRight {
