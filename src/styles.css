@@ -134,13 +134,15 @@ h1 {
 }
 
 .Rectangles__marked {
-    fill: var(--mui-palette-primary-main);
+    opacity: 1;
 }
 
+.Rectangles__unmarked {
+    opacity: 0.4;
+}
 
 .Rectangles__rect {
     fill: var(--mui-palette-primary-main);
-    opacity: 0.4;
 }
 
 .Rectangles__rect--is-next-to-selected {

@@ -104,6 +104,10 @@
     font-weight: 900;
 }
 
+.outOfFocus .SelectableList__item--is-selected {
+    border-color: var(--mui-palette-background-primary);
+}
+
 .SelectableList__item--is-next-to-selected {
     opacity: 0.4;
 }
@@ -139,6 +143,9 @@
     transition: all 0.3s ease-out;
 }
 
+.outOfFocus .SelectableList__item__bar {
+    background: var(--mui-palette-background-primary);
+}
 
 .SelectableList__item__label {
     flex: 1;

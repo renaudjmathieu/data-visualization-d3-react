@@ -45,8 +45,8 @@ const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, 
     {data.map((d, i) => (
       <rect style={style}
         className={
-          color ? "Rectangles__marked" : [
-            "Rectangles__rect",
+          color ? "Rectangles__rect Rectangles__marked" : [
+            "Rectangles__rect Rectangles__unmarked",
             `Rectangles__rect--is-${selectedChart == chartIndex && xAxisType === 'number' && d.x0 == selectedItem1 && d.x1 == selectedItem2 ? "selected" :
               selectedChart == chartIndex && xAxisType !== 'number' && d[0] == selectedItem1 ? "selected" :
                 selectedChart == chartIndex && selectedItem1 ? "next-to-selected" : "not-selected"
