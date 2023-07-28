@@ -37,8 +37,10 @@ const Dashboard = (props, ref) => {
 
     const handleOutsideClick = (e) => {
         if (e.target.tagName === "DIV" &&
+        (!e.target.classList.contains("SelectableList")) &&
         (!e.target.classList.contains("SelectableList__column-headers")) &&
         (!e.target.classList.contains("SelectableList__column-header")) &&
+        (!e.target.classList.contains("SelectableList__items")) &&
         (!e.target.classList.contains("SelectableList__item")) &&
         (!e.target.classList.contains("SelectableList__item__label")) &&
         (!e.target.classList.contains("SelectableList__item__bar")) &&

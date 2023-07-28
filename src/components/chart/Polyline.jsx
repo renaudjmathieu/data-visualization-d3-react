@@ -6,6 +6,8 @@ const Polyline = ({ type, zoomed, data, dimensions, xAccessorScaled, yAccessorSc
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
+  const [clickedClosestDataPoint, setClickedClosestDataPoint] = React.useState(null)
+
   const interpolation = d3.curveMonotoneX
 
   const handleMouseDown = (e, data) => {
@@ -24,14 +26,25 @@ const Polyline = ({ type, zoomed, data, dimensions, xAccessorScaled, yAccessorSc
     const closestXValue = xAccessor(closestDataPoint)
     const closestYValue = yAccessor(closestDataPoint)
 
-    if (selectedColumnType == 'SingleValue' && selectedColumn === column && selectedItem === closestXValue) {
+    const formatter = xAxisFormat ? d3.timeFormat(xAxisFormat) : null
+
+    if (selectedChart === chartIndex && selectedColumnType === 'SingleValue' && selectedColumn === column && formatter(selectedItem) === formatter(closestXValue)) {
       onMouseDown(e, null, null, null, null, null, null, null, null)
     }
     else {
-      dot
-        .attr("cx", xScale(closestXValue))
-        .attr("cy", yScale(closestYValue))
-        .style("opacity", 1)
+
+      if (selectedChart === chartIndex) {
+        dot
+          .attr("cx", xScale(closestXValue))
+          .attr("cy", yScale(closestYValue))
+          .style("opacity", 1)
+      }
+      else {
+        d3.selectAll(".tooltip-circle")
+          .style("opacity", 0)
+
+        setClickedClosestDataPoint(closestDataPoint)
+      }
 
       onMouseDown(e, chartIndex, 'SingleValue', column, null, closestXValue, null, xAxisFormat, null)
     }
@@ -120,17 +133,30 @@ const Polyline = ({ type, zoomed, data, dimensions, xAccessorScaled, yAccessorSc
       .y1(yAccessorScaled)
   }
 
-  console.log('selectedChart', selectedChart)
-  console.log('chartIndex', chartIndex)
-  console.log('selectedColumn', selectedColumn)
-  console.log('column', column)
+  if (selectedChart !== chartIndex || selectedColumn !== column) {
+    d3.selectAll(".yo-circle")
+      .style("opacity", 0)
+  }
+
+  if (clickedClosestDataPoint) {
+    const dot = d3.selectAll(".yo-circle")
+    const closestXValue = xAccessor(clickedClosestDataPoint)
+    const closestYValue = yAccessor(clickedClosestDataPoint)
+
+    dot
+      .attr("cx", xScale(closestXValue))
+      .attr("cy", yScale(closestYValue))
+      .style("opacity", 1)
+
+    setClickedClosestDataPoint(null)
+  }
 
   return <React.Fragment>
 
     <path {...props}
       className={[
         `Polyline Polyline--type-${type}`,
-        `Polyline Polyline--type-${type}--is-${selectedChart == chartIndex && selectedColumn === column ? "next-to-selected" : "selected"
+        `Polyline Polyline--type-${type}--is-${selectedChart === chartIndex && selectedColumn === column ? "next-to-selected" : "selected"
         }`
       ].join(" ")}
       d={lineGenerator(data)}
