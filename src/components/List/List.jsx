@@ -64,7 +64,7 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={(selectedColumnType == 'SingleValue' && selectedColumn1 == category && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'SingleValue', category, null, item[0], null)}>
+              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'SingleValue', category, null, item[0], null)) : null}>
 
               <div className="SelectableList__item__left">
 

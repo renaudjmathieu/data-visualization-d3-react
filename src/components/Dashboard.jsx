@@ -42,6 +42,11 @@ const Dashboard = (props, ref) => {
         (!e.target.classList.contains("SelectableList__column-header")) &&
         (!e.target.classList.contains("SelectableList__items")) &&
         (!e.target.classList.contains("SelectableList__item")) &&
+        (!e.target.classList.contains("SelectableList__item--is-selected")) &&
+        (!e.target.classList.contains("SelectableList__item--is-next-to-selected")) &&
+        (!e.target.classList.contains("SelectableList__item--is-not-selected")) &&
+        (!e.target.classList.contains("SelectableList__item__left")) &&
+        (!e.target.classList.contains("SelectableList__item__right")) &&
         (!e.target.classList.contains("SelectableList__item__label")) &&
         (!e.target.classList.contains("SelectableList__item__bar")) &&
         (!e.target.classList.contains("SelectableList__item__value")) &&
