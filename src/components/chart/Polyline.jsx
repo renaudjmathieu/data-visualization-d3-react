@@ -2,7 +2,7 @@ import React from "react"
 import * as d3 from "d3"
 import { useTheme } from '@mui/material/styles';
 
-const Tooltipper = ({ type, zoomed, data, dimensions, xAccessorScaled, yAccessorScaled, y0AccessorScaled, selectedChart, chartIndex, selectedColumnType, selectedColumn, column, selectedItem, xScale, yScale, tooltipValue1Title, xAccessor, tooltipValue2Title, yAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, onMouseDown, xAxisFormat, ...props }) => {
+const Polyline = ({ type, zoomed, data, dimensions, xAccessorScaled, yAccessorScaled, y0AccessorScaled, selectedChart, chartIndex, selectedColumnType, selectedColumn, column, selectedItem, xScale, yScale, tooltipValue1Title, xAccessor, tooltipValue2Title, yAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, onMouseDown, xAxisFormat, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
@@ -170,4 +170,4 @@ const Tooltipper = ({ type, zoomed, data, dimensions, xAccessorScaled, yAccessor
   </React.Fragment>
 }
 
-export default Tooltipper
+export default Polyline

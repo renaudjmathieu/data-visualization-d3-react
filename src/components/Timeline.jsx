@@ -3,7 +3,7 @@ import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
 import Axis from "./chart/Axis"
-import Tooltipper from "./chart/Tooltipper";
+import Polyline from "./chart/Polyline";
 import { useChartDimensions } from "./chart/utils"
 
 const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, selectedChart, onMouseDown, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
@@ -48,7 +48,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           format={yAxisType}
         />
-        <Tooltipper
+        <Polyline
           type="area"
           data={data}
           xAccessorScaled={xAccessorScaled}
@@ -61,7 +61,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           selectedColumn={selectedColumn1}
           column={xAxis}
         />
-        <Tooltipper
+        <Polyline
           type={data.length === 1 ? "circle" : "line"}
           data={data}
           xAccessorScaled={xAccessorScaled}
