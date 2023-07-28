@@ -5,56 +5,71 @@ import * as d3 from 'd3'
 
 const Dashboard = (props, ref) => {
 
-    const [charts, setCharts] = useState(props.charts);
+    const [charts, setCharts] = useState(props.charts)
 
     useEffect(() => {
-        setCharts(props.charts);
-    }, [props.charts]);
+        setCharts(props.charts)
+    }, [props.charts])
 
     const [chosen, setChosen] = useState(null);
 
-    const handleClick1 = (e, chart, index) => {
-        setChosen(index);
+    const OpenDrawer = (chart, index) => {
+        setChosen(index)
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
-        props.handleDrawerOpen(chart, index);
-    };
+        props.handleDrawerOpen(chart, index)
+    }
+
+    const CloseDrawer = () => {
+        setChosen(null)
+        document.body.classList.add("config-closed")
+        document.body.classList.remove("config-open")
+        props.handleDrawerClose()
+    }
+
+    const handleClick1 = (e, chart, index) => {
+        OpenDrawer(chart, index)
+    }
 
     const handleClick2 = (e, chart, index) => {
 
-    };
+    }
 
     const handleOutsideClick = (e) => {
-        if (e.target.tagName === "DIV" && (!e.target.classList.contains("Chart__rectangle")) && (!e.target.classList.contains("Chart__rectangle__large")) && (!e.target.classList.contains("Chart__square"))) {
-            setChosen(null)
-            document.body.classList.add("config-closed")
-            document.body.classList.remove("config-open")
-            props.handleDrawerClose();
+        console.log('handleOutsideClick - e.target', e.target.classList)
+        if (e.target.tagName === "DIV" &&
+        (!e.target.classList.contains("SelectableList__column-headers")) &&
+        (!e.target.classList.contains("SelectableList__column-header")) &&
+        (!e.target.classList.contains("SelectableList__item")) &&
+        (!e.target.classList.contains("SelectableList__item__label")) &&
+        (!e.target.classList.contains("SelectableList__item__bar")) &&
+        (!e.target.classList.contains("SelectableList__item__value")) &&
+            (!e.target.classList.contains("Chart__rectangle")) &&
+            (!e.target.classList.contains("Chart__rectangle__large")) &&
+            (!e.target.classList.contains("Chart__square"))) {
+            CloseDrawer()
         }
-    };
+    }
 
     const handleOutsideOutsideClick = (e) => {
         if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
-            setChosen(null)
-            document.body.classList.add("config-closed")
-            document.body.classList.remove("config-open")
-            props.handleDrawerClose();
+            CloseDrawer()
         }
-    };
+    }
 
     const doSomething = () => {
-        setChosen(null);
-    };
+        setChosen(null)
+    }
 
-    useImperativeHandle(ref, () => ({ doSomething }));
+    useImperativeHandle(ref, () => ({ doSomething }))
 
     useEffect(() => {
-        document.addEventListener("click", handleOutsideOutsideClick);
+        document.addEventListener("click", handleOutsideOutsideClick)
 
         return () => {
-            document.removeEventListener("click", handleOutsideOutsideClick);
-        };
-    });
+            document.removeEventListener("click", handleOutsideOutsideClick)
+        }
+    })
 
 
 
