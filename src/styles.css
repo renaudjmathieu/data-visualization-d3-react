@@ -149,10 +149,7 @@ h1 {
     opacity: 0.4;
 }
 
-.Polyline--type-line {
-    stroke: var(--mui-palette-primary-main);
-}
-
+.Polyline--type-line,
 .Polyline--type-circle {
     stroke: var(--mui-palette-primary-main);
 }
@@ -161,6 +158,18 @@ h1 {
     fill: var(--mui-palette-primary-main);
     opacity: 0.6;
 }
+
+.Polyline--type-line--is-next-to-selected,
+.Polyline--type-circle--is-next-to-selected {
+    stroke: var(--mui-palette-primary-main);
+    opacity: 0.4;
+}
+
+.Polyline--type-area--is-next-to-selected {
+    fill: var(--mui-palette-primary-main);
+    opacity: 0.2;
+}
+
 
 .Axis__line {
     stroke: #bdc3c7;

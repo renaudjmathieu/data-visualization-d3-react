@@ -2,7 +2,6 @@ import React from "react"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import Polyline from "./chart/Polyline"
 import Axis from "./chart/Axis"
 import Tooltipper from "./chart/Tooltipper";
 import { useChartDimensions } from "./chart/utils"
@@ -49,46 +48,50 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           format={yAxisType}
         />
-        <Polyline
+        <Tooltipper
           type="area"
           data={data}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
-          y0Accessor={y0AccessorScaled}
+          xAccessorScaled={xAccessorScaled}
+          yAccessorScaled={yAccessorScaled}
+          y0AccessorScaled={y0AccessorScaled}
+
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumnType={selectedColumnType}
+          selectedColumn={selectedColumn1}
+          column={xAxis}
         />
-        <Polyline
+        <Tooltipper
           type={data.length === 1 ? "circle" : "line"}
           data={data}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
-        />
-        {!outOfFocus && <Tooltipper
-          zoomed={zoomed}
-          data={data}
+          xAccessorScaled={xAccessorScaled}
+          yAccessorScaled={yAccessorScaled}
+          y0AccessorScaled={null}
+
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumnType={selectedColumnType}
+          selectedColumn={selectedColumn1}
+          column={xAxis}
+          selectedItem={selectedItem1}
+
+
           dimensions={dimensions}
-          xAccessor={xAccessor}
-          yAccessor={yAccessor}
+          zoomed={zoomed}
+
           xScale={xScale}
           yScale={yScale}
           tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue1Value={xAccessor}
-          tooltipValue2Value={yAccessor}
+          xAccessor={xAccessor}
+          yAccessor={yAccessor}
           tooltipValue1ValueFormat={xAxisType}
           tooltipValue2ValueFormat={yAxisType}
 
           onMouseDown={onMouseDown}
-          column={xAxis}
-          selectedChart={selectedChart}
-          chartIndex={chartIndex}
-          selectedColumnType={selectedColumnType}
-          selectedColumn1={selectedColumn1}
-          selectedColumn2={selectedColumn2}
-          selectedItem1={selectedItem1}
-          selectedItem2={selectedItem2}
 
           xAxisFormat={xAxisFormat}
-        />}
+        />
       </Chart>
     </div>
   )

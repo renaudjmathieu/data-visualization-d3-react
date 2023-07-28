@@ -94,6 +94,8 @@ const Dashboard = (props, ref) => {
     )
 
     const doStuff = (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
+
+        /*
         console.log('chartIndex', chartIndex)
         console.log('columnType', columnType)
         console.log('column1', column1)
@@ -102,6 +104,7 @@ const Dashboard = (props, ref) => {
         console.log('item2', item2)
         console.log('format1', format1)
         console.log('format2', format2)
+        */
 
         const formatter = format1 ? d3.timeFormat(format1) : null
 
@@ -136,8 +139,6 @@ const Dashboard = (props, ref) => {
                                     marked: true
                                 }
                             })
-
-        console.log('date?!?', _.filter(filteredData, { marked: true }))
 
         setFilteredData(filteredData)
         setSelectedChart(chartIndex)
