@@ -4,12 +4,12 @@ import * as d3 from "d3"
 import { accessorPropsType } from "./utils";
 
 const Polyline = ({ type, data, xAccessor, yAccessor, y0Accessor, angleAccessor, radiusAccessor, interpolation, ...props }) => {
-  const lineGenerator = d3[type]()
+  const lineGenerator = d3[type === "circle" ? "line" : type]()
     .curve(interpolation)
 
   let polyline = null
 
-  if (type === "line" || type === "area") {
+  if (type === "line" || type === "area" || type === "circle") {
     lineGenerator
       .x(xAccessor)
       .y(yAccessor)

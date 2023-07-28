@@ -12,6 +12,12 @@
     stroke-linecap: round;
 }
 
+.Polyline--type-circle {
+    fill: none;
+    stroke-width: 8px;
+    stroke-linecap: round;
+}
+
 .Polyline--type-area {
     stroke-width: 0;
 }

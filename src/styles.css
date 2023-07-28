@@ -153,6 +153,10 @@ h1 {
     stroke: var(--mui-palette-primary-main);
 }
 
+.Polyline--type-circle {
+    stroke: var(--mui-palette-primary-main);
+}
+
 .Polyline--type-area {
     fill: var(--mui-palette-primary-main);
     opacity: 0.6;
@@ -224,6 +228,12 @@ h1 {
 .Chart__rectangle__large.outOfFocus .Polyline--type-line,
 .Chart__rectangle.outOfFocus .Polyline--type-line,
 .Chart__square.outOfFocus .Polyline--type-line {
+    stroke: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Polyline--type-circle,
+.Chart__rectangle.outOfFocus .Polyline--type-circle,
+.Chart__square.outOfFocus .Polyline--type-circle {
     stroke: var(--mui-palette-background-primary);
 }
 

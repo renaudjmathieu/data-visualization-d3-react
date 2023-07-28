@@ -57,6 +57,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           y0Accessor={y0AccessorScaled}
         />
         <Polyline
+          type={data.length === 1 ? "circle" : "line"}
           data={data}
           xAccessor={xAccessorScaled}
           yAccessor={yAccessorScaled}
@@ -85,7 +86,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           selectedColumn2={selectedColumn2}
           selectedItem1={selectedItem1}
           selectedItem2={selectedItem2}
-          
+
           xAxisFormat={xAxisFormat}
         />}
       </Chart>
