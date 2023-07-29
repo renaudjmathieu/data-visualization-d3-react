@@ -63,17 +63,16 @@
 }
 
 .SelectableList__items {
-    height: 250px;
+    height: 295px;
     overflow: auto;
 }
 
-div.SelectableList__items>div:nth-of-type(even) {
+div.SelectableList__items>div:nth-of-type(odd) {
     background: white;
 }
 div.SelectableList__items>div:nth-of-type(even) {
     background: whitesmoke;
 }
-
 
 /* width */
 .outOfFocus .SelectableList__items::-webkit-scrollbar {
@@ -106,12 +105,7 @@ div.SelectableList__items>div:nth-of-type(even) {
 }
 
 .SelectableList__item--is-selected {
-    border-color: var(--mui-palette-primary-main);
     font-weight: 900;
-}
-
-.outOfFocus .SelectableList__item--is-selected {
-    border-color: var(--mui-palette-background-primary);
 }
 
 .SelectableList__item--is-next-to-selected {
