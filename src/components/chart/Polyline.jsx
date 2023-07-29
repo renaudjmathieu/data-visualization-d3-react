@@ -8,8 +8,8 @@ const Polyline = ({ outOfFocus, type, zoomed, data, dimensions, xAccessorScaled,
 
   const [clickedClosestDataPoint, setClickedClosestDataPoint] = React.useState(null)
 
-  const interpolation = d3.curveMonotoneX
-
+  const interpolation = d3.curveLinear
+  
   const handleMouseDown = (e, data) => {
 
     const bounds = d3.select(e.target.parentElement)

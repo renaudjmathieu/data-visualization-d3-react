@@ -46,28 +46,47 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
   const calculateYAxisSummarization = (items, dataType, summarization) => {
     items.forEach(item => {
       const currentItem = dataType === "number" ? item : item[1]
+      console.log('currentItem', d3.group(currentItem, yAccessor).size)
       switch (yAxisSummarization) {
         case "sum":
           currentItem[yAxisSummarization] = d3.sum(currentItem, yAccessor);
-          currentItem[`marked ${yAxisSummarization}`] = currentItem['marked'] ? d3.sum(currentItem, yAccessor) : 0;
+          currentItem[`marked ${yAxisSummarization}`] = d3.sum(_.filter(currentItem, ['marked', true]), yAccessor);
           break;
-        case "average": currentItem[yAxisSummarization] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length; break;
-        case "min": currentItem[yAxisSummarization] = d3.min(currentItem, yAccessor); break;
-        case "max": currentItem[yAxisSummarization] = d3.max(currentItem, yAccessor); break;
-        case "distinct": currentItem[yAxisSummarization] = d3.group(currentItem, yAccessor).size; break;
+        case "average":
+          currentItem[yAxisSummarization] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length;
+          currentItem[`marked ${yAxisSummarization}`] = d3.sum(d3.rollup(_.filter(currentItem, ['marked', true]), v => d3.sum(v, yAccessor), yAccessor).values()) / _.filter(currentItem, ['marked', true]).length;
+          break;
+        case "min":
+          currentItem[yAxisSummarization] = d3.min(currentItem, yAccessor);
+          currentItem[`marked ${yAxisSummarization}`] = d3.min(_.filter(currentItem, ['marked', true]), yAccessor);
+          break;
+        case "max":
+          currentItem[yAxisSummarization] = d3.max(currentItem, yAccessor);
+          currentItem[`marked ${yAxisSummarization}`] = d3.max(_.filter(currentItem, ['marked', true]), yAccessor);
+          break;
+        case "distinct":
+          currentItem[yAxisSummarization] = d3.group(currentItem, yAccessor).size;
+          currentItem[`marked ${yAxisSummarization}`] = d3.group(_.filter(currentItem, ['marked', true]), yAccessor).size;
+          break;
         case "count":
           currentItem[yAxisSummarization] = currentItem.length;
           currentItem[`marked ${yAxisSummarization}`] = _.filter(currentItem, ['marked', true]).length;
           break;
-        case "median": currentItem[yAxisSummarization] = d3.median(currentItem, yAccessor); break;
+        case "median":
+          currentItem[yAxisSummarization] = d3.median(currentItem, yAccessor);
+          currentItem[`marked ${yAxisSummarization}`] = d3.median(_.filter(currentItem, ['marked', true]), yAccessor);
+          break;
         default: null;
       }
     })
     return items
   }
 
+
   const xScale = calculateXScale(data, xAxisType, numberOfThresholds)
   const items = calculateYAxisSummarization(calculateItems(data, xAxisType, xScale, numberOfThresholds), xAxisType, yAxisSummarization)
+
+  console.log('items', items)
 
   let yAccessorSummarizationFormatter = null
   switch (yAxisSummarization) {
