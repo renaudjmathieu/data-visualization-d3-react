@@ -46,7 +46,6 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
   const calculateYAxisSummarization = (items, dataType, summarization) => {
     items.forEach(item => {
       const currentItem = dataType === "number" ? item : item[1]
-      console.log('currentItem', d3.group(currentItem, yAccessor).size)
       switch (yAxisSummarization) {
         case "sum":
           currentItem[yAxisSummarization] = d3.sum(currentItem, yAccessor);
@@ -82,11 +81,8 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
     return items
   }
 
-
   const xScale = calculateXScale(data, xAxisType, numberOfThresholds)
   const items = calculateYAxisSummarization(calculateItems(data, xAxisType, xScale, numberOfThresholds), xAxisType, yAxisSummarization)
-
-  console.log('items', items)
 
   let yAccessorSummarizationFormatter = null
   switch (yAxisSummarization) {

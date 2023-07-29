@@ -175,7 +175,7 @@ const getThemeExtender = (color) => {
 const App = (props) => {
     const { window } = props;
     const [data, setData] = React.useState(getData())
-    const [theme, setTheme] = React.useState(getThemeExtender(getFixColor()))
+    const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {
         let resizeTimer;
@@ -269,12 +269,14 @@ const App = (props) => {
                 type: typeof data.random[0][id],
                 name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
                 ...(typesAndFormats.find(f => f.id === id) ? {
+                    type: typesAndFormats.find(f => f.id === id).type ? typesAndFormats.find(f => f.id === id).type : typeof data.random[0][id],
                     format: typesAndFormats.find(f => f.id === id).format
                 } : {})
             }
         ))
         .sort((a, b) => a.name.localeCompare(b.name))
 
+    console.log('fieldsAvailable', fieldsAvailable)
     return (
         <CssVarsProvider theme={theme}>
             <CssBaseline />
