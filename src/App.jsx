@@ -135,6 +135,16 @@ const getRandomColor = () => {
     let l = Math.floor(Math.random() * (60 - 40 + 1) + 40);
     let color = `hsl(${h},${s}%,${l}%)`;
     let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
+    console.log('color', h, s, l)
+    return { color, complementaryColor }
+}
+
+const getFixColor = () => {
+    let h = 210;
+    let s = 90;
+    let l = 50;
+    let color = `hsl(${h},${s}%,${l}%)`;
+    let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
     return { color, complementaryColor }
 }
 
@@ -165,7 +175,7 @@ const getThemeExtender = (color) => {
 const App = (props) => {
     const { window } = props;
     const [data, setData] = React.useState(getData())
-    const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
+    const [theme, setTheme] = React.useState(getThemeExtender(getFixColor()))
 
     const handleThemeChange = () => {
         let resizeTimer;
