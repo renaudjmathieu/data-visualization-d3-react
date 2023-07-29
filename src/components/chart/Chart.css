@@ -12,23 +12,30 @@
     stroke-linecap: round;
 }
 
+.Polyline--type-circle {
+    fill: none;
+    stroke-width: 8px;
+    stroke-linecap: round;
+}
+
 .Polyline--type-area {
     stroke-width: 0;
 }
 
 .Axis__label {
     text-anchor: middle;
-    font-size: 0.9em;
+    font-size: 0.8em;
     letter-spacing: 0.01em;
+    fill: #000 !important;
 }
 
 .Axis__tick {
-    font-size: 0.8em;
+    text-align: right;
     transition: all 0.3s ease-out;
 }
 
 .AxisHorizontal .Axis__tick {
-    text-anchor: middle;
+    text-anchor: end;
 }
 
 .AxisVertical .Axis__tick {

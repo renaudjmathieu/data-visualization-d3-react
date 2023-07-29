@@ -94,9 +94,11 @@ const summarizationAvailable = [
 ]
 
 const chartsAvailable = [
-    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', playAxis: '' },
-    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', playAxis: '' },
-    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', playAxis: '' },
+    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
+    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', value: '', valueSummarization: '', playAxis: '' },
+    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
+    { id: 'list', name: "List", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'icon', value: 'humidity', valueSummarization: 'distinct', playAxis: '' },
+    //{ id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'icon', value: 'humidity', valueSummarization: 'distinct', playAxis: '' },
 ]
 
 function ModeToggle() {
@@ -128,10 +130,19 @@ function ModeToggle() {
 }
 
 const getRandomColor = () => {
-    //get a random hsl color with saturation between 80 and 100 and lightness between 40 and 60
     let h = Math.floor(Math.random() * 360);
     let s = Math.floor(Math.random() * (100 - 80 + 1) + 80);
     let l = Math.floor(Math.random() * (60 - 40 + 1) + 40);
+    let color = `hsl(${h},${s}%,${l}%)`;
+    let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
+    console.log('color', h, s, l)
+    return { color, complementaryColor }
+}
+
+const getFixColor = () => {
+    let h = 210;
+    let s = 90;
+    let l = 50;
     let color = `hsl(${h},${s}%,${l}%)`;
     let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
     return { color, complementaryColor }
@@ -164,7 +175,7 @@ const getThemeExtender = (color) => {
 const App = (props) => {
     const { window } = props;
     const [data, setData] = React.useState(getData())
-    const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
+    const [theme, setTheme] = React.useState(getThemeExtender(getFixColor()))
 
     const handleThemeChange = () => {
         let resizeTimer;
@@ -195,12 +206,18 @@ const App = (props) => {
         setOpen(false);
         document.body.classList.add("closed")
         document.body.classList.remove("open")
+
+        if (dashboardRef.current) {
+            dashboardRef.current.doSomething();
+        }
+
+        
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
     const [charts, setCharts] = React.useState(
-        chartsAvailable.filter((chart) => ['scatter', 'histogram', 'timeline'].includes(chart.id))
+        chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'list'].includes(chart.id))
     );
 
     const handleReplaceChart = (event) => {
@@ -221,39 +238,38 @@ const App = (props) => {
         setCharts(charts.slice(0, charts.length - 1));
     };
 
-    const dashboardRef = React.useRef();
+    const dashboardRef = React.useRef(null);
 
     const handleFieldChange = (event, keyName) => {
         setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
     };
 
-    const parsersAndFormats = [
-        { id: 'date', parser: d3.timeParse("%Y-%m-%d"), format: 'date' },
-        { id: 'time', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'sunriseTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'sunsetTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureHighTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureLowTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureHighTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureLowTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'windGustTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'uvIndexTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureMinTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'temperatureMaxTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureMinTime', parser: d3.timeParse("%s"), format: 'time' },
-        { id: 'apparentTemperatureMaxTime', parser: d3.timeParse("%s"), format: 'time' },
+    const typesAndFormats = [
+        { id: 'date', format:"%Y-%m-%d", type: 'date' },
+        { id: 'time', format:"%s", type: 'time' },
+        { id: 'sunriseTime', format:"%s", type: 'time' },
+        { id: 'sunsetTime', format:"%s", type: 'time' },
+        { id: 'temperatureHighTime', format:"%s", type: 'time' },
+        { id: 'temperatureLowTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureHighTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureLowTime', format:"%s", type: 'time' },
+        { id: 'windGustTime', format:"%s", type: 'time' },
+        { id: 'uvIndexTime', format:"%s", type: 'time' },
+        { id: 'temperatureMinTime', format:"%s", type: 'time' },
+        { id: 'temperatureMaxTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureMinTime', format:"%s", type: 'time' },
+        { id: 'apparentTemperatureMaxTime', format:"%s", type: 'time' },
     ]
 
     const fieldsAvailable = Object.keys(data.random[0])
-        .filter(id => !parsersAndFormats.find(f => f.id === id && f.format === 'time')) // todo - add time fields
+        .filter(id => !typesAndFormats.find(f => f.id === id && f.type === 'time')) // todo - add time fields
         .map(id => (
             {
                 id,
                 type: typeof data.random[0][id],
                 name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
-                ...(parsersAndFormats.find(f => f.id === id) ? {
-                    parser: parsersAndFormats.find(f => f.id === id).parser,
-                    format: parsersAndFormats.find(f => f.id === id).format
+                ...(typesAndFormats.find(f => f.id === id) ? {
+                    format: typesAndFormats.find(f => f.id === id).format
                 } : {})
             }
         ))
@@ -364,7 +380,10 @@ const App = (props) => {
                                                 summarizationAvailable
                                                     .filter(
                                                         summarization => summarization.numberOnly === false ||
-                                                            (fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')]))[0].type === 'number'
+                                                            (
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0] !== undefined &&
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0].type === 'number'
+                                                            )
                                                     )
                                                     .map(summarization => (
                                                         <MenuItem value={summarization.id}>{summarization.name}</MenuItem>

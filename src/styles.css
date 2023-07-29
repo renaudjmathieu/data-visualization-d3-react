@@ -128,17 +128,48 @@ h1 {
     fill: var(--mui-palette-primary-main);
 }
 
+.Circle--type-circle--is-next-to-selected {
+    fill: var(--mui-palette-primary-main);
+    opacity: 0.4;
+}
+
+.Rectangles__marked {
+    opacity: 1;
+}
+
+.Rectangles__unmarked {
+    opacity: 0.4;
+}
+
 .Rectangles__rect {
     fill: var(--mui-palette-primary-main);
 }
 
-.Polyline--type-line {
+.Rectangles__rect--is-next-to-selected {
+    opacity: 0.4;
+}
+
+.Polyline--type-line,
+.Polyline--type-circle {
     stroke: var(--mui-palette-primary-main);
 }
 
 .Polyline--type-area {
     fill: var(--mui-palette-primary-main);
+    opacity: 0.6;
 }
+
+.Polyline--type-line--is-next-to-selected,
+.Polyline--type-circle--is-next-to-selected {
+    stroke: var(--mui-palette-primary-main);
+    opacity: 0.4;
+}
+
+.Polyline--type-area--is-next-to-selected {
+    fill: var(--mui-palette-primary-main);
+    opacity: 0.2;
+}
+
 
 .Axis__line {
     stroke: #bdc3c7;
@@ -207,6 +238,20 @@ h1 {
 .Chart__rectangle.outOfFocus .Polyline--type-line,
 .Chart__square.outOfFocus .Polyline--type-line {
     stroke: var(--mui-palette-background-primary);
+}
+
+.Chart__rectangle__large.outOfFocus .Polyline--type-circle,
+.Chart__rectangle.outOfFocus .Polyline--type-circle,
+.Chart__square.outOfFocus .Polyline--type-circle {
+    stroke: var(--mui-palette-background-primary);
+}
+
+.yo-circle {
+    fill: var(--mui-palette-primary-main);
+}
+
+.outOfFocus .yo-circle {
+    fill: var(--mui-palette-background-primary);
 }
 
 .Chart__rectangle__large.outOfFocus .Polyline--type-area,
@@ -285,9 +330,11 @@ h1 {
     fill: #eceff1;
 }
 
+/*
 .inFocus .Rectangles__rect:hover {
     fill: var(--mui-palette-primary-complementaryColor) !important;
 }
+*/
 
 .tooltipD3 {
     opacity: 0;
@@ -352,10 +399,30 @@ h1 {
 .ChartIcons {
     visibility: hidden;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: -40px;
+    right: 0px;
 }
 
-.ChartIcons button {
-    margin-left: -6px;
+.ChartIcon {
+    display: inline-block;
+    background: #fff;
+    border:#fff solid 1px;
+}
+
+.active .ChartIcon {
+    border-left-color: var(--mui-palette-primary-main);
+    border-top-color: var(--mui-palette-primary-main);
+    border-right-color: var(--mui-palette-primary-main);
+}
+
+.ChartIconRight {
+    margin-left: 5px;
+}
+
+.ChartIcon button:hover {
+    background: #fff;
+}
+
+.tooltip-line {
+    fill: #292e31;
 }

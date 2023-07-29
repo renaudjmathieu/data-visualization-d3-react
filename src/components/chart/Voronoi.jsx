@@ -5,7 +5,7 @@ import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
+const Voronoi = ({ outOfFocus, zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
 
@@ -16,8 +16,8 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1
       .attr("class", "tooltipDot")
       .attr("cx", callAccessor(xAccessor, d, i))
       .attr("cy", callAccessor(yAccessor, d, i))
-      .attr("r", 6)
-      .style("fill", theme.vars.palette.primary.complementaryColor)
+      .attr("r", 5)
+      .style("fill", theme.vars.palette.primary.main)
       .style("pointer-events", "none")
 
     const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
@@ -61,8 +61,8 @@ const Voronoi = ({ zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1
       <path
         className="voronoi"
         d={voronoi.renderCell(i)}
-        onMouseEnter={e => handleMouseEnter(e, d, i)}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={!outOfFocus ? (e => handleMouseEnter(e, d, i)) : null}
+        onMouseLeave={!outOfFocus ? handleMouseLeave : null}
       />
     ))}
   </React.Fragment>

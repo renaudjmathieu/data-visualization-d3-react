@@ -8,23 +8,44 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import Histogram from "../Histogram"
 import ScatterPlot from "../ScatterPlot"
 import Timeline from "../Timeline"
+import List from "../List/List"
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fields }) => {
+import * as d3 from 'd3'
+
+const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data, filteredData, selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onDoStuff, fields }) => {
 
   const theme = useTheme();
 
-  const outOfFocus = chosen !== null && index !== chosen
-  const active = index === chosen
+  const outOfFocus = chosen !== null && chartIndex !== chosen
+  const active = chartIndex === chosen
   const xAxis = chart.xAxis
   const yAxis = chart.yAxis
   const yAxisSummarization = chart.yAxisSummarization
-  const xAxisParser = fields.find(field => field.id === chart.xAxis).parser
-  const yAxisParser = fields.find(field => field.id === chart.yAxis).parser
-  const xAxisFormat = fields.find(field => field.id === chart.xAxis).format
-  const yAxisFormat = fields.find(field => field.id === chart.yAxis).format
+  const category = chart.category
+  const value = chart.value
+  const valueSummarization = chart.valueSummarization
+
+  const xAxisFormat = xAxis ? fields.find(field => field.id === xAxis).format : null
+  const xAxisParser = xAxisFormat ? d3.timeParse(xAxisFormat) : null
+  const yAxisFormat = yAxis ? fields.find(field => field.id === yAxis).format : null
+  const yAxisParser = yAxisFormat ? d3.timeParse(yAxisFormat) : null
+  const categoryFormat = category ? fields.find(field => field.id === category).format : null
+  const categoryParser = categoryFormat ? d3.timeParse(categoryFormat) : null
+  const valueFormat = value ? fields.find(field => field.id === value).format : null
+  const valueParser = valueFormat ? d3.timeParse(valueFormat) : null
+
+  const xAccessor = xAxisParser ? d => xAxisParser(d[xAxis]) : d => d[xAxis]
+  const yAccessor = yAxisParser ? d => yAxisParser(d[yAxis]) : d => d[yAxis]
+  const categoryAccessor = categoryParser ? d => categoryParser(d[category]) : d => d[category]
+  const valueAccessor = valueParser ? d => valueParser(d[value]) : d => d[value]
+
+  const xAxisType = xAxis && fields.find(field => field.id === xAxis).type ? fields.find(field => field.id === xAxis).type : typeof xAccessor(filteredData[0])
+  const yAxisType = yAxis ? fields.find(field => field.id === yAxis).type : null
+  const categoryType = category ? fields.find(field => field.id === category).type : null
+  const valueType = value ? fields.find(field => field.id === value).type : null
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -36,36 +57,84 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
         yAxisParser={yAxisParser}
-        xAxisFormat={xAxisFormat}
-        yAxisFormat={yAxisFormat}
-      />;
+        xAxisType={xAxisType}
+        yAxisType={yAxisType}
+        onMouseDown={onDoStuff}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
+      />
       case "histogram": return <Histogram
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
+        data={filteredData}
+        onMouseDown={onDoStuff}
         xAxis={xAxis}
         yAxis={yAxis}
+        xAccessor={xAccessor}
+        yAccessor={yAccessor}
         xAxisParser={xAxisParser}
-        xAxisFormat={xAxisFormat}
+        xAxisType={xAxisType}
         yAxisSummarization={yAxisSummarization}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
       />
       case "timeline": return <Timeline
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={data}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         xAxis={xAxis}
         yAxis={yAxis}
+        xAxisFormat={xAxisFormat}
         xAxisParser={xAxisParser}
         yAxisParser={yAxisParser}
-        xAxisFormat={xAxisFormat}
-        yAxisFormat={yAxisFormat}
+        xAxisType={xAxisType}
+        yAxisType={yAxisType}
+        onMouseDown={onDoStuff}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
+      />
+      case "list": return <List
+        zoomed={zoomed}
+        active={active}
+        outOfFocus={outOfFocus}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
+        selectedChart={selectedChart}
+        chartIndex={chartIndex}
+        selectedColumnType={selectedColumnType}
+        selectedColumn1={selectedColumn1}
+        selectedColumn2={selectedColumn2}
+        selectedItem1={selectedItem1}
+        selectedItem2={selectedItem2}
+        onMouseDown={onDoStuff}
+        category={category}
+        value={value}
+        categoryParser={categoryParser}
+        valueParser={valueParser}
+        categoryType={categoryType}
+        valueType={valueType}
+        valueSummarization={valueSummarization}
       />
       default: return null;
     }
@@ -76,6 +145,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
       case "scatter": return 'Chart__square__container';
       case "histogram": return 'Chart__rectangle__container';
       case "timeline": return 'Chart__rectangle__large__container';
+      case "list": return 'Chart__rectangle__container';
       default: return null;
     }
   }
@@ -94,15 +164,19 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
   };
 
   return (
-    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${active ? 'active' : '' } ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
+    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
       <div className="ChartIconsContainer">
         <div className="ChartIcons">
-          <IconButton onClick={onClick1}>
-            <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
-          </IconButton>
-          <IconButton onClick={handleOpen}>
-            <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
-          </IconButton>
+          <div className="ChartIcon">
+            <IconButton onClick={onClick1}>
+              <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
+            </IconButton>
+          </div>
+          <div className="ChartIcon ChartIconRight">
+            <IconButton onClick={handleOpen}>
+              <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
+            </IconButton>
+          </div>
         </div>
       </div>
 
@@ -119,6 +193,9 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, index, data, fie
             </div>
             <div className="tooltipD3-value2">
               <span id="tooltipD3zoomed-value2"></span>
+            </div>
+            <div className="tooltipD3-value3">
+              <span id="tooltipD3zoomed-value3"></span>
             </div>
           </div>
           {renderChart(true)}

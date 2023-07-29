@@ -8,7 +8,7 @@ import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 
-const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisFormat, yAxisFormat }) => {
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisType, yAxisType, onMouseDown, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
@@ -47,22 +47,17 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           dimension="x"
           scale={xScale}
           label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={xAxisFormat}
+          format={xAxisType}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
           label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={yAxisFormat}
-        />
-        <Circles
-          data={data}
-          keyAccessor={keyAccessor}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
+          format={yAxisType}
         />
         {!outOfFocus && <Voronoi
+          outOfFocus={outOfFocus}
           zoomed={zoomed}
           data={data}
           dimensions={dimensions}
@@ -72,9 +67,36 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           tooltipValue1Value={xAccessor}
           tooltipValue2Value={yAccessor}
-          tooltipValue1ValueFormat={xAxisFormat}
-          tooltipValue2ValueFormat={yAxisFormat}
+          tooltipValue1ValueFormat={xAxisType}
+          tooltipValue2ValueFormat={yAxisType}
         />}
+        <Circles
+          outOfFocus={outOfFocus}
+          zoomed={zoomed}
+          data={data}
+          dimensions={dimensions}
+          keyAccessor={keyAccessor}
+          xAccessor={xAccessorScaled}
+          yAccessor={yAccessorScaled}
+          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1Value={xAccessor}
+          tooltipValue2Value={yAccessor}
+          tooltipValue1ValueFormat={xAxisType}
+          tooltipValue2ValueFormat={yAxisType}
+          xValue={xAccessor}
+          yValue={yAccessor}
+          onMouseDown={onMouseDown}
+          xAxis={xAxis}
+          yAxis={yAxis}
+          selectedChart={selectedChart}
+          chartIndex={chartIndex}
+          selectedColumnType={selectedColumnType}
+          selectedColumn1={selectedColumn1}
+          selectedColumn2={selectedColumn2}
+          selectedItem1={selectedItem1}
+          selectedItem2={selectedItem2}
+        />
       </Chart>
     </div>
   )
