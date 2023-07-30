@@ -94,11 +94,58 @@ const summarizationAvailable = [
 ]
 
 const chartsAvailable = [
-    { id: 'scatter', name: "Scatter chart", xAxis: 'humidity', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
-    { id: 'histogram', name: "Column chart", xAxis: 'humidity', yAxis: 'humidity', yAxisSummarization: 'count', category: '', value: '', valueSummarization: '', playAxis: '' },
-    { id: 'timeline', name: "Line chart", xAxis: 'date', yAxis: 'temperatureMin', yAxisSummarization: '', category: '', value: '', valueSummarization: '', playAxis: '' },
-    { id: 'list', name: "List", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'icon', value: 'humidity', valueSummarization: 'distinct', playAxis: '' },
-    //{ id: 'pie', name: "Pie chart", xAxis: '', yAxis: '', yAxisSummarization: '', category: 'icon', value: 'humidity', valueSummarization: 'distinct', playAxis: '' },
+    {
+        id: 'scatter',
+        name: "Scatter chart",
+        xAxis: 'humidity',
+        yAxis: 'temperatureMin',
+        yAxisSummarization: '',
+        category1: '',
+        category2: '',
+        category3: '',
+        value: '',
+        valueSummarization: '',
+        playAxis: ''
+    },
+    {
+        id: 'histogram',
+        name: "Column chart",
+        xAxis: 'humidity',
+        yAxis: 'humidity',
+        yAxisSummarization: 'count',
+        category1: '',
+        category2: '',
+        category3: '',
+        value: '',
+        valueSummarization: '',
+        playAxis: ''
+    },
+    {
+        id: 'timeline',
+        name: "Line chart",
+        xAxis: 'date',
+        yAxis: 'temperatureMin',
+        yAxisSummarization: '',
+        category1: '',
+        category2: '',
+        category3: '',
+        value: '',
+        valueSummarization: '',
+        playAxis: ''
+    },
+    {
+        id: 'list',
+        name: "List",
+        xAxis: '',
+        yAxis: '',
+        yAxisSummarization: '',
+        category1: 'icon',
+        category2: '',
+        category3: '',
+        value: 'humidity',
+        valueSummarization: 'distinct',
+        playAxis: ''
+    },
 ]
 
 function ModeToggle() {
@@ -211,7 +258,7 @@ const App = (props) => {
             dashboardRef.current.doSomething();
         }
 
-        
+
     };
 
     const container = window !== undefined ? () => window().document.body : undefined;
@@ -245,20 +292,20 @@ const App = (props) => {
     };
 
     const typesAndFormats = [
-        { id: 'date', format:"%Y-%m-%d", type: 'date' },
-        { id: 'time', format:"%s", type: 'time' },
-        { id: 'sunriseTime', format:"%s", type: 'time' },
-        { id: 'sunsetTime', format:"%s", type: 'time' },
-        { id: 'temperatureHighTime', format:"%s", type: 'time' },
-        { id: 'temperatureLowTime', format:"%s", type: 'time' },
-        { id: 'apparentTemperatureHighTime', format:"%s", type: 'time' },
-        { id: 'apparentTemperatureLowTime', format:"%s", type: 'time' },
-        { id: 'windGustTime', format:"%s", type: 'time' },
-        { id: 'uvIndexTime', format:"%s", type: 'time' },
-        { id: 'temperatureMinTime', format:"%s", type: 'time' },
-        { id: 'temperatureMaxTime', format:"%s", type: 'time' },
-        { id: 'apparentTemperatureMinTime', format:"%s", type: 'time' },
-        { id: 'apparentTemperatureMaxTime', format:"%s", type: 'time' },
+        { id: 'date', format: "%Y-%m-%d", type: 'date' },
+        { id: 'time', format: "%s", type: 'time' },
+        { id: 'sunriseTime', format: "%s", type: 'time' },
+        { id: 'sunsetTime', format: "%s", type: 'time' },
+        { id: 'temperatureHighTime', format: "%s", type: 'time' },
+        { id: 'temperatureLowTime', format: "%s", type: 'time' },
+        { id: 'apparentTemperatureHighTime', format: "%s", type: 'time' },
+        { id: 'apparentTemperatureLowTime', format: "%s", type: 'time' },
+        { id: 'windGustTime', format: "%s", type: 'time' },
+        { id: 'uvIndexTime', format: "%s", type: 'time' },
+        { id: 'temperatureMinTime', format: "%s", type: 'time' },
+        { id: 'temperatureMaxTime', format: "%s", type: 'time' },
+        { id: 'apparentTemperatureMinTime', format: "%s", type: 'time' },
+        { id: 'apparentTemperatureMaxTime', format: "%s", type: 'time' },
     ]
 
     const fieldsAvailable = Object.keys(data.random[0])

@@ -24,7 +24,9 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
   const xAxis = chart.xAxis
   const yAxis = chart.yAxis
   const yAxisSummarization = chart.yAxisSummarization
-  const category = chart.category
+  const category1 = chart.category1
+  const category2 = chart.category2
+  const category3 = chart.category3
   const value = chart.value
   const valueSummarization = chart.valueSummarization
 
@@ -32,19 +34,27 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
   const xAxisParser = xAxisFormat ? d3.timeParse(xAxisFormat) : null
   const yAxisFormat = yAxis ? fields.find(field => field.id === yAxis).format : null
   const yAxisParser = yAxisFormat ? d3.timeParse(yAxisFormat) : null
-  const categoryFormat = category ? fields.find(field => field.id === category).format : null
-  const categoryParser = categoryFormat ? d3.timeParse(categoryFormat) : null
+  const category1Format = category1 ? fields.find(field => field.id === category1).format : null
+  const category2Format = category2 ? fields.find(field => field.id === category2).format : null
+  const category3Format = category3 ? fields.find(field => field.id === category3).format : null
+  const category1Parser = category1Format ? d3.timeParse(category1Format) : null
+  const category2Parser = category2Format ? d3.timeParse(category2Format) : null
+  const category3Parser = category3Format ? d3.timeParse(category3Format) : null
   const valueFormat = value ? fields.find(field => field.id === value).format : null
   const valueParser = valueFormat ? d3.timeParse(valueFormat) : null
 
   const xAccessor = xAxisParser ? d => xAxisParser(d[xAxis]) : d => d[xAxis]
   const yAccessor = yAxisParser ? d => yAxisParser(d[yAxis]) : d => d[yAxis]
-  const categoryAccessor = categoryParser ? d => categoryParser(d[category]) : d => d[category]
+  const category1Accessor = category1Parser ? d => category1Parser(d[category1]) : d => d[category1]
+  const category2Accessor = category2Parser ? d => category2Parser(d[category2]) : d => d[category2]
+  const category3Accessor = category3Parser ? d => category3Parser(d[category3]) : d => d[category3]
   const valueAccessor = valueParser ? d => valueParser(d[value]) : d => d[value]
 
   const xAxisType = xAxis && fields.find(field => field.id === xAxis).type ? fields.find(field => field.id === xAxis).type : typeof xAccessor(filteredData[0])
   const yAxisType = yAxis ? fields.find(field => field.id === yAxis).type : null
-  const categoryType = category ? fields.find(field => field.id === category).type : null
+  const category1Type = category1 ? fields.find(field => field.id === category1).type : null
+  const category2Type = category2 ? fields.find(field => field.id === category2).type : null
+  const category3Type = category3 ? fields.find(field => field.id === category3).type : null
   const valueType = value ? fields.find(field => field.id === value).type : null
 
   const [open, setOpen] = React.useState(false);
@@ -128,11 +138,17 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, chartIndex, data
         selectedItem1={selectedItem1}
         selectedItem2={selectedItem2}
         onMouseDown={onDoStuff}
-        category={category}
+        category1={category1}
+        category2={category2}
+        category3={category3}
         value={value}
-        categoryParser={categoryParser}
+        category1Parser={category1Parser}
+        category2Parser={category2Parser}
+        category3Parser={category3Parser}
         valueParser={valueParser}
-        categoryType={categoryType}
+        category1Type={category1Type}
+        category2Type={category2Type}
+        category3Type={category3Type}
         valueType={valueType}
         valueSummarization={valueSummarization}
       />

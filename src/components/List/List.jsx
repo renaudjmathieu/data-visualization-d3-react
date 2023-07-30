@@ -9,38 +9,40 @@ import "./List.css"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category, value, categoryParser, valueParser, categoryType, valueType, valueSummarization }) => {
+const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
 
-  const categoryAccessor = d => d[category]
+  const numberOfCategories = 1 + category2 ? 1 : 0 + category3 ? 1 : 0
+
+  const category1Accessor = d => d[category1]
+  const category2Accessor = d => d[category2]
+  const category3Accessor = d => d[category3]
   const valueAccessor = d => d[value]
 
-  const dataByCategory = Array.from(d3.group(data, categoryAccessor))
+  const dataByCategory = Array.from(numberOfCategories === 1 ? d3.group(data, category1Accessor) : d3.flatGroup(data, category1Accessor, category2Accessor, category3Accessor))
 
   dataByCategory.forEach(categoryData => {
     switch (valueSummarization) {
-      case "sum": categoryData[1][valueSummarization] = d3.sum(categoryData[1], valueAccessor); break;
-      case "average": categoryData[1][valueSummarization] = d3.sum(d3.rollup(categoryData[1], v => d3.sum(v, valueAccessor), valueAccessor).values()) / categoryData[1].length; break;
-      case "min": categoryData[1][valueSummarization] = d3.min(categoryData[1], valueAccessor); break;
-      case "max": categoryData[1][valueSummarization] = d3.max(categoryData[1], valueAccessor); break;
-      case "distinct": categoryData[1][valueSummarization] = d3.group(categoryData[1], valueAccessor).size; break;
-      case "count": categoryData[1][valueSummarization] = categoryData[1].length; break;
-      case "median": categoryData[1][valueSummarization] = d3.median(categoryData[1], valueAccessor); break;
+      case "sum": categoryData[numberOfCategories][valueSummarization] = d3.sum(categoryData[numberOfCategories], valueAccessor); break;
+      case "average": categoryData[numberOfCategories][valueSummarization] = d3.sum(d3.rollup(categoryData[numberOfCategories], v => d3.sum(v, valueAccessor), valueAccessor).values()) / categoryData[numberOfCategories].length; break;
+      case "min": categoryData[numberOfCategories][valueSummarization] = d3.min(categoryData[numberOfCategories], valueAccessor); break;
+      case "max": categoryData[numberOfCategories][valueSummarization] = d3.max(categoryData[numberOfCategories], valueAccessor); break;
+      case "distinct": categoryData[numberOfCategories][valueSummarization] = d3.group(categoryData[numberOfCategories], valueAccessor).size; break;
+      case "count": categoryData[numberOfCategories][valueSummarization] = categoryData[numberOfCategories].length; break;
+      case "median": categoryData[numberOfCategories][valueSummarization] = d3.median(categoryData[numberOfCategories], valueAccessor); break;
       default: null;
     }
   })
-
 
   const valueSummarizationAccessor = ([key, values]) => values[valueSummarization]
 
   const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
 
-
   const items = orderedDataByCategory
-  const total = _.sumBy(orderedDataByCategory, valueSummarizationAccessor)
+  const total = _.sumBy(items, valueSummarizationAccessor)
 
   return (
     <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
@@ -64,7 +66,7 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'SingleValue', category, null, item[0], null)) : null}>
+              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category1 && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'SingleValue', category1, null, item[0], null)) : null}>
 
               <div className="SelectableList__item__left">
 
@@ -72,18 +74,30 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
                   {item[0]}
                 </div>
 
+                {numberOfCategories >= 2 &&
+                  <div className="SelectableList__item__label">
+                    {item[1]}
+                  </div>
+                }
+
+                {numberOfCategories === 3 &&
+                  <div className="SelectableList__item__label">
+                    {item[2]}
+                  </div>
+                }
+
               </div>
 
               <div className="SelectableList__item__right">
 
                 <div className="SelectableList__item__bar" style={{
-                  width: `${item[1][valueSummarization] * 100 / items[0][1][valueSummarization]}%`,
+                  width: `${item[numberOfCategories][valueSummarization] * 100 / items[0][numberOfCategories][valueSummarization]}%`,
                 }} />
                 <div className="SelectableList__item__value">
-                  {formatNumber(item[1][valueSummarization])}
+                  {formatNumber(item[numberOfCategories][valueSummarization])}
                 </div>
                 <div className="SelectableList__item__value">
-                  {formatPercent(item[1][valueSummarization] / total)}
+                  {formatPercent(item[numberOfCategories][valueSummarization] / total)}
                 </div>
 
               </div>
