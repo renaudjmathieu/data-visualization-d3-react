@@ -6,7 +6,7 @@ import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import { useChartDimensions } from "./chart/utils"
 
-const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, selectedChart, chartId, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -156,7 +156,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           onMouseDown={onMouseDown}
           column={xAxis}
           selectedChart={selectedChart}
-          chartId={chartId}
+          chartIndex={chartIndex}
           selectedColumnType={selectedColumnType}
           selectedColumn1={selectedColumn1}
           selectedColumn2={selectedColumn2}
@@ -184,7 +184,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           onMouseDown={onMouseDown}
           column={xAxis}
           selectedChart={selectedChart}
-          chartId={chartId}
+          chartIndex={chartIndex}
           selectedColumnType={selectedColumnType}
           selectedColumn1={selectedColumn1}
           selectedColumn2={selectedColumn2}

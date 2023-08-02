@@ -15,12 +15,12 @@ import Modal from '@mui/material/Modal';
 
 import * as d3 from 'd3'
 
-const Container = ({ opened, onClick1, onClick2, chart, chosen, data, filteredData, selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onDoStuff, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data, filteredData, selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onDoStuff, fields }) => {
 
   const theme = useTheme();
 
-  const outOfFocus = chosen !== null && chart.id !== chosen
-  const active = chart.id === chosen
+  const outOfFocus = chosen !== null && chartIndex !== chosen
+  const active = chartIndex === chosen
   const xAxis = chart.xAxis
   const yAxis = chart.yAxis
   const yAxisSummarization = chart.yAxisSummarization
@@ -67,7 +67,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, data, filteredDa
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chart.id ? filteredData : _.filter(filteredData, { marked: true })}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -76,7 +76,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, data, filteredDa
         yAxisType={yAxisType}
         onMouseDown={onDoStuff}
         selectedChart={selectedChart}
-        chartId={chart.id}
+        chartIndex={chartIndex}
         selectedColumnType={selectedColumnType}
         selectedColumn1={selectedColumn1}
         selectedColumn2={selectedColumn2}
@@ -97,7 +97,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, data, filteredDa
         xAxisType={xAxisType}
         yAxisSummarization={yAxisSummarization}
         selectedChart={selectedChart}
-        chartId={chart.id}
+        chartIndex={chartIndex}
         selectedColumnType={selectedColumnType}
         selectedColumn1={selectedColumn1}
         selectedColumn2={selectedColumn2}
@@ -108,7 +108,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, data, filteredDa
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chart.id ? filteredData : _.filter(filteredData, { marked: true })}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisFormat={xAxisFormat}
@@ -118,7 +118,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, data, filteredDa
         yAxisType={yAxisType}
         onMouseDown={onDoStuff}
         selectedChart={selectedChart}
-        chartId={chart.id}
+        chartIndex={chartIndex}
         selectedColumnType={selectedColumnType}
         selectedColumn1={selectedColumn1}
         selectedColumn2={selectedColumn2}
@@ -129,9 +129,9 @@ const Container = ({ opened, onClick1, onClick2, chart, chosen, data, filteredDa
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chart.id ? filteredData : _.filter(filteredData, { marked: true })}
+        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
         selectedChart={selectedChart}
-        chartId={chart.id}
+        chartIndex={chartIndex}
         selectedColumnType={selectedColumnType}
         selectedColumn1={selectedColumn1}
         selectedColumn2={selectedColumn2}

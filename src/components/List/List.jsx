@@ -9,7 +9,7 @@ import "./List.css"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartId, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization }) => {
+const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -60,13 +60,13 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartId, select
             <div
               className={[
                 "SelectableList__item",
-                `SelectableList__item--is-${selectedChart == chartId && item[0] == selectedItem1 ? "selected" :
-                  selectedChart == chartId && selectedItem1 ? "next-to-selected" :
+                `SelectableList__item--is-${selectedChart == chartIndex && item[0] == selectedItem1 ? "selected" :
+                  selectedChart == chartIndex && selectedItem1 ? "next-to-selected" :
                     "not-selected"
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category1 && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartId, 'SingleValue', category1, null, item[0], null)) : null}>
+              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category1 && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'SingleValue', category1, null, item[0], null)) : null}>
 
               <div className="SelectableList__item__left">
 

@@ -1,25 +1,24 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 
-import { useSelector } from 'react-redux'
+import { useChartsContext } from "../providers/ChartsProvider"
 
 import Container from "./chart/Container"
-
-import { highlightAdded } from './../features/highlights/highlightsSlice'
 
 import * as d3 from 'd3'
 
 const Dashboard = (props, ref) => {
 
+    const { charts } = useChartsContext()
 
-  const charts = useSelector((state) => state.charts)
+    console.log('charts !', charts)
 
     const [chosen, setChosen] = useState(null);
 
-    const OpenDrawer = (chart) => {
-        setChosen(chart.id)
+    const OpenDrawer = (chart, index) => {
+        setChosen(index)
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
-        props.handleDrawerOpen(chart)
+        props.handleDrawerOpen(chart, index)
     }
 
     const CloseDrawer = () => {
@@ -29,11 +28,11 @@ const Dashboard = (props, ref) => {
         props.handleDrawerClose()
     }
 
-    const handleClick1 = (e, chart) => {
-        OpenDrawer(chart)
+    const handleClick1 = (e, chart, index) => {
+        OpenDrawer(chart, index)
     }
 
-    const handleClick2 = (e, chart) => {
+    const handleClick2 = (e, chart, index) => {
 
     }
 
@@ -79,13 +78,7 @@ const Dashboard = (props, ref) => {
         }
     })
 
-
-
-
-
-
-
-    const [selectedChart, setSelectedChartId] = React.useState(null)
+    const [selectedChart, setSelectedChartIndex] = React.useState(null)
     const [selectedColumnType, setSelectedColumnType] = React.useState(null)
     const [selectedColumn1, setSelectedColumn1] = React.useState(null)
     const [selectedColumn2, setSelectedColumn2] = React.useState(null)
@@ -102,12 +95,12 @@ const Dashboard = (props, ref) => {
         })
     )
 
-    const doStuff = (chartId, columnType, column1, column2, item1, item2, format1, format2) => {
+    const doStuff = (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
 
         /*
         dispatch(
             highlightAdded({
-                chartId: chartId,
+                chartIndex: chartIndex,
                 columnType: columnType,
                 column1: column1,
                 column2: column2,
@@ -120,7 +113,7 @@ const Dashboard = (props, ref) => {
         */
 
         /*
-        console.log('chartId', chartId)
+        console.log('chartIndex', chartIndex)
         console.log('columnType', columnType)
         console.log('column1', column1)
         console.log('column2', column2)
@@ -165,7 +158,7 @@ const Dashboard = (props, ref) => {
                             })
 
         setFilteredData(filteredData)
-        setSelectedChartId(chartId)
+        setSelectedChartIndex(chartIndex)
         setSelectedColumnType(columnType)
         setSelectedColumn1(column1)
         setSelectedColumn2(column2)
@@ -175,13 +168,15 @@ const Dashboard = (props, ref) => {
         setSelectedFormat2(format2)
     }
 
-    const onDoStuff = (e, chartId, columnType, column1, column2, item1, item2, format1, format2) => {
-        doStuff(chartId, columnType, column1, column2, item1, item2, format1, format2)
+    const onDoStuff = (e, chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
+        doStuff(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
     }
 
     React.useEffect(() => {
         doStuff(selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
     }, [])
+
+
 
 
     return (
@@ -201,12 +196,13 @@ const Dashboard = (props, ref) => {
             </div>
             <div className="App__charts">
                 {charts
-                    .map((chart) => {
+                    .map((chart, index) => {
                         return <Container
                             opened={props.opened}
-                            onClick1={(e) => handleClick1(e, chart)}
-                            onClick2={(e) => handleClick2(e, chart)}
+                            onClick1={(e) => handleClick1(e, chart, index)}
+                            onClick2={(e) => handleClick2(e, chart, index)}
                             chart={chart}
+                            chartIndex={index}
                             chosen={chosen}
                             data={props.data.random}
                             filteredData={filteredData}

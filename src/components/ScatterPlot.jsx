@@ -8,7 +8,7 @@ import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 
-const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisType, yAxisType, onMouseDown, selectedChart, chartId, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisType, yAxisType, onMouseDown, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
@@ -90,7 +90,7 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           xAxis={xAxis}
           yAxis={yAxis}
           selectedChart={selectedChart}
-          chartId={chartId}
+          chartIndex={chartIndex}
           selectedColumnType={selectedColumnType}
           selectedColumn1={selectedColumn1}
           selectedColumn2={selectedColumn2}

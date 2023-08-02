@@ -1,16 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import store from './app/store'
-import { Provider } from 'react-redux'
-
-console.log('next state', store.getState())
+import ChartsProvider from './providers/ChartsProvider'
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <ChartsProvider>
       <App />
-    </Provider>
+    </ChartsProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

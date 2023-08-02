@@ -32,9 +32,7 @@ import "./styles.css"
 
 import data from '../my_weather_data.json'
 
-import { useDispatch, useSelector } from 'react-redux'
-
-import { chartAdded, chartRemoved, lastChartRemoved, chartReplaced } from './features/charts/chartsSlice'
+import { useChartsContext, chartsAvailable } from "./providers/ChartsProvider"
 
 const getData = () => ({
     random: data
@@ -97,105 +95,21 @@ const summarizationAvailable = [
     { id: 'median', name: 'Median', numberOnly: true },
 ]
 
-const chartsAvailable = [
-    {
-        id: 'scatter',
-        name: "Scatter chart",
-        xAxis: 'humidity',
-        yAxis: 'temperatureMin',
-        yAxisSummarization: '',
-        category1: '',
-        category2: '',
-        category3: '',
-        value: '',
-        valueSummarization: '',
-        playAxis: ''
-    },
-    {
-        id: 'histogram',
-        name: "Column chart",
-        xAxis: 'humidity',
-        yAxis: 'humidity',
-        yAxisSummarization: 'count',
-        category1: '',
-        category2: '',
-        category3: '',
-        value: '',
-        valueSummarization: '',
-        playAxis: ''
-    },
-    {
-        id: 'timeline',
-        name: "Line chart",
-        xAxis: 'date',
-        yAxis: 'temperatureMin',
-        yAxisSummarization: '',
-        category1: '',
-        category2: '',
-        category3: '',
-        value: '',
-        valueSummarization: '',
-        playAxis: ''
-    },
-    {
-        id: 'list',
-        name: "List",
-        xAxis: '',
-        yAxis: '',
-        yAxisSummarization: '',
-        category1: 'icon',
-        category2: '',
-        category3: '',
-        value: 'humidity',
-        valueSummarization: 'distinct',
-        playAxis: ''
-    },
-]
-
-function ModeToggle() {
-    const { mode, setMode } = useColorScheme();
-    return (
-        <Button
-            onClick={() => {
-                setMode(mode === 'light' ? 'dark' : 'light');
-
-                let resizeTimer;
-                document.body.classList.add("resize-animation-stopper");
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    document.body.classList.remove("resize-animation-stopper");
-                }, 300);
-                if (mode === "light") {
-                    document.body.classList.add("dark")
-                    document.body.classList.remove("light")
-                }
-                else {
-                    document.body.classList.add("light")
-                    document.body.classList.remove("dark")
-                }
-            }}
-        >
-            {mode === 'light' ? 'Turn dark' : 'Turn light'}
-        </Button>
-    );
-}
-
 const getRandomColor = () => {
-    let h = Math.floor(Math.random() * 360);
-    let s = Math.floor(Math.random() * (100 - 80 + 1) + 80);
-    let l = Math.floor(Math.random() * (60 - 40 + 1) + 40);
-    let color = `hsl(${h},${s}%,${l}%)`;
-    let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
-    //console.log('color', h, s, l)
+    let h = Math.floor(Math.random() * 360)
+    let s = Math.floor(Math.random() * (100 - 80 + 1) + 80)
+    let l = Math.floor(Math.random() * (60 - 40 + 1) + 40)
+    let color = `hsl(${h},${s}%,${l}%)`
+    let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`
     return { color, complementaryColor }
 }
 
 const getFixColor = () => {
-    let h = 210;
-    let s = 90;
-    let l = 50;
-    let color = `hsl(${h},${s}%,${l}%)`;
-    let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
+    let h = 210
+    let s = 90
+    let l = 50
+    let color = `hsl(${h},${s}%,${l}%)`
+    let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`
     return { color, complementaryColor }
 }
 
@@ -217,7 +131,7 @@ const getThemeExtender = (color) => {
                 },
             }
         }
-    });
+    })
 
     return theme
 }
@@ -225,78 +139,47 @@ const getThemeExtender = (color) => {
 
 const App = (props) => {
 
-    const charts = useSelector((state) => state.charts)
+    const { charts, addChart, replaceChart, removeChart, removeLastChart, updateChart } = useChartsContext()
 
-    console.log('charts', charts)
+    console.log('charts ?', charts)
 
-    const { window } = props;
+    const { window } = props
     const [data, setData] = React.useState(getData())
     const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {
-        let resizeTimer;
-        document.body.classList.add("resize-animation-stopper");
-        clearTimeout(resizeTimer);
+        let resizeTimer
+        document.body.classList.add("resize-animation-stopper")
+        clearTimeout(resizeTimer)
         resizeTimer = setTimeout(() => {
-            document.body.classList.remove("resize-animation-stopper");
-        }, 300);
+            document.body.classList.remove("resize-animation-stopper")
+        }, 300)
 
         setTheme(getThemeExtender(getRandomColor()))
     }
 
-    const [open, setOpen] = React.useState(false);
-    const [selectedChartType, setSelectedChartType] = React.useState(null);
-    const [selectedChartId, setSelectedChartId] = React.useState(null);
+    const [open, setOpen] = React.useState(false)
+    const [selectedChartIndex, setSelectedChartIndex] = React.useState(null)
 
-    const handleDrawerOpen = (chart) => {
-        setSelectedChartType(chart.type)
-        setSelectedChartId(chart.id)
+    const handleDrawerOpen = (chart, index) => {
+        setSelectedChartIndex(index)
         setOpen(true);
         document.body.classList.add("open")
         document.body.classList.remove("closed")
-    };
+    }
 
     const handleDrawerClose = () => {
-        setSelectedChartType(null)
-        setSelectedChartId(null)
+        setSelectedChartIndex(null)
         setOpen(false);
         document.body.classList.add("closed")
         document.body.classList.remove("open")
 
         if (dashboardRef.current) {
-            dashboardRef.current.doSomething();
+            dashboardRef.current.doSomething()
         }
-
-
-    };
-
-    const container = window !== undefined ? () => window().document.body : undefined;
-
-    const dispatch = useDispatch()
-
-    const handleAddChart = () => {
-        dispatch(chartAdded())
-    }
-
-    const handleRemoveSelectedChart = () => {
-        setSelectedChartType(null)
-        dispatch(chartRemoved({ id: selectedChartId }))
-    }
-
-    const handleRemoveChart = () => {
-        dispatch(lastChartRemoved())
-    }
-
-    const handleReplaceChart = (event) => {
-        setSelectedChartType(event.target.value)
-        dispatch(chartReplaced({ id: event.target.value }))
     }
 
     const dashboardRef = React.useRef(null)
-
-    const handleFieldChange = (event, keyName) => {
-        dispatch(chartUpdated({ id: selectedChartId, keyName: keyName, value: event.target.value }))
-    }
 
     const typesAndFormats = [
         { id: 'date', format: "%Y-%m-%d", type: 'date' },
@@ -330,7 +213,6 @@ const App = (props) => {
         ))
         .sort((a, b) => a.name.localeCompare(b.name))
 
-    //console.log('fieldsAvailable', fieldsAvailable)
     return (
         <CssVarsProvider theme={theme}>
             <CssBaseline />
@@ -354,8 +236,8 @@ const App = (props) => {
                         <Grid container spacing={2} className="containerOnDesktop">
                             <Grid xs={8} className="gridOnDesktop__left close_me">
                                 <ButtonGroup variant="contained" aria-label="outlined primary button group" className="close_me">
-                                    <Button disabled={open} onClick={handleAddChart}>Add New Chart</Button>
-                                    <Button disabled={open || (charts.length === 0)} onClick={handleRemoveChart}>Remove Last Chart</Button>
+                                    <Button disabled={open} onClick={addChart}>Add New Chart</Button>
+                                    <Button disabled={open || (charts.length === 0)} onClick={removeLastChart}>Remove Last Chart</Button>
                                 </ButtonGroup>
                             </Grid>
                             <Grid xs={4} className="gridOnDesktop__right close_me" justifyContent="right" alignItems="right">
@@ -401,8 +283,8 @@ const App = (props) => {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             className="config__select"
-                            value={selectedChartType}
-                            onChange={handleReplaceChart}
+                            value={charts[selectedChartIndex].type}
+                            onChange={(e) => replaceChart(selectedChartIndex, e.target.value)}
                         >
                             {chartsAvailable
                                 .map((chart) => (
@@ -412,19 +294,19 @@ const App = (props) => {
                     </FormControl>
 
                     {chartsAvailable
-                        .filter(chart => chart.type === selectedChartType)
+                        .filter(chart => chart.type === charts[selectedChartIndex].type)
                         .map(chart => (
                             Object.keys(chart)
-                                .filter((keyName, i) => keyName !== 'id' && keyName !== 'name' && chart[keyName] !== '')
+                                .filter((keyName, i) => keyName !== 'type' && keyName !== 'name' && chart[keyName] !== '')
                                 .map((keyName, i) => (
                                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                                         <InputLabel id={`demo-simple-select-helper-label-${keyName}`}>{keyName}</InputLabel>
                                         <Select
                                             labelId={`demo-simple-select-helper-label-${keyName}`}
                                             id={`demo-simple-select-helper-${keyName}`}
-                                            value={charts.filter((chart, index) => index === selectedChartId)[0][keyName]}
+                                            value={charts.filter((chart, index) => index === selectedChartIndex)[0][keyName]}
                                             label={keyName}
-                                            onChange={(e) => handleFieldChange(e, keyName)}
+                                            onChange={(e) => updateChart(selectedChartIndex, keyName, e.target.value)}
                                         >
                                             {!keyName.includes('Summarization') ?
                                                 fieldsAvailable
@@ -436,8 +318,8 @@ const App = (props) => {
                                                     .filter(
                                                         summarization => summarization.numberOnly === false ||
                                                             (
-                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartId)[0][keyName.replace('Summarization', '')])[0] !== undefined &&
-                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartId)[0][keyName.replace('Summarization', '')])[0].type === 'number'
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0] !== undefined &&
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0].type === 'number'
                                                             )
                                                     )
                                                     .map(summarization => (
@@ -451,7 +333,7 @@ const App = (props) => {
 
                     <Divider className="config__divider" />
 
-                    <Button variant="contained" className="config__button close_me" onClick={handleRemoveSelectedChart}>Remove Chart</Button>
+                    <Button variant="contained" className="config__button close_me" onClick={removeChart(selectedChartIndex)}>Remove Chart</Button>
                 </Drawer>
             </div>
         </CssVarsProvider>
