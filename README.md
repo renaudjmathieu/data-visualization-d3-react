@@ -2,7 +2,7 @@
 
 A dynamic and configurable data dashboard web app built with D3 + React
 
-![image](https://raw.githubusercontent.com/renaudjmathieu/my-web-app/main/www/src/img/project1.png)
+![image](https://raw.githubusercontent.com/renaudjmathieu/my-web-app/main/src/img/project1.png)
 
 ## :technologist: Available Script Commands
 
@@ -36,6 +36,8 @@ npm install d3
 npm install prop-types
 npm install resize-observer-polyfill
 npm install babel-plugin-inline-react-svg
+npm install react-redux
+npm install @reduxjs/toolkit
 ```	
 
 
@@ -77,12 +79,14 @@ This web app was built using these products :
 [<img src="https://ms-azuretools.gallerycdn.vsassets.io/extensions/ms-azuretools/vscode-azurestaticwebapps/0.11.3/1665693006913/Microsoft.VisualStudio.Services.Icons.Default" width="50">][azure-static-web-apps]
 [<img src="https://raw.githubusercontent.com/webpack/media/master/logo/icon-square-big.png" width="55">][webpack]
 [<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1024px-React-icon.svg.png" width="50">][react]
+[<img src="https://d33wubrfki0l68.cloudfront.net/0834d0215db51e91525a25acf97433051f280f2f/c30f5/img/redux.svg" width="50">][redux]
 [<img src="https://seeklogo.com/images/M/mui-logo-56F171E991-seeklogo.com.png" width="45">][mui]
 [<img src="https://raw.githubusercontent.com/d3/d3-logo/master/d3.png" width="45">][d3]
 
 [azure-static-web-apps]: https://azure.microsoft.com/en-us/products/app-service/static/
 [webpack]: https://webpack.js.org
 [react]: https://reactjs.org
+[redux]: https://redux.js.org
 [mui]: https://mui.com/
 [d3]: https://d3js.org/
 
