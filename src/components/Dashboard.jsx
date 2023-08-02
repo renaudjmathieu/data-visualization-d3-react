@@ -1,23 +1,25 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
+
+import { useSelector } from 'react-redux'
+
 import Container from "./chart/Container"
+
+import { highlightAdded } from './../features/highlights/highlightsSlice'
 
 import * as d3 from 'd3'
 
 const Dashboard = (props, ref) => {
 
-    const [charts, setCharts] = useState(props.charts)
 
-    useEffect(() => {
-        setCharts(props.charts)
-    }, [props.charts])
+  const charts = useSelector((state) => state.charts)
 
     const [chosen, setChosen] = useState(null);
 
-    const OpenDrawer = (chart, index) => {
-        setChosen(index)
+    const OpenDrawer = (chart) => {
+        setChosen(chart.id)
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
-        props.handleDrawerOpen(chart, index)
+        props.handleDrawerOpen(chart)
     }
 
     const CloseDrawer = () => {
@@ -27,29 +29,29 @@ const Dashboard = (props, ref) => {
         props.handleDrawerClose()
     }
 
-    const handleClick1 = (e, chart, index) => {
-        OpenDrawer(chart, index)
+    const handleClick1 = (e, chart) => {
+        OpenDrawer(chart)
     }
 
-    const handleClick2 = (e, chart, index) => {
+    const handleClick2 = (e, chart) => {
 
     }
 
     const handleOutsideClick = (e) => {
         if (e.target.tagName === "DIV" &&
-        (!e.target.classList.contains("SelectableList")) &&
-        (!e.target.classList.contains("SelectableList__column-headers")) &&
-        (!e.target.classList.contains("SelectableList__column-header")) &&
-        (!e.target.classList.contains("SelectableList__items")) &&
-        (!e.target.classList.contains("SelectableList__item")) &&
-        (!e.target.classList.contains("SelectableList__item--is-selected")) &&
-        (!e.target.classList.contains("SelectableList__item--is-next-to-selected")) &&
-        (!e.target.classList.contains("SelectableList__item--is-not-selected")) &&
-        (!e.target.classList.contains("SelectableList__item__left")) &&
-        (!e.target.classList.contains("SelectableList__item__right")) &&
-        (!e.target.classList.contains("SelectableList__item__label")) &&
-        (!e.target.classList.contains("SelectableList__item__bar")) &&
-        (!e.target.classList.contains("SelectableList__item__value")) &&
+            (!e.target.classList.contains("SelectableList")) &&
+            (!e.target.classList.contains("SelectableList__column-headers")) &&
+            (!e.target.classList.contains("SelectableList__column-header")) &&
+            (!e.target.classList.contains("SelectableList__items")) &&
+            (!e.target.classList.contains("SelectableList__item")) &&
+            (!e.target.classList.contains("SelectableList__item--is-selected")) &&
+            (!e.target.classList.contains("SelectableList__item--is-next-to-selected")) &&
+            (!e.target.classList.contains("SelectableList__item--is-not-selected")) &&
+            (!e.target.classList.contains("SelectableList__item__left")) &&
+            (!e.target.classList.contains("SelectableList__item__right")) &&
+            (!e.target.classList.contains("SelectableList__item__label")) &&
+            (!e.target.classList.contains("SelectableList__item__bar")) &&
+            (!e.target.classList.contains("SelectableList__item__value")) &&
             (!e.target.classList.contains("Chart__rectangle")) &&
             (!e.target.classList.contains("Chart__rectangle__large")) &&
             (!e.target.classList.contains("Chart__square"))) {
@@ -83,7 +85,7 @@ const Dashboard = (props, ref) => {
 
 
 
-    const [selectedChart, setSelectedChart] = React.useState(null)
+    const [selectedChart, setSelectedChartId] = React.useState(null)
     const [selectedColumnType, setSelectedColumnType] = React.useState(null)
     const [selectedColumn1, setSelectedColumn1] = React.useState(null)
     const [selectedColumn2, setSelectedColumn2] = React.useState(null)
@@ -100,10 +102,25 @@ const Dashboard = (props, ref) => {
         })
     )
 
-    const doStuff = (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
+    const doStuff = (chartId, columnType, column1, column2, item1, item2, format1, format2) => {
 
         /*
-        console.log('chartIndex', chartIndex)
+        dispatch(
+            highlightAdded({
+                chartId: chartId,
+                columnType: columnType,
+                column1: column1,
+                column2: column2,
+                item1: item1,
+                item2: item2,
+                format1: format1,
+                format2: format2
+            })
+        )
+        */
+
+        /*
+        console.log('chartId', chartId)
         console.log('columnType', columnType)
         console.log('column1', column1)
         console.log('column2', column2)
@@ -148,7 +165,7 @@ const Dashboard = (props, ref) => {
                             })
 
         setFilteredData(filteredData)
-        setSelectedChart(chartIndex)
+        setSelectedChartId(chartId)
         setSelectedColumnType(columnType)
         setSelectedColumn1(column1)
         setSelectedColumn2(column2)
@@ -158,8 +175,8 @@ const Dashboard = (props, ref) => {
         setSelectedFormat2(format2)
     }
 
-    const onDoStuff = (e, chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
-        doStuff(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
+    const onDoStuff = (e, chartId, columnType, column1, column2, item1, item2, format1, format2) => {
+        doStuff(chartId, columnType, column1, column2, item1, item2, format1, format2)
     }
 
     React.useEffect(() => {
@@ -184,14 +201,13 @@ const Dashboard = (props, ref) => {
             </div>
             <div className="App__charts">
                 {charts
-                    .map((chart, index) => {
+                    .map((chart) => {
                         return <Container
                             opened={props.opened}
-                            onClick1={(e) => handleClick1(e, chart, index)}
-                            onClick2={(e) => handleClick2(e, chart, index)}
+                            onClick1={(e) => handleClick1(e, chart)}
+                            onClick2={(e) => handleClick2(e, chart)}
                             chart={chart}
                             chosen={chosen}
-                            chartIndex={index}
                             data={props.data.random}
                             filteredData={filteredData}
                             selectedChart={selectedChart}

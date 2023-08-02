@@ -6,7 +6,7 @@ import Axis from "./chart/Axis"
 import Polyline from "./chart/Polyline";
 import { useChartDimensions } from "./chart/utils"
 
-const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, selectedChart, onMouseDown, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, selectedChart, onMouseDown, chartId, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
 
   const [ref, dimensions] = useChartDimensions()
 
@@ -57,7 +57,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           y0AccessorScaled={y0AccessorScaled}
 
           selectedChart={selectedChart}
-          chartIndex={chartIndex}
+          chartId={chartId}
           selectedColumnType={selectedColumnType}
           selectedColumn={selectedColumn1}
           column={xAxis}
@@ -71,7 +71,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           y0AccessorScaled={null}
 
           selectedChart={selectedChart}
-          chartIndex={chartIndex}
+          chartId={chartId}
           selectedColumnType={selectedColumnType}
           selectedColumn={selectedColumn1}
           column={xAxis}

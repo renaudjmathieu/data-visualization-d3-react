@@ -32,6 +32,10 @@ import "./styles.css"
 
 import data from '../my_weather_data.json'
 
+import { useDispatch, useSelector } from 'react-redux'
+
+import { chartAdded, chartRemoved, lastChartRemoved, chartReplaced } from './features/charts/chartsSlice'
+
 const getData = () => ({
     random: data
 })
@@ -182,7 +186,7 @@ const getRandomColor = () => {
     let l = Math.floor(Math.random() * (60 - 40 + 1) + 40);
     let color = `hsl(${h},${s}%,${l}%)`;
     let complementaryColor = `hsl(${h + 180},${s}%,${l}%)`;
-    console.log('color', h, s, l)
+    //console.log('color', h, s, l)
     return { color, complementaryColor }
 }
 
@@ -220,6 +224,11 @@ const getThemeExtender = (color) => {
 
 
 const App = (props) => {
+
+    const charts = useSelector((state) => state.charts)
+
+    console.log('charts', charts)
+
     const { window } = props;
     const [data, setData] = React.useState(getData())
     const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
@@ -236,20 +245,20 @@ const App = (props) => {
     }
 
     const [open, setOpen] = React.useState(false);
+    const [selectedChartType, setSelectedChartType] = React.useState(null);
     const [selectedChartId, setSelectedChartId] = React.useState(null);
-    const [selectedChartIndex, setSelectedChartIndex] = React.useState(null);
 
-    const handleDrawerOpen = (chart, index) => {
+    const handleDrawerOpen = (chart) => {
+        setSelectedChartType(chart.type)
         setSelectedChartId(chart.id)
-        setSelectedChartIndex(index)
         setOpen(true);
         document.body.classList.add("open")
         document.body.classList.remove("closed")
     };
 
     const handleDrawerClose = () => {
+        setSelectedChartType(null)
         setSelectedChartId(null)
-        setSelectedChartIndex(null)
         setOpen(false);
         document.body.classList.add("closed")
         document.body.classList.remove("open")
@@ -263,33 +272,31 @@ const App = (props) => {
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
-    const [charts, setCharts] = React.useState(
-        chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'list'].includes(chart.id))
-    );
-
-    const handleReplaceChart = (event) => {
-        setSelectedChartId(event.target.value)
-        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, id: event.target.value, name: chartsAvailable.find((chart) => chart.id === event.target.value).name } : chart));
-    };
-
-    const handleRemoveSelectedChart = () => {
-        setSelectedChartId(null)
-        setCharts(charts.filter((chart, index) => index !== selectedChartIndex));
-    };
+    const dispatch = useDispatch()
 
     const handleAddChart = () => {
-        setCharts([...charts, chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]]);
-    };
+        dispatch(chartAdded())
+    }
+
+    const handleRemoveSelectedChart = () => {
+        setSelectedChartType(null)
+        dispatch(chartRemoved({ id: selectedChartId }))
+    }
 
     const handleRemoveChart = () => {
-        setCharts(charts.slice(0, charts.length - 1));
-    };
+        dispatch(lastChartRemoved())
+    }
 
-    const dashboardRef = React.useRef(null);
+    const handleReplaceChart = (event) => {
+        setSelectedChartType(event.target.value)
+        dispatch(chartReplaced({ id: event.target.value }))
+    }
+
+    const dashboardRef = React.useRef(null)
 
     const handleFieldChange = (event, keyName) => {
-        setCharts(charts.map((chart, index) => index === selectedChartIndex ? { ...chart, [keyName]: event.target.value } : chart));
-    };
+        dispatch(chartUpdated({ id: selectedChartId, keyName: keyName, value: event.target.value }))
+    }
 
     const typesAndFormats = [
         { id: 'date', format: "%Y-%m-%d", type: 'date' },
@@ -323,7 +330,7 @@ const App = (props) => {
         ))
         .sort((a, b) => a.name.localeCompare(b.name))
 
-    console.log('fieldsAvailable', fieldsAvailable)
+    //console.log('fieldsAvailable', fieldsAvailable)
     return (
         <CssVarsProvider theme={theme}>
             <CssBaseline />
@@ -365,7 +372,6 @@ const App = (props) => {
                     <Dashboard ref={dashboardRef}
                         opened={open}
                         data={data}
-                        charts={charts}
                         fields={fieldsAvailable}
                         handleDrawerOpen={handleDrawerOpen}
                         handleDrawerClose={handleDrawerClose} />
@@ -395,18 +401,18 @@ const App = (props) => {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             className="config__select"
-                            value={selectedChartId}
+                            value={selectedChartType}
                             onChange={handleReplaceChart}
                         >
                             {chartsAvailable
                                 .map((chart) => (
-                                    <MenuItem value={chart.id}>{chart.name}</MenuItem>
+                                    <MenuItem value={chart.type}>{chart.name}</MenuItem>
                                 ))}
                         </Select>
                     </FormControl>
 
                     {chartsAvailable
-                        .filter(chart => chart.id === selectedChartId)
+                        .filter(chart => chart.type === selectedChartType)
                         .map(chart => (
                             Object.keys(chart)
                                 .filter((keyName, i) => keyName !== 'id' && keyName !== 'name' && chart[keyName] !== '')
@@ -416,7 +422,7 @@ const App = (props) => {
                                         <Select
                                             labelId={`demo-simple-select-helper-label-${keyName}`}
                                             id={`demo-simple-select-helper-${keyName}`}
-                                            value={charts.filter((chart, index) => index === selectedChartIndex)[0][keyName]}
+                                            value={charts.filter((chart, index) => index === selectedChartId)[0][keyName]}
                                             label={keyName}
                                             onChange={(e) => handleFieldChange(e, keyName)}
                                         >
@@ -430,8 +436,8 @@ const App = (props) => {
                                                     .filter(
                                                         summarization => summarization.numberOnly === false ||
                                                             (
-                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0] !== undefined &&
-                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartIndex)[0][keyName.replace('Summarization', '')])[0].type === 'number'
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartId)[0][keyName.replace('Summarization', '')])[0] !== undefined &&
+                                                                fieldsAvailable.filter(field => field.id === charts.filter((chart, index) => index === selectedChartId)[0][keyName.replace('Summarization', '')])[0].type === 'number'
                                                             )
                                                     )
                                                     .map(summarization => (
