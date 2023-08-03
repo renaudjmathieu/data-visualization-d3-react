@@ -4,10 +4,13 @@ import * as d3 from "d3"
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
+import { useChartDimensions } from "./Chart";
 
-const Voronoi = ({ outOfFocus, zoomed, data, dimensions, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
-  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
+const Voronoi = ({ outOfFocus, zoomed, data, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
   const theme = useTheme();
+  const dimensions = useChartDimensions()
+
+  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
   const handleMouseEnter = (e, d, i) => {
     const bounds = d3.select(e.target.parentElement)

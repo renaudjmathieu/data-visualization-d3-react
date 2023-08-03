@@ -5,10 +5,12 @@ import { accessorPropsType, callAccessor } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
 import { useDataContext } from "../../providers/DataProvider"
+import { useChartDimensions } from "./Chart";
 
-const Circles = ({ outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, handleHighlightData, xAxis, yAxis, chartIndex, radius }) => {
+const Circles = ({ outOfFocus, zoomed, type, data, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, handleHighlightData, xAxis, yAxis, chartIndex, radius }) => {
 
   const theme = useTheme();
+  const dimensions = useChartDimensions()
   const { selectedChartIndex, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()
 
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)

@@ -3,13 +3,15 @@ import PropTypes from "prop-types"
 import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
+import { useChartDimensions } from "./Chart";
 
 import { useDataContext } from "../../providers/DataProvider"
 
-const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, xAxisType, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, tooltipValue3Value, style, outOfFocus, handleHighlightData, column, chartIndex, color, ...props }) => {
-  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
-
+const Rectangles = ({ zoomed, active, data, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, xAxisType, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, tooltipValue3Value, style, outOfFocus, handleHighlightData, column, chartIndex, color, ...props }) => {
+  const dimensions = useChartDimensions()
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1, selectedItem2 } = useDataContext()
+
+  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
   const xAxisTypeter = xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 

@@ -2,11 +2,15 @@ import React from "react"
 import * as d3 from "d3"
 import { useTheme } from '@mui/material/styles';
 import { useDataContext } from "../../providers/DataProvider"
+import { useChartDimensions } from "./Chart";
 
-const Polyline = ({ outOfFocus, type, zoomed, data, dimensions, xAccessorScaled, yAccessorScaled, y0AccessorScaled, chartIndex, column, xScale, yScale, tooltipValue1Title, xAccessor, tooltipValue2Title, yAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, handleHighlightData, xAxisFormat, ...props }) => {
-  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
+const Polyline = ({ outOfFocus, type, zoomed, data, xAccessorScaled, yAccessorScaled, y0AccessorScaled, chartIndex, column, xScale, yScale, tooltipValue1Title, xAccessor, tooltipValue2Title, yAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, handleHighlightData, xAxisFormat, ...props }) => {
+  
   const theme = useTheme();
+  const dimensions = useChartDimensions()
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1 } = useDataContext()
+
+  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
 
   const [clickedClosestDataPoint, setClickedClosestDataPoint] = React.useState(null)
 
