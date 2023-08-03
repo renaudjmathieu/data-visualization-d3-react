@@ -30,8 +30,8 @@ import Dashboard from "./components/Dashboard"
 
 import "./styles.css"
 
-import { useChartsContext, chartsAvailable } from "./providers/ChartsProvider"
-import { useDataContext } from "./providers/DataProvider"
+import { useChartsContext } from "./providers/ChartsProvider"
+import { useDataContext, chartsAvailable, fieldsAvailable } from "./providers/DataProvider"
 
 
 const drawerWidth = 240;
@@ -183,38 +183,6 @@ const App = (props) => {
         replaceChart(selectedChartIndex, event.target.value)
     }
 
-    const typesAndFormats = [
-        { id: 'date', format: "%Y-%m-%d", type: 'date' },
-        { id: 'time', format: "%s", type: 'time' },
-        { id: 'sunriseTime', format: "%s", type: 'time' },
-        { id: 'sunsetTime', format: "%s", type: 'time' },
-        { id: 'temperatureHighTime', format: "%s", type: 'time' },
-        { id: 'temperatureLowTime', format: "%s", type: 'time' },
-        { id: 'apparentTemperatureHighTime', format: "%s", type: 'time' },
-        { id: 'apparentTemperatureLowTime', format: "%s", type: 'time' },
-        { id: 'windGustTime', format: "%s", type: 'time' },
-        { id: 'uvIndexTime', format: "%s", type: 'time' },
-        { id: 'temperatureMinTime', format: "%s", type: 'time' },
-        { id: 'temperatureMaxTime', format: "%s", type: 'time' },
-        { id: 'apparentTemperatureMinTime', format: "%s", type: 'time' },
-        { id: 'apparentTemperatureMaxTime', format: "%s", type: 'time' },
-    ]
-
-    const fieldsAvailable = Object.keys(data[0])
-        .filter(id => !typesAndFormats.find(f => f.id === id && f.type === 'time')) // todo - add time fields
-        .map(id => (
-            {
-                id,
-                type: typeof data[0][id],
-                name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
-                ...(typesAndFormats.find(f => f.id === id) ? {
-                    type: typesAndFormats.find(f => f.id === id).type ? typesAndFormats.find(f => f.id === id).type : typeof data[0][id],
-                    format: typesAndFormats.find(f => f.id === id).format
-                } : {})
-            }
-        ))
-        .sort((a, b) => a.name.localeCompare(b.name))
-
     return (
         <CssVarsProvider theme={theme}>
             <CssBaseline />
@@ -298,7 +266,7 @@ const App = (props) => {
                         .filter(chart => chart.type === selectedChartType)
                         .map(chart => (
                             Object.keys(chart)
-                                .filter((keyName, i) => keyName !== 'type' && keyName !== 'name' && chart[keyName] !== '')
+                                .filter((keyName, i) => keyName !== 'type' && keyName !== 'name' && chart[keyName] !== null)
                                 .map((keyName, i) => (
                                     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                                         <InputLabel id={`demo-simple-select-helper-label-${keyName}`}>{keyName}</InputLabel>

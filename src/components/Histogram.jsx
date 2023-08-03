@@ -14,6 +14,8 @@ const Histogram = ({ zoomed, active, outOfFocus, data, handleHighlightData, xAxi
 
   const numberOfThresholds = 9
 
+  console.log('xAxisType', xAxisType)
+
   const calculateXScale = (data, dataType, numberOfThresholds) => {
     switch (dataType) {
       case "number":

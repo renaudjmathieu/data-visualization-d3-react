@@ -7,6 +7,89 @@ import data from '../../my_weather_data.json'
 const DataContext = createContext()
 export const useDataContext = () => useContext(DataContext)
 
+export const chartsAvailable = [
+  {
+    type: 'scatter',
+    name: "Scatter chart",
+    xAxis: 'humidity',
+    yAxis: 'temperatureMin',
+    yAxisSummarization: null,
+    category1: null,
+    category2: null,
+    category3: null,
+    value: null,
+    valueSummarization: null
+  },
+  {
+    type: 'histogram',
+    name: "Column chart",
+    xAxis: 'humidity',
+    yAxis: 'humidity',
+    yAxisSummarization: 'count',
+    category1: null,
+    category2: null,
+    category3: null,
+    value: null,
+    valueSummarization: null
+  },
+  {
+    type: 'timeline',
+    name: "Line chart",
+    xAxis: 'date',
+    yAxis: 'temperatureMin',
+    yAxisSummarization: null,
+    category1: null,
+    category2: null,
+    category3: null,
+    value: null,
+    valueSummarization: null
+  },
+  {
+    type: 'list',
+    name: "List",
+    xAxis: null,
+    yAxis: null,
+    yAxisSummarization: null,
+    category1: 'icon',
+    category2: null,
+    category3: null,
+    value: 'humidity',
+    valueSummarization: 'distinct'
+  },
+]
+
+const typesAndFormats = [
+  { id: 'date', format: "%Y-%m-%d", type: 'date' },
+  { id: 'time', format: "%s", type: 'time' },
+  { id: 'sunriseTime', format: "%s", type: 'time' },
+  { id: 'sunsetTime', format: "%s", type: 'time' },
+  { id: 'temperatureHighTime', format: "%s", type: 'time' },
+  { id: 'temperatureLowTime', format: "%s", type: 'time' },
+  { id: 'apparentTemperatureHighTime', format: "%s", type: 'time' },
+  { id: 'apparentTemperatureLowTime', format: "%s", type: 'time' },
+  { id: 'windGustTime', format: "%s", type: 'time' },
+  { id: 'uvIndexTime', format: "%s", type: 'time' },
+  { id: 'temperatureMinTime', format: "%s", type: 'time' },
+  { id: 'temperatureMaxTime', format: "%s", type: 'time' },
+  { id: 'apparentTemperatureMinTime', format: "%s", type: 'time' },
+  { id: 'apparentTemperatureMaxTime', format: "%s", type: 'time' },
+]
+
+export const fieldsAvailable = Object.keys(data[0])
+  .filter(id => !typesAndFormats.find(f => f.id === id && f.type === 'time')) // todo - add time fields
+  .map(id => (
+      {
+          id,
+          type: typeof data[0][id],
+          name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
+          ...(typesAndFormats.find(f => f.id === id) ? {
+              type: typesAndFormats.find(f => f.id === id).type ? typesAndFormats.find(f => f.id === id).type : typeof data[0][id],
+              format: typesAndFormats.find(f => f.id === id).format
+          } : {})
+      }
+  ))
+  .sort((a, b) => a.name.localeCompare(b.name))
+
 const initialState = {
   selectedChartIndex: null,
   chosenChartIndex: null,

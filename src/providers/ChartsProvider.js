@@ -1,64 +1,74 @@
 import React, { createContext, useContext } from 'react'
+import { chartsAvailable, fieldsAvailable } from "./DataProvider"
+
+import * as d3 from 'd3'
 
 const ChartsContext = createContext()
 export const useChartsContext = () => useContext(ChartsContext)
 
-export const chartsAvailable = [
-  {
-    type: 'scatter',
-    name: "Scatter chart",
-    xAxis: 'humidity',
-    yAxis: 'temperatureMin',
-    yAxisSummarization: '',
-    category1: '',
-    category2: '',
-    category3: '',
-    value: '',
-    valueSummarization: '',
-    playAxis: ''
-  },
-  {
-    type: 'histogram',
-    name: "Column chart",
-    xAxis: 'humidity',
-    yAxis: 'humidity',
-    yAxisSummarization: 'count',
-    category1: '',
-    category2: '',
-    category3: '',
-    value: '',
-    valueSummarization: '',
-    playAxis: ''
-  },
-  {
-    type: 'timeline',
-    name: "Line chart",
-    xAxis: 'date',
-    yAxis: 'temperatureMin',
-    yAxisSummarization: '',
-    category1: '',
-    category2: '',
-    category3: '',
-    value: '',
-    valueSummarization: '',
-    playAxis: ''
-  },
-  {
-    type: 'list',
-    name: "List",
-    xAxis: '',
-    yAxis: '',
-    yAxisSummarization: '',
-    category1: 'icon',
-    category2: '',
-    category3: '',
-    value: 'humidity',
-    valueSummarization: 'distinct',
-    playAxis: ''
-  },
-]
+const CalculateChartAdditionalFields = (chart) => {
+  const xAxisType = chart.xAxis ? fieldsAvailable.find(field => field.id === chart.xAxis).type : null
+  const yAxisType = chart.yAxis ? fieldsAvailable.find(field => field.id === chart.yAxis).type : null
+  const category1Type = chart.category1 ? fieldsAvailable.find(field => field.id === chart.category1).type : null
+  const category2Type = chart.category2 ? fieldsAvailable.find(field => field.id === chart.category2).type : null
+  const category3Type = chart.category3 ? fieldsAvailable.find(field => field.id === chart.category3).type : null
+  const valueType = chart.value ? fieldsAvailable.find(field => field.id === chart.value).type : null
 
-const initialState = chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'list'].includes(chart.type))
+  const xAxisFormat = chart.xAxis ? fieldsAvailable.find(field => field.id === chart.xAxis).format : null
+  const yAxisFormat = chart.yAxis ? fieldsAvailable.find(field => field.id === chart.yAxis).format : null
+  const category1Format = chart.category1 ? fieldsAvailable.find(field => field.id === chart.category1).format : null
+  const category2Format = chart.category2 ? fieldsAvailable.find(field => field.id === chart.category2).format : null
+  const category3Format = chart.category3 ? fieldsAvailable.find(field => field.id === chart.category3).format : null
+  const valueFormat = chart.value ? fieldsAvailable.find(field => field.id === chart.value).format : null
+
+  const xAxisParser = xAxisFormat ? d3.timeParse(xAxisFormat) : null
+  const yAxisParser = yAxisFormat ? d3.timeParse(yAxisFormat) : null
+  const category1Parser = category1Format ? d3.timeParse(category1Format) : null
+  const category2Parser = category2Format ? d3.timeParse(category2Format) : null
+  const category3Parser = category3Format ? d3.timeParse(category3Format) : null
+  const valueParser = valueFormat ? d3.timeParse(valueFormat) : null
+
+  const xAxisAccessor = xAxisParser ? d => xAxisParser(d[chart.xAxis]) : d => d[chart.xAxis]
+  const yAxisAccessor = yAxisParser ? d => yAxisParser(d[chart.yAxis]) : d => d[chart.yAxis]
+  const category1Accessor = category1Parser ? d => category1Parser(d[chart.category1]) : d => d[chart.category1]
+  const category2Accessor = category2Parser ? d => category2Parser(d[chart.category2]) : d => d[chart.category2]
+  const category3Accessor = category3Parser ? d => category3Parser(d[chart.category3]) : d => d[chart.category3]
+  const valueAccessor = valueParser ? d => valueParser(d[chart.value]) : d => d[chart.value]
+
+  return {
+    xAxisType,
+    yAxisType,
+    category1Type,
+    category2Type,
+    category3Type,
+    valueType,
+    xAxisFormat,
+    yAxisFormat,
+    category1Format,
+    category2Format,
+    category3Format,
+    valueFormat,
+    xAxisParser,
+    yAxisParser,
+    category1Parser,
+    category2Parser,
+    category3Parser,
+    valueParser,
+    xAxisAccessor,
+    yAxisAccessor,
+    category1Accessor,
+    category2Accessor,
+    category3Accessor,
+    valueAccessor
+  }
+}
+
+const initialState = chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'list'].includes(chart.type)).map((chart) => {
+  return {
+    ...chart,
+    ...CalculateChartAdditionalFields(chart)
+  }
+})
 
 const reducer = (state, action) => {
   switch (action.type) {

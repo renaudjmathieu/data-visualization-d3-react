@@ -54,7 +54,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, handleHighli
   const category3Accessor = category3Parser ? d => category3Parser(d[category3]) : d => d[category3]
   const valueAccessor = valueParser ? d => valueParser(d[value]) : d => d[value]
 
-  const xAxisType = xAxis && fields.find(field => field.id === xAxis).type ? fields.find(field => field.id === xAxis).type : typeof xAccessor(highlightedData[0])
+  const xAxisType = xAxis ? fields.find(field => field.id === xAxis).type : null
   const yAxisType = yAxis ? fields.find(field => field.id === yAxis).type : null
   const category1Type = category1 ? fields.find(field => field.id === category1).type : null
   const category2Type = category2 ? fields.find(field => field.id === category2).type : null
