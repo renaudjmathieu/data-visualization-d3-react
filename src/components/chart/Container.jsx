@@ -17,15 +17,14 @@ import * as d3 from 'd3'
 
 import { useDataContext } from "../../providers/DataProvider"
 
-const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, handleHighlightData, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chart, chartIndex, handleHighlightData, fields }) => {
 
   const theme = useTheme();
 
-  const { selectedChartIndex, highlightedData } = useDataContext()
+  const { selectedChartIndex, chosenChartIndex, highlightedData } = useDataContext()
 
-
-  const outOfFocus = chosen !== null && chartIndex !== chosen
-  const active = chartIndex === chosen
+  const outOfFocus = chosenChartIndex !== null && chartIndex !== chosenChartIndex
+  const active = chartIndex === chosenChartIndex
   const xAxis = chart.xAxis
   const yAxis = chart.yAxis
   const yAxisSummarization = chart.yAxisSummarization

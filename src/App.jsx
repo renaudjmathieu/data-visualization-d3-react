@@ -135,7 +135,7 @@ const getThemeExtender = (color) => {
 
 const App = (props) => {
     const { charts, addChart, replaceChart, removeChart, removeLastChart, updateChart } = useChartsContext()
-    const { data } = useDataContext()
+    const { data, setChosenChartIndex } = useDataContext()
     const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {
@@ -168,9 +168,7 @@ const App = (props) => {
         document.body.classList.add("closed")
         document.body.classList.remove("open")
 
-        if (dashboardRef.current) {
-            dashboardRef.current.doSomething()
-        }
+        setChosenChartIndex(null)
     }
 
     const dashboardRef = React.useRef(null)

@@ -9,6 +9,7 @@ export const useDataContext = () => useContext(DataContext)
 
 const initialState = {
   selectedChartIndex: null,
+  chosenChartIndex: null,
   selectedColumnType: null,
   selectedColumn1: null,
   selectedColumn2: null,
@@ -51,6 +52,11 @@ const reducer = (state, action) => {
           }
         })
       }
+    case 'choose':
+      return {
+        ...state,
+        chosenChartIndex: action.chosenChartIndex
+      }
   }
 }
 
@@ -60,6 +66,7 @@ const DataProvider = ({ children }) => {
 
   const value = {
     selectedChartIndex: state.selectedChartIndex,
+    chosenChartIndex: state.chosenChartIndex,
     selectedColumnType: state.selectedColumnType,
     selectedColumn1: state.selectedColumn1,
     selectedColumn2: state.selectedColumn2,
@@ -70,6 +77,7 @@ const DataProvider = ({ children }) => {
     highlightedData: state.highlightedData,
     data: state.data,
     setHighlightedData: (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => { dispatch({ type: 'highlight', chartIndex, columnType, column1, column2, item1, item2, format1, format2 }) },
+    setChosenChartIndex: (chosenChartIndex) => { dispatch({ type: 'choose', chosenChartIndex }) }
   }
 
   return (

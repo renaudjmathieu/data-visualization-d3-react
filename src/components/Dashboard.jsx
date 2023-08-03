@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
+import React from "react"
 
 import { useChartsContext } from "../providers/ChartsProvider"
 import { useDataContext } from "../providers/DataProvider"
@@ -10,19 +10,17 @@ import * as d3 from 'd3'
 const Dashboard = (props, ref) => {
 
     const { charts } = useChartsContext()
-    const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, highlightedData, setHighlightedData } = useDataContext()
-
-    const [chosen, setChosen] = useState(null);
+    const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, setHighlightedData, setChosenChartIndex } = useDataContext()
 
     const OpenDrawer = (chart, index) => {
-        setChosen(index)
+        setChosenChartIndex(index)
         document.body.classList.add("config-open")
         document.body.classList.remove("config-closed")
         props.handleDrawerOpen(chart, index)
     }
 
     const CloseDrawer = () => {
-        setChosen(null)
+        setChosenChartIndex(null)
         document.body.classList.add("config-closed")
         document.body.classList.remove("config-open")
         props.handleDrawerClose()
@@ -35,7 +33,7 @@ const Dashboard = (props, ref) => {
     const handleClick2 = (e, chart, index) => {
     }
 
-    const handleOutsideClick = (e) => {
+    const handleOutsideClick1 = (e) => {
         if (e.target.tagName === "DIV" &&
             (!e.target.classList.contains("SelectableList")) &&
             (!e.target.classList.contains("SelectableList__column-headers")) &&
@@ -57,23 +55,17 @@ const Dashboard = (props, ref) => {
         }
     }
 
-    const handleOutsideOutsideClick = (e) => {
+    const handleOutsideClick2 = (e) => {
         if (e.target.tagName === "HTML" || e.target.tagName === "MAIN" || e.target.tagName === "SPAN" || e.target.classList.contains("close_me")) {
             CloseDrawer()
         }
     }
 
-    const doSomething = () => {
-        setChosen(null)
-    }
-
-    useImperativeHandle(ref, () => ({ doSomething }))
-
-    useEffect(() => {
-        document.addEventListener("click", handleOutsideOutsideClick)
+    React.useEffect(() => {
+        document.addEventListener("click", handleOutsideClick2)
 
         return () => {
-            document.removeEventListener("click", handleOutsideOutsideClick)
+            document.removeEventListener("click", handleOutsideClick2)
         }
     })
 
@@ -86,7 +78,7 @@ const Dashboard = (props, ref) => {
     }, [])
 
     return (
-        <div className="App__charts__dashboard" onClick={handleOutsideClick}>
+        <div className="App__charts__dashboard" onClick={handleOutsideClick1}>
             <div className="App__charts__config">
             </div>
             <div id="tooltipD3" className="tooltipD3">
@@ -109,7 +101,6 @@ const Dashboard = (props, ref) => {
                             onClick2={(e) => handleClick2(e, chart, index)}
                             chart={chart}
                             chartIndex={index}
-                            chosen={chosen}
                             handleHighlightData={handleHighlightData}
                             fields={props.fields}
                         />
@@ -120,4 +111,4 @@ const Dashboard = (props, ref) => {
     )
 }
 
-export default forwardRef(Dashboard)
+export default React.forwardRef(Dashboard)
