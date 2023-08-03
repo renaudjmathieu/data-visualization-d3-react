@@ -4,10 +4,14 @@ import * as d3 from "d3"
 import { accessorPropsType, callAccessor } from "./utils";
 import { useTheme } from '@mui/material/styles';
 
-const Circles = ({outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, onMouseDown, xAxis, yAxis, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, radius }) => {
+import { useDataContext } from "../../providers/DataProvider"
+
+const Circles = ({ outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, onMouseDown, xAxis, yAxis, chartIndex, radius }) => {
+
+  const theme = useTheme();
+  const { selectedChartIndex, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()
 
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
-  const theme = useTheme();
 
   const handleMouseEnter = (e, d, i) => {
     const bounds = d3.select(e.target.parentElement)
@@ -53,8 +57,8 @@ const Circles = ({outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAcce
         <circle
           className={[
             `Circles Circle--type-${type}`,
-            `Circles Circle--type-${type}--is-${selectedChart == chartIndex && selectedItem1 === xValue(d, i) && selectedItem2 === yValue(d, i) ? "selected" :
-              selectedChart == chartIndex && selectedItem1 ? "next-to-selected" :
+            `Circles Circle--type-${type}--is-${selectedChartIndex == chartIndex && selectedItem1 === xValue(d, i) && selectedItem2 === yValue(d, i) ? "selected" :
+              selectedChartIndex == chartIndex && selectedItem1 ? "next-to-selected" :
                 "not-selected"
             }`
           ].join(" ")}

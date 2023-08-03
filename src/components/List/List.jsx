@@ -3,17 +3,20 @@ import * as d3 from "d3"
 import _ from "lodash"
 
 import { useChartDimensions } from "../chart/utils"
+import { useDataContext } from "../../providers/DataProvider"
 
 import "./List.css"
 
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onMouseDown, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization }) => {
+const List = ({ zoomed, active, outOfFocus, data, onMouseDown, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization, chartIndex }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
+
+  const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()
 
   const numberOfCategories = 1 + category2 ? 1 : 0 + category3 ? 1 : 0
 
@@ -60,8 +63,8 @@ const List = ({ zoomed, active, outOfFocus, data, selectedChart, chartIndex, sel
             <div
               className={[
                 "SelectableList__item",
-                `SelectableList__item--is-${selectedChart == chartIndex && item[0] == selectedItem1 ? "selected" :
-                  selectedChart == chartIndex && selectedItem1 ? "next-to-selected" :
+                `SelectableList__item--is-${selectedChartIndex == chartIndex && item[0] == selectedItem1 ? "selected" :
+                  selectedChartIndex == chartIndex && selectedItem1 ? "next-to-selected" :
                     "not-selected"
                 }`
               ].join(" ")}

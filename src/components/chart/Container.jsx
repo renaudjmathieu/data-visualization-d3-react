@@ -15,9 +15,14 @@ import Modal from '@mui/material/Modal';
 
 import * as d3 from 'd3'
 
-const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data, filteredData, selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, onDoStuff, fields }) => {
+import { useDataContext } from "../../providers/DataProvider"
+
+const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, onDoStuff, fields }) => {
 
   const theme = useTheme();
+
+  const { selectedChartIndex, highlightedData } = useDataContext()
+
 
   const outOfFocus = chosen !== null && chartIndex !== chosen
   const active = chartIndex === chosen
@@ -50,7 +55,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data
   const category3Accessor = category3Parser ? d => category3Parser(d[category3]) : d => d[category3]
   const valueAccessor = valueParser ? d => valueParser(d[value]) : d => d[value]
 
-  const xAxisType = xAxis && fields.find(field => field.id === xAxis).type ? fields.find(field => field.id === xAxis).type : typeof xAccessor(filteredData[0])
+  const xAxisType = xAxis && fields.find(field => field.id === xAxis).type ? fields.find(field => field.id === xAxis).type : typeof xAccessor(highlightedData[0])
   const yAxisType = yAxis ? fields.find(field => field.id === yAxis).type : null
   const category1Type = category1 ? fields.find(field => field.id === category1).type : null
   const category2Type = category2 ? fields.find(field => field.id === category2).type : null
@@ -67,7 +72,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
+        data={selectedChartIndex == chartIndex ? highlightedData : _.filter(highlightedData, { highlighted: true })}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisParser={xAxisParser}
@@ -75,19 +80,13 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data
         xAxisType={xAxisType}
         yAxisType={yAxisType}
         onMouseDown={onDoStuff}
-        selectedChart={selectedChart}
         chartIndex={chartIndex}
-        selectedColumnType={selectedColumnType}
-        selectedColumn1={selectedColumn1}
-        selectedColumn2={selectedColumn2}
-        selectedItem1={selectedItem1}
-        selectedItem2={selectedItem2}
       />
       case "histogram": return <Histogram
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={filteredData}
+        data={highlightedData}
         onMouseDown={onDoStuff}
         xAxis={xAxis}
         yAxis={yAxis}
@@ -96,19 +95,13 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data
         xAxisParser={xAxisParser}
         xAxisType={xAxisType}
         yAxisSummarization={yAxisSummarization}
-        selectedChart={selectedChart}
         chartIndex={chartIndex}
-        selectedColumnType={selectedColumnType}
-        selectedColumn1={selectedColumn1}
-        selectedColumn2={selectedColumn2}
-        selectedItem1={selectedItem1}
-        selectedItem2={selectedItem2}
       />
       case "timeline": return <Timeline
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
+        data={selectedChartIndex == chartIndex ? highlightedData : _.filter(highlightedData, { highlighted: true })}
         xAxis={xAxis}
         yAxis={yAxis}
         xAxisFormat={xAxisFormat}
@@ -117,27 +110,13 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data
         xAxisType={xAxisType}
         yAxisType={yAxisType}
         onMouseDown={onDoStuff}
-        selectedChart={selectedChart}
         chartIndex={chartIndex}
-        selectedColumnType={selectedColumnType}
-        selectedColumn1={selectedColumn1}
-        selectedColumn2={selectedColumn2}
-        selectedItem1={selectedItem1}
-        selectedItem2={selectedItem2}
       />
       case "list": return <List
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChart == chartIndex ? filteredData : _.filter(filteredData, { marked: true })}
-        selectedChart={selectedChart}
-        chartIndex={chartIndex}
-        selectedColumnType={selectedColumnType}
-        selectedColumn1={selectedColumn1}
-        selectedColumn2={selectedColumn2}
-        selectedItem1={selectedItem1}
-        selectedItem2={selectedItem2}
-        onMouseDown={onDoStuff}
+        data={selectedChartIndex == chartIndex ? highlightedData : _.filter(highlightedData, { highlighted: true })}
         category1={category1}
         category2={category2}
         category3={category3}
@@ -151,6 +130,8 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, data
         category3Type={category3Type}
         valueType={valueType}
         valueSummarization={valueSummarization}
+        onMouseDown={onDoStuff}
+        chartIndex={chartIndex}
       />
       default: return null;
     }

@@ -6,7 +6,7 @@ import Axis from "./chart/Axis"
 import Polyline from "./chart/Polyline";
 import { useChartDimensions } from "./chart/utils"
 
-const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, selectedChart, onMouseDown, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, onMouseDown, chartIndex }) => {
 
   const [ref, dimensions] = useChartDimensions()
 
@@ -55,11 +55,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           xAccessorScaled={xAccessorScaled}
           yAccessorScaled={yAccessorScaled}
           y0AccessorScaled={y0AccessorScaled}
-
-          selectedChart={selectedChart}
           chartIndex={chartIndex}
-          selectedColumnType={selectedColumnType}
-          selectedColumn={selectedColumn1}
           column={xAxis}
         />
         <Polyline
@@ -69,18 +65,11 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           xAccessorScaled={xAccessorScaled}
           yAccessorScaled={yAccessorScaled}
           y0AccessorScaled={null}
-
-          selectedChart={selectedChart}
           chartIndex={chartIndex}
-          selectedColumnType={selectedColumnType}
-          selectedColumn={selectedColumn1}
           column={xAxis}
-          selectedItem={selectedItem1}
-
 
           dimensions={dimensions}
           zoomed={zoomed}
-
           xScale={xScale}
           yScale={yScale}
           tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
@@ -89,9 +78,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           yAccessor={yAccessor}
           tooltipValue1ValueFormat={xAxisType}
           tooltipValue2ValueFormat={yAxisType}
-
           onMouseDown={onMouseDown}
-
           xAxisFormat={xAxisFormat}
         />
       </Chart>

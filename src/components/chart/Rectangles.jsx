@@ -4,8 +4,12 @@ import * as d3 from 'd3'
 import { accessorPropsType, callAccessor } from "./utils";
 import { dimensionsPropsType } from "./utils";
 
-const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, xAxisType, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, tooltipValue3Value, style, outOfFocus, onMouseDown, column, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, color, ...props }) => {
+import { useDataContext } from "../../providers/DataProvider"
+
+const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, xAxisType, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, tooltipValue3Value, style, outOfFocus, onMouseDown, column, chartIndex, color, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
+
+  const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1, selectedItem2 } = useDataContext()
 
   const xAxisTypeter = xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
@@ -47,9 +51,9 @@ const Rectangles = ({ zoomed, active, data, dimensions, keyAccessor, xAccessor, 
         className={
           color ? "Rectangles__rect Rectangles__marked" : [
             "Rectangles__rect Rectangles__unmarked",
-            `Rectangles__rect--is-${selectedChart == chartIndex && xAxisType === 'number' && d.x0 == selectedItem1 && d.x1 == selectedItem2 ? "selected" :
-              selectedChart == chartIndex && xAxisType !== 'number' && d[0] == selectedItem1 ? "selected" :
-                selectedChart == chartIndex && selectedItem1 ? "next-to-selected" : "not-selected"
+            `Rectangles__rect--is-${selectedChartIndex == chartIndex && xAxisType === 'number' && d.x0 == selectedItem1 && d.x1 == selectedItem2 ? "selected" :
+              selectedChartIndex == chartIndex && xAxisType !== 'number' && d[0] == selectedItem1 ? "selected" :
+                selectedChartIndex == chartIndex && selectedItem1 ? "next-to-selected" : "not-selected"
             }`
           ].join(" ")}
         key={keyAccessor(d, i)}

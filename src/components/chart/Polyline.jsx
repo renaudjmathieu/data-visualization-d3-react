@@ -1,10 +1,12 @@
 import React from "react"
 import * as d3 from "d3"
 import { useTheme } from '@mui/material/styles';
+import { useDataContext } from "../../providers/DataProvider"
 
-const Polyline = ({ outOfFocus, type, zoomed, data, dimensions, xAccessorScaled, yAccessorScaled, y0AccessorScaled, selectedChart, chartIndex, selectedColumnType, selectedColumn, column, selectedItem, xScale, yScale, tooltipValue1Title, xAccessor, tooltipValue2Title, yAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, onMouseDown, xAxisFormat, ...props }) => {
+const Polyline = ({ outOfFocus, type, zoomed, data, dimensions, xAccessorScaled, yAccessorScaled, y0AccessorScaled, chartIndex, column, xScale, yScale, tooltipValue1Title, xAccessor, tooltipValue2Title, yAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, onMouseDown, xAxisFormat, ...props }) => {
   const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
   const theme = useTheme();
+  const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1 } = useDataContext()
 
   const [clickedClosestDataPoint, setClickedClosestDataPoint] = React.useState(null)
 
@@ -28,12 +30,12 @@ const Polyline = ({ outOfFocus, type, zoomed, data, dimensions, xAccessorScaled,
 
     const formatter = xAxisFormat ? d3.timeFormat(xAxisFormat) : null
 
-    if (selectedChart === chartIndex && selectedColumnType === 'SingleValue' && selectedColumn === column && formatter(selectedItem) === formatter(closestXValue)) {
+    if (selectedChartIndex === chartIndex && selectedColumnType === 'SingleValue' && selectedColumn1 === column && formatter(selectedItem1) === formatter(closestXValue)) {
       onMouseDown(e, null, null, null, null, null, null, null, null)
     }
     else {
 
-      if (selectedChart === chartIndex) {
+      if (selectedChartIndex === chartIndex) {
         dot
           .attr("cx", xScale(closestXValue))
           .attr("cy", yScale(closestYValue))
@@ -133,7 +135,7 @@ const Polyline = ({ outOfFocus, type, zoomed, data, dimensions, xAccessorScaled,
       .y1(yAccessorScaled)
   }
 
-  if (selectedChart !== chartIndex || selectedColumn !== column) {
+  if (selectedChartIndex !== chartIndex || selectedColumn1 !== column) {
     d3.selectAll(".yo-circle")
       .style("opacity", 0)
   }
@@ -156,7 +158,7 @@ const Polyline = ({ outOfFocus, type, zoomed, data, dimensions, xAccessorScaled,
     <path {...props}
       className={[
         `Polyline Polyline--type-${type}`,
-        `Polyline Polyline--type-${type}--is-${selectedChart === chartIndex && selectedColumn === column ? "next-to-selected" : "selected"
+        `Polyline Polyline--type-${type}--is-${selectedChartIndex === chartIndex && selectedColumn1 === column ? "next-to-selected" : "selected"
         }`
       ].join(" ")}
       d={lineGenerator(data)}

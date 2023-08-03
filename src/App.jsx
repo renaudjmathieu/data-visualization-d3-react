@@ -30,13 +30,9 @@ import Dashboard from "./components/Dashboard"
 
 import "./styles.css"
 
-import data from '../my_weather_data.json'
-
 import { useChartsContext, chartsAvailable } from "./providers/ChartsProvider"
+import { useDataContext } from "./providers/DataProvider"
 
-const getData = () => ({
-    random: data
-})
 
 const drawerWidth = 240;
 
@@ -140,11 +136,12 @@ const getThemeExtender = (color) => {
 const App = (props) => {
 
     const { charts, addChart, replaceChart, removeChart, removeLastChart, updateChart } = useChartsContext()
+    const { data } = useDataContext()
 
-    console.log('charts ?', charts)
+    console.log('data', data)
+    console.log('Object.keys', Object.keys(data[0]))
 
     const { window } = props
-    const [data, setData] = React.useState(getData())
     const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {
@@ -160,8 +157,10 @@ const App = (props) => {
 
     const [open, setOpen] = React.useState(false)
     const [selectedChartIndex, setSelectedChartIndex] = React.useState(null)
+    const [selectedChartType, setSelectedChartType] = React.useState(null)
 
     const handleDrawerOpen = (chart, index) => {
+        setSelectedChartType(chart.type)
         setSelectedChartIndex(index)
         setOpen(true);
         document.body.classList.add("open")
@@ -169,6 +168,7 @@ const App = (props) => {
     }
 
     const handleDrawerClose = () => {
+        setSelectedChartType(null)
         setSelectedChartIndex(null)
         setOpen(false);
         document.body.classList.add("closed")
@@ -180,6 +180,16 @@ const App = (props) => {
     }
 
     const dashboardRef = React.useRef(null)
+
+    const handleRemoveSelectedChart = () => {
+        setSelectedChartType(null)
+        removeChart(selectedChartIndex)
+    }
+
+    const handleReplaceChart = (event) => {
+        setSelectedChartType(event.target.value)
+        replaceChart(selectedChartIndex, event.target.value)
+    }
 
     const typesAndFormats = [
         { id: 'date', format: "%Y-%m-%d", type: 'date' },
@@ -198,15 +208,15 @@ const App = (props) => {
         { id: 'apparentTemperatureMaxTime', format: "%s", type: 'time' },
     ]
 
-    const fieldsAvailable = Object.keys(data.random[0])
+    const fieldsAvailable = Object.keys(data[0])
         .filter(id => !typesAndFormats.find(f => f.id === id && f.type === 'time')) // todo - add time fields
         .map(id => (
             {
                 id,
-                type: typeof data.random[0][id],
+                type: typeof data[0][id],
                 name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
                 ...(typesAndFormats.find(f => f.id === id) ? {
-                    type: typesAndFormats.find(f => f.id === id).type ? typesAndFormats.find(f => f.id === id).type : typeof data.random[0][id],
+                    type: typesAndFormats.find(f => f.id === id).type ? typesAndFormats.find(f => f.id === id).type : typeof data[0][id],
                     format: typesAndFormats.find(f => f.id === id).format
                 } : {})
             }
@@ -253,7 +263,6 @@ const App = (props) => {
                     </Box>
                     <Dashboard ref={dashboardRef}
                         opened={open}
-                        data={data}
                         fields={fieldsAvailable}
                         handleDrawerOpen={handleDrawerOpen}
                         handleDrawerClose={handleDrawerClose} />
@@ -283,8 +292,8 @@ const App = (props) => {
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             className="config__select"
-                            value={charts[selectedChartIndex].type}
-                            onChange={(e) => replaceChart(selectedChartIndex, e.target.value)}
+                            value={selectedChartType}
+                            onChange={handleReplaceChart}
                         >
                             {chartsAvailable
                                 .map((chart) => (
@@ -294,7 +303,7 @@ const App = (props) => {
                     </FormControl>
 
                     {chartsAvailable
-                        .filter(chart => chart.type === charts[selectedChartIndex].type)
+                        .filter(chart => chart.type === selectedChartType)
                         .map(chart => (
                             Object.keys(chart)
                                 .filter((keyName, i) => keyName !== 'type' && keyName !== 'name' && chart[keyName] !== '')
@@ -333,7 +342,7 @@ const App = (props) => {
 
                     <Divider className="config__divider" />
 
-                    <Button variant="contained" className="config__button close_me" onClick={removeChart(selectedChartIndex)}>Remove Chart</Button>
+                    <Button variant="contained" className="config__button close_me" onClick={handleRemoveSelectedChart}>Remove Chart</Button>
                 </Drawer>
             </div>
         </CssVarsProvider>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 
 import { useChartsContext } from "../providers/ChartsProvider"
+import { useDataContext } from "../providers/DataProvider"
 
 import Container from "./chart/Container"
 
@@ -9,8 +10,7 @@ import * as d3 from 'd3'
 const Dashboard = (props, ref) => {
 
     const { charts } = useChartsContext()
-
-    console.log('charts !', charts)
+    const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, highlightedData, setFilteredData } = useDataContext()
 
     const [chosen, setChosen] = useState(null);
 
@@ -33,7 +33,6 @@ const Dashboard = (props, ref) => {
     }
 
     const handleClick2 = (e, chart, index) => {
-
     }
 
     const handleOutsideClick = (e) => {
@@ -78,106 +77,16 @@ const Dashboard = (props, ref) => {
         }
     })
 
-    const [selectedChart, setSelectedChartIndex] = React.useState(null)
-    const [selectedColumnType, setSelectedColumnType] = React.useState(null)
-    const [selectedColumn1, setSelectedColumn1] = React.useState(null)
-    const [selectedColumn2, setSelectedColumn2] = React.useState(null)
-    const [selectedItem1, setSelectedItem1] = React.useState(null)
-    const [selectedItem2, setSelectedItem2] = React.useState(null)
-    const [selectedFormat1, setSelectedFormat1] = React.useState(null)
-    const [selectedFormat2, setSelectedFormat2] = React.useState(null)
-    const [filteredData, setFilteredData] = React.useState(
-        _.map(props.data.random, (d) => {
-            return {
-                ...d,
-                marked: true
-            }
-        })
-    )
-
-    const doStuff = (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
-
-        /*
-        dispatch(
-            highlightAdded({
-                chartIndex: chartIndex,
-                columnType: columnType,
-                column1: column1,
-                column2: column2,
-                item1: item1,
-                item2: item2,
-                format1: format1,
-                format2: format2
-            })
-        )
-        */
-
-        /*
-        console.log('chartIndex', chartIndex)
-        console.log('columnType', columnType)
-        console.log('column1', column1)
-        console.log('column2', column2)
-        console.log('item1', item1)
-        console.log('item2', item2)
-        console.log('format1', format1)
-        console.log('format2', format2)
-        */
-
-        const formatter = format1 ? d3.timeFormat(format1) : null
-
-        const filteredData =
-            columnType === 'SingleValue' ? _.map(props.data.random, (d) => {
-                return {
-                    ...d,
-                    marked: (format1 ? formatter(item1) : item1) === d[column1] ? true : false
-                }
-            }) :
-                columnType === 'MultipleValues' ? _.map(props.data.random, (d) => {
-                    return {
-                        ...d,
-                        marked: d[column1] === item1 && d[column2] === item2 ? true : false
-                    }
-                }) :
-                    columnType === 'BinValues' ? _.map(props.data.random, (d) => {
-                        return {
-                            ...d,
-                            marked: d[column1] >= d3.min([item1, item2]) && d[column1] < d3.max([item1, item2]) ? true : false
-                        }
-                    }) :
-                        columnType === 'LastBinValues' ? _.map(props.data.random, (d) => {
-                            return {
-                                ...d,
-                                marked: d[column1] >= d3.min([item1, item2]) && d[column1] <= d3.max([item1, item2]) ? true : false
-                            }
-                        }) :
-                            _.map(props.data.random, (d) => {
-                                return {
-                                    ...d,
-                                    marked: true
-                                }
-                            })
-
-        setFilteredData(filteredData)
-        setSelectedChartIndex(chartIndex)
-        setSelectedColumnType(columnType)
-        setSelectedColumn1(column1)
-        setSelectedColumn2(column2)
-        setSelectedItem1(item1)
-        setSelectedItem2(item2)
-        setSelectedFormat1(format1)
-        setSelectedFormat2(format2)
-    }
-
     const onDoStuff = (e, chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
-        doStuff(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
+        console.log('onDoStuff', chartIndex, columnType, column1, column2, item1, item2, format1, format2)
+        setFilteredData(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
     }
 
     React.useEffect(() => {
-        doStuff(selectedChart, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
+        setFilteredData(selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
     }, [])
 
-
-
+    console.log('highlightedData - 1', highlightedData)
 
     return (
         <div className="App__charts__dashboard" onClick={handleOutsideClick}>
@@ -204,14 +113,6 @@ const Dashboard = (props, ref) => {
                             chart={chart}
                             chartIndex={index}
                             chosen={chosen}
-                            data={props.data.random}
-                            filteredData={filteredData}
-                            selectedChart={selectedChart}
-                            selectedColumnType={selectedColumnType}
-                            selectedColumn1={selectedColumn1}
-                            selectedColumn2={selectedColumn2}
-                            selectedItem1={selectedItem1}
-                            selectedItem2={selectedItem2}
                             onDoStuff={onDoStuff}
                             fields={props.fields}
                         />

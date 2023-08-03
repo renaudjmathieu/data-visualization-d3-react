@@ -6,7 +6,7 @@ import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import { useChartDimensions } from "./chart/utils"
 
-const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, selectedChart, chartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, chartIndex }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -49,31 +49,31 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
       switch (yAxisSummarization) {
         case "sum":
           currentItem[yAxisSummarization] = d3.sum(currentItem, yAccessor);
-          currentItem[`marked ${yAxisSummarization}`] = d3.sum(_.filter(currentItem, ['marked', true]), yAccessor);
+          currentItem[`highlighted ${yAxisSummarization}`] = d3.sum(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         case "average":
           currentItem[yAxisSummarization] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length;
-          currentItem[`marked ${yAxisSummarization}`] = d3.sum(d3.rollup(_.filter(currentItem, ['marked', true]), v => d3.sum(v, yAccessor), yAccessor).values()) / _.filter(currentItem, ['marked', true]).length;
+          currentItem[`highlighted ${yAxisSummarization}`] = d3.sum(d3.rollup(_.filter(currentItem, ['highlighted', true]), v => d3.sum(v, yAccessor), yAccessor).values()) / _.filter(currentItem, ['highlighted', true]).length;
           break;
         case "min":
           currentItem[yAxisSummarization] = d3.min(currentItem, yAccessor);
-          currentItem[`marked ${yAxisSummarization}`] = d3.min(_.filter(currentItem, ['marked', true]), yAccessor);
+          currentItem[`highlighted ${yAxisSummarization}`] = d3.min(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         case "max":
           currentItem[yAxisSummarization] = d3.max(currentItem, yAccessor);
-          currentItem[`marked ${yAxisSummarization}`] = d3.max(_.filter(currentItem, ['marked', true]), yAccessor);
+          currentItem[`highlighted ${yAxisSummarization}`] = d3.max(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         case "distinct":
           currentItem[yAxisSummarization] = d3.group(currentItem, yAccessor).size;
-          currentItem[`marked ${yAxisSummarization}`] = d3.group(_.filter(currentItem, ['marked', true]), yAccessor).size;
+          currentItem[`highlighted ${yAxisSummarization}`] = d3.group(_.filter(currentItem, ['highlighted', true]), yAccessor).size;
           break;
         case "count":
           currentItem[yAxisSummarization] = currentItem.length;
-          currentItem[`marked ${yAxisSummarization}`] = _.filter(currentItem, ['marked', true]).length;
+          currentItem[`highlighted ${yAxisSummarization}`] = _.filter(currentItem, ['highlighted', true]).length;
           break;
         case "median":
           currentItem[yAxisSummarization] = d3.median(currentItem, yAccessor);
-          currentItem[`marked ${yAxisSummarization}`] = d3.median(_.filter(currentItem, ['marked', true]), yAccessor);
+          currentItem[`highlighted ${yAxisSummarization}`] = d3.median(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         default: null;
       }
@@ -97,7 +97,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
   }
 
   const yAccessorSummarization = (xAxisType === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
-  const yAccessorSummarizationMarked = (xAxisType === "number") ? d => d[`marked ${yAxisSummarization}`] : d => d[1][`marked ${yAxisSummarization}`]
+  const yAccessorSummarizationMarked = (xAxisType === "number") ? d => d[`highlighted ${yAxisSummarization}`] : d => d[1][`highlighted ${yAxisSummarization}`]
 
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(items, yAccessorSummarization)])
@@ -155,13 +155,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           outOfFocus={outOfFocus}
           onMouseDown={onMouseDown}
           column={xAxis}
-          selectedChart={selectedChart}
           chartIndex={chartIndex}
-          selectedColumnType={selectedColumnType}
-          selectedColumn1={selectedColumn1}
-          selectedColumn2={selectedColumn2}
-          selectedItem1={selectedItem1}
-          selectedItem2={selectedItem2}
           color={'red'}
         />}
         {xAxis && <Rectangles
@@ -183,13 +177,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           outOfFocus={outOfFocus}
           onMouseDown={onMouseDown}
           column={xAxis}
-          selectedChart={selectedChart}
           chartIndex={chartIndex}
-          selectedColumnType={selectedColumnType}
-          selectedColumn1={selectedColumn1}
-          selectedColumn2={selectedColumn2}
-          selectedItem1={selectedItem1}
-          selectedItem2={selectedItem2}
         />}
       </Chart>
     </div>
