@@ -8,7 +8,7 @@ import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 
-const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisType, yAxisType, onMouseDown, chartIndex }) => {
+const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisType, yAxisType, handleHighlightData, chartIndex }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
@@ -86,7 +86,7 @@ const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisPars
           tooltipValue2ValueFormat={yAxisType}
           xValue={xAccessor}
           yValue={yAccessor}
-          onMouseDown={onMouseDown}
+          handleHighlightData={handleHighlightData}
           xAxis={xAxis}
           yAxis={yAxis}
           chartIndex={chartIndex}

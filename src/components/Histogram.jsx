@@ -6,7 +6,7 @@ import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 import { useChartDimensions } from "./chart/utils"
 
-const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, chartIndex }) => {
+const Histogram = ({ zoomed, active, outOfFocus, data, handleHighlightData, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, chartIndex }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -153,7 +153,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
           tooltipValue3Value={null}
           outOfFocus={outOfFocus}
-          onMouseDown={onMouseDown}
+          handleHighlightData={handleHighlightData}
           column={xAxis}
           chartIndex={chartIndex}
           color={'red'}
@@ -175,7 +175,7 @@ const Histogram = ({ zoomed, active, outOfFocus, data, onMouseDown, xAxis, yAxis
           tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
           tooltipValue3Value={yAccessorSummarizationMarked}
           outOfFocus={outOfFocus}
-          onMouseDown={onMouseDown}
+          handleHighlightData={handleHighlightData}
           column={xAxis}
           chartIndex={chartIndex}
         />}

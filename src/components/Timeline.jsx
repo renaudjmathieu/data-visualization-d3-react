@@ -6,7 +6,7 @@ import Axis from "./chart/Axis"
 import Polyline from "./chart/Polyline";
 import { useChartDimensions } from "./chart/utils"
 
-const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, onMouseDown, chartIndex }) => {
+const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, handleHighlightData, chartIndex }) => {
 
   const [ref, dimensions] = useChartDimensions()
 
@@ -78,7 +78,7 @@ const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat,
           yAccessor={yAccessor}
           tooltipValue1ValueFormat={xAxisType}
           tooltipValue2ValueFormat={yAxisType}
-          onMouseDown={onMouseDown}
+          handleHighlightData={handleHighlightData}
           xAxisFormat={xAxisFormat}
         />
       </Chart>

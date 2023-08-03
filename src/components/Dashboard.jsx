@@ -77,8 +77,7 @@ const Dashboard = (props, ref) => {
         }
     })
 
-    const onDoStuff = (e, chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
-        console.log('onDoStuff', chartIndex, columnType, column1, column2, item1, item2, format1, format2)
+    const handleHighlightData = (e, chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
         setHighlightedData(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
     }
 
@@ -113,7 +112,7 @@ const Dashboard = (props, ref) => {
                             chart={chart}
                             chartIndex={index}
                             chosen={chosen}
-                            onDoStuff={onDoStuff}
+                            handleHighlightData={handleHighlightData}
                             fields={props.fields}
                         />
                     }

@@ -10,7 +10,7 @@ import "./List.css"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, onMouseDown, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization, chartIndex }) => {
+const List = ({ zoomed, active, outOfFocus, data, handleHighlightData, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization, chartIndex }) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
@@ -69,7 +69,7 @@ const List = ({ zoomed, active, outOfFocus, data, onMouseDown, category1, catego
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category1 && selectedItem1 == item[0]) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'SingleValue', category1, null, item[0], null)) : null}>
+              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category1 && selectedItem1 == item[0]) ? (e) => handleHighlightData(e, null, null, null, null, null, null) : (e) => handleHighlightData(e, chartIndex, 'SingleValue', category1, null, item[0], null)) : null}>
 
               <div className="SelectableList__item__left">
 

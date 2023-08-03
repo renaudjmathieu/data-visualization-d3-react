@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { useDataContext } from "../../providers/DataProvider"
 
-const Circles = ({ outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, onMouseDown, xAxis, yAxis, chartIndex, radius }) => {
+const Circles = ({ outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, handleHighlightData, xAxis, yAxis, chartIndex, radius }) => {
 
   const theme = useTheme();
   const { selectedChartIndex, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()
@@ -66,7 +66,7 @@ const Circles = ({ outOfFocus, zoomed, type, data, dimensions, keyAccessor, xAcc
           cx={typeof xAccessor == "function" ? xAccessor(d, i) : xAccessor}
           cy={typeof yAccessor == "function" ? yAccessor(d, i) : yAccessor}
           r={typeof radius == "function" ? radius(d, i) : radius}
-          onMouseDown={!outOfFocus ? (selectedColumn1 == xAxis && selectedItem1 == xValue(d, i) && selectedColumn2 == yAxis && selectedItem2 == yValue(d, i) ? (e) => onMouseDown(e, null, null, null, null, null, null) : (e) => onMouseDown(e, chartIndex, 'MultipleValues', xAxis, yAxis, xValue(d, i), yValue(d, i))) : null}
+          onMouseDown={!outOfFocus ? (selectedColumn1 == xAxis && selectedItem1 == xValue(d, i) && selectedColumn2 == yAxis && selectedItem2 == yValue(d, i) ? (e) => handleHighlightData(e, null, null, null, null, null, null) : (e) => handleHighlightData(e, chartIndex, 'MultipleValues', xAxis, yAxis, xValue(d, i), yValue(d, i))) : null}
           onMouseEnter={!outOfFocus ? (e => handleMouseEnter(e, d, i)) : null}
           onMouseLeave={!outOfFocus ? handleMouseLeave : null}
         />

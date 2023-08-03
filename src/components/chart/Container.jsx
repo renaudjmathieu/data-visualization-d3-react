@@ -17,7 +17,7 @@ import * as d3 from 'd3'
 
 import { useDataContext } from "../../providers/DataProvider"
 
-const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, onDoStuff, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, handleHighlightData, fields }) => {
 
   const theme = useTheme();
 
@@ -79,7 +79,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, onDo
         yAxisParser={yAxisParser}
         xAxisType={xAxisType}
         yAxisType={yAxisType}
-        onMouseDown={onDoStuff}
+        handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
       />
       case "histogram": return <Histogram
@@ -87,7 +87,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, onDo
         active={active}
         outOfFocus={outOfFocus}
         data={highlightedData}
-        onMouseDown={onDoStuff}
+        handleHighlightData={handleHighlightData}
         xAxis={xAxis}
         yAxis={yAxis}
         xAccessor={xAccessor}
@@ -109,7 +109,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, onDo
         yAxisParser={yAxisParser}
         xAxisType={xAxisType}
         yAxisType={yAxisType}
-        onMouseDown={onDoStuff}
+        handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
       />
       case "list": return <List
@@ -130,7 +130,7 @@ const Container = ({ opened, onClick1, onClick2, chart, chartIndex, chosen, onDo
         category3Type={category3Type}
         valueType={valueType}
         valueSummarization={valueSummarization}
-        onMouseDown={onDoStuff}
+        handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
       />
       default: return null;
