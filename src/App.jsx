@@ -134,14 +134,8 @@ const getThemeExtender = (color) => {
 
 
 const App = (props) => {
-
     const { charts, addChart, replaceChart, removeChart, removeLastChart, updateChart } = useChartsContext()
     const { data } = useDataContext()
-
-    console.log('data', data)
-    console.log('Object.keys', Object.keys(data[0]))
-
-    const { window } = props
     const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
 
     const handleThemeChange = () => {

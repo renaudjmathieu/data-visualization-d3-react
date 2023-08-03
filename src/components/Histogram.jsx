@@ -48,32 +48,32 @@ const Histogram = ({ zoomed, active, outOfFocus, data, handleHighlightData, xAxi
       const currentItem = dataType === "number" ? item : item[1]
       switch (yAxisSummarization) {
         case "sum":
-          currentItem[yAxisSummarization] = d3.sum(currentItem, yAccessor);
-          currentItem[`highlighted ${yAxisSummarization}`] = d3.sum(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.sum(currentItem, yAccessor);
+          currentItem['-highlighted summarization-'] = d3.sum(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         case "average":
-          currentItem[yAxisSummarization] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length;
-          currentItem[`highlighted ${yAxisSummarization}`] = d3.sum(d3.rollup(_.filter(currentItem, ['highlighted', true]), v => d3.sum(v, yAccessor), yAccessor).values()) / _.filter(currentItem, ['highlighted', true]).length;
+          currentItem['-summarization-'] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length;
+          currentItem['-highlighted summarization-'] = d3.sum(d3.rollup(_.filter(currentItem, ['highlighted', true]), v => d3.sum(v, yAccessor), yAccessor).values()) / _.filter(currentItem, ['highlighted', true]).length;
           break;
         case "min":
-          currentItem[yAxisSummarization] = d3.min(currentItem, yAccessor);
-          currentItem[`highlighted ${yAxisSummarization}`] = d3.min(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.min(currentItem, yAccessor);
+          currentItem['-highlighted summarization-'] = d3.min(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         case "max":
-          currentItem[yAxisSummarization] = d3.max(currentItem, yAccessor);
-          currentItem[`highlighted ${yAxisSummarization}`] = d3.max(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.max(currentItem, yAccessor);
+          currentItem['-highlighted summarization-'] = d3.max(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         case "distinct":
-          currentItem[yAxisSummarization] = d3.group(currentItem, yAccessor).size;
-          currentItem[`highlighted ${yAxisSummarization}`] = d3.group(_.filter(currentItem, ['highlighted', true]), yAccessor).size;
+          currentItem['-summarization-'] = d3.group(currentItem, yAccessor).size;
+          currentItem['-highlighted summarization-'] = d3.group(_.filter(currentItem, ['highlighted', true]), yAccessor).size;
           break;
         case "count":
-          currentItem[yAxisSummarization] = currentItem.length;
-          currentItem[`highlighted ${yAxisSummarization}`] = _.filter(currentItem, ['highlighted', true]).length;
+          currentItem['-summarization-'] = currentItem.length;
+          currentItem['-highlighted summarization-'] = _.filter(currentItem, ['highlighted', true]).length;
           break;
         case "median":
-          currentItem[yAxisSummarization] = d3.median(currentItem, yAccessor);
-          currentItem[`highlighted ${yAxisSummarization}`] = d3.median(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.median(currentItem, yAccessor);
+          currentItem['-highlighted summarization-'] = d3.median(_.filter(currentItem, ['highlighted', true]), yAccessor);
           break;
         default: null;
       }
@@ -96,8 +96,8 @@ const Histogram = ({ zoomed, active, outOfFocus, data, handleHighlightData, xAxi
     default: yAccessorSummarizationFormatter = d3.format(",");
   }
 
-  const yAccessorSummarization = (xAxisType === "number") ? d => d[yAxisSummarization] : d => d[1][yAxisSummarization]
-  const yAccessorSummarizationMarked = (xAxisType === "number") ? d => d[`highlighted ${yAxisSummarization}`] : d => d[1][`highlighted ${yAxisSummarization}`]
+  const yAccessorSummarization = (xAxisType === "number") ? d => d['-summarization-'] : d => d[1]['-summarization-']
+  const yAccessorSummarizationMarked = (xAxisType === "number") ? d => d['-highlighted summarization-'] : d => d[1]['-highlighted summarization-']
 
   const yScale = d3.scaleLinear()
     .domain([0, d3.max(items, yAccessorSummarization)])

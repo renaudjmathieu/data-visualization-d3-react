@@ -85,8 +85,6 @@ const Dashboard = (props, ref) => {
         setHighlightedData(selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
     }, [])
 
-    console.log('highlightedData - 1', highlightedData)
-
     return (
         <div className="App__charts__dashboard" onClick={handleOutsideClick}>
             <div className="App__charts__config">
