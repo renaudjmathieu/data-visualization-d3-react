@@ -25,37 +25,9 @@ const initialState = {
   data: data
 }
 
-const actions = {
-  SET_SELECTED_CHART_INDEX: 'SET_SELECTED_CHART_INDEX',
-  SET_SELECTED_COLUMN_TYPE: 'SET_SELECTED_COLUMN_TYPE',
-  SET_SELECTED_COLUMN_1: 'SET_SELECTED_COLUMN_1',
-  SET_SELECTED_COLUMN_2: 'SET_SELECTED_COLUMN_2',
-  SET_SELECTED_ITEM_1: 'SET_SELECTED_ITEM_1',
-  SET_SELECTED_ITEM_2: 'SET_SELECTED_ITEM_2',
-  SET_SELECTED_FORMAT_1: 'SET_SELECTED_FORMAT_1',
-  SET_SELECTED_FORMAT_2: 'SET_SELECTED_FORMAT_2',
-  SET_FILTERED_DATA: 'SET_FILTERED_DATA',
-}
-
 const reducer = (state, action) => {
   switch (action.type) {
-    case actions.SET_SELECTED_CHART_INDEX:
-      return { ...state, selectedChartIndex: action.value }
-    case actions.SET_SELECTED_COLUMN_TYPE:
-      return { ...state, selectedColumnType: action.value }
-    case actions.SET_SELECTED_COLUMN_1:
-      return { ...state, selectedColumn1: action.value }
-    case actions.SET_SELECTED_COLUMN_2:
-      return { ...state, selectedColumn2: action.value }
-    case actions.SET_SELECTED_ITEM_1:
-      return { ...state, selectedItem1: action.value }
-    case actions.SET_SELECTED_ITEM_2:
-      return { ...state, selectedItem2: action.value }
-    case actions.SET_SELECTED_FORMAT_1:
-      return { ...state, selectedFormat1: action.value }
-    case actions.SET_SELECTED_FORMAT_2:
-      return { ...state, selectedFormat2: action.value }
-    case actions.SET_FILTERED_DATA:
+    case 'highlight':
       const formatter = action.format1 ? d3.timeFormat(action.format1) : null
       return {
         ...state,
@@ -97,16 +69,7 @@ const DataProvider = ({ children }) => {
     selectedFormat2: state.selectedFormat2,
     highlightedData: state.highlightedData,
     data: state.data,
-
-    setSelectedChartIndex: (value) => { dispatch({ type: actions.SET_SELECTED_CHART_INDEX, value }) },
-    setSelectedColumnType: (value) => { dispatch({ type: actions.SET_SELECTED_COLUMN_TYPE, value }) },
-    setSelectedColumn1: (value) => { dispatch({ type: actions.SET_SELECTED_COLUMN_1, value }) },
-    setSelectedColumn2: (value) => { dispatch({ type: actions.SET_SELECTED_COLUMN_2, value }) },
-    setSelectedItem1: (value) => { dispatch({ type: actions.SET_SELECTED_ITEM_1, value }) },
-    setSelectedItem2: (value) => { dispatch({ type: actions.SET_SELECTED_ITEM_2, value }) },
-    setSelectedFormat1: (value) => { dispatch({ type: actions.SET_SELECTED_FORMAT_1, value }) },
-    setSelectedFormat2: (value) => { dispatch({ type: actions.SET_SELECTED_FORMAT_2, value }) },
-    setFilteredData: (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => { dispatch({ type: actions.SET_FILTERED_DATA, chartIndex, columnType, column1, column2, item1, item2, format1, format2 }) },
+    setHighlightedData: (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => { dispatch({ type: 'highlight', chartIndex, columnType, column1, column2, item1, item2, format1, format2 }) },
   }
 
   return (

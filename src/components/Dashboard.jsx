@@ -10,7 +10,7 @@ import * as d3 from 'd3'
 const Dashboard = (props, ref) => {
 
     const { charts } = useChartsContext()
-    const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, highlightedData, setFilteredData } = useDataContext()
+    const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, highlightedData, setHighlightedData } = useDataContext()
 
     const [chosen, setChosen] = useState(null);
 
@@ -79,11 +79,11 @@ const Dashboard = (props, ref) => {
 
     const onDoStuff = (e, chartIndex, columnType, column1, column2, item1, item2, format1, format2) => {
         console.log('onDoStuff', chartIndex, columnType, column1, column2, item1, item2, format1, format2)
-        setFilteredData(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
+        setHighlightedData(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
     }
 
     React.useEffect(() => {
-        setFilteredData(selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
+        setHighlightedData(selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
     }, [])
 
     console.log('highlightedData - 1', highlightedData)
