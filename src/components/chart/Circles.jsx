@@ -53,7 +53,6 @@ const Circles = (props) => {
   const handleMouseLeave = () => {
     d3.selectAll(".tooltipDot")
       .remove()
-
     tooltip.style("opacity", 0)
   }
 
@@ -62,8 +61,8 @@ const Circles = (props) => {
       {props.data.map((d, i) => (
         <circle
           className={[
-            `Circles Circle--type-${props.type}`,
-            `Circles Circle--type-${props.type}--is-${selectedChartIndex == props.chartIndex && selectedItem1 === currentChart.xAxisAccessor(d, i) && selectedItem2 === currentChart.yAxisAccessor(d, i) ? "selected" :
+            `Circles Circle--type-circle`,
+            `Circles Circle--type-circle--is-${selectedChartIndex == props.chartIndex && selectedItem1 === currentChart.xAxisAccessor(d, i) && selectedItem2 === currentChart.yAxisAccessor(d, i) ? "selected" :
               selectedChartIndex == props.chartIndex && selectedItem1 ? "next-to-selected" :
                 "not-selected"
             }`
@@ -71,7 +70,7 @@ const Circles = (props) => {
           key={props.keyAxisAccessor(d, i)}
           cx={typeof props.xAxisAccessor == "function" ? props.xAxisAccessor(d, i) : props.xAxisAccessor}
           cy={typeof props.yAxisAccessor == "function" ? props.yAxisAccessor(d, i) : props.yAxisAccessor}
-          r={typeof props.radius == "function" ? props.radius(d, i) : props.radius}
+          r={5}
           onMouseDown={!props.outOfFocus ? (selectedColumn1 == currentChart.xAxis && selectedItem1 == currentChart.xAxisAccessor(d, i) && selectedColumn2 == currentChart.yAxis && selectedItem2 == currentChart.yAxisAccessor(d, i) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'MultipleValues', currentChart.xAxis, currentChart.yAxis, currentChart.xAxisAccessor(d, i), currentChart.yAxisAccessor(d, i))) : null}
           onMouseEnter={!props.outOfFocus ? (e => handleMouseEnter(e, d, i)) : null}
           onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
@@ -79,20 +78,6 @@ const Circles = (props) => {
       ))}
     </React.Fragment>
   )
-}
-
-Circles.propTypes = {
-  type: PropTypes.oneOf(["circle", "ring"]),
-  data: PropTypes.array,
-  keyAxisAccessor: accessorPropsType,
-  xAxisAccessor: accessorPropsType,
-  yAxisAccessor: accessorPropsType,
-  radius: accessorPropsType,
-}
-
-Circles.defaultProps = {
-  type: "circle",
-  radius: 5,
 }
 
 export default Circles

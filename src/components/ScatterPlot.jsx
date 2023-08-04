@@ -67,6 +67,7 @@ const ScatterPlot = (props) => {
           xAxisAccessor={xAxisAccessorScaled}
           yAxisAccessor={yAxisAccessorScaled}
           chartIndex={props.chartIndex}
+          handleHighlightData={props.handleHighlightData}
         />
       </Chart>
     </div>
