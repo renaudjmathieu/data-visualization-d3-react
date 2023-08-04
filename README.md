@@ -2,7 +2,7 @@
 
 A dynamic and configurable data dashboard web app built with D3 + React
 
-![image](https://raw.githubusercontent.com/renaudjmathieu/my-web-app/main/www/src/img/project1.png)
+![image](https://raw.githubusercontent.com/renaudjmathieu/my-web-app/main/src/img/project1.png)
 
 ## :technologist: Available Script Commands
 
@@ -33,7 +33,6 @@ npm install react-router-dom
 npm install @mui/material @emotion/react @emotion/styled
 npm install @mui/icons-material
 npm install d3
-npm install prop-types
 npm install resize-observer-polyfill
 npm install babel-plugin-inline-react-svg
 ```	

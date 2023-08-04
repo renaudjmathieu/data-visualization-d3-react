@@ -1,15 +1,14 @@
 import React from "react"
-import PropTypes from "prop-types"
 import * as d3 from 'd3'
-import { dimensionsPropsType, callAccessor } from "./utils";
-import { useChartDimensions } from "./Chart";
+import { callAccessor } from "../utils";
+import { useChartDimensionsContext } from "../providers/ChartDimensionsProvider";
 
 const axisComponentsByDimension = {
   x: AxisHorizontal,
   y: AxisVertical,
 }
 const Axis = ({ dimension, ...props }) => {
-  const dimensions = useChartDimensions()
+  const dimensions = useChartDimensionsContext()
   const Component = axisComponentsByDimension[dimension]
   if (!Component) return null
 
@@ -21,27 +20,13 @@ const Axis = ({ dimension, ...props }) => {
   )
 }
 
-Axis.propTypes = {
-  dimension: PropTypes.oneOf(["x", "y"]),
-  dimensions: dimensionsPropsType,
-  scale: PropTypes.func,
-  label: PropTypes.string,
-  format: PropTypes.string,
-}
-
-Axis.defaultProps = {
-  dimension: "x",
-  scale: null,
-  format: null,
-}
-
 export default Axis
 
-function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, xAccessor, widthAccessor, ...props }) {
+function AxisHorizontal({ dimensions, scale, label, format, data, keyAxisAccessor, xAxisAccessor, widthAccessor, ...props }) {
   const numberOfTicks = dimensions.boundedWidth < 600
     ? dimensions.boundedWidth / 100
     : dimensions.boundedWidth / 250
-
+  
   const ticks = format === 'number' ? scale.ticks(numberOfTicks) : scale.domain()
   const formatter = format === 'date' ? d3.timeFormat("%b %Y") : format === 'time' ? d3.timeFormat("%H:%M") : d => d.length > 18 ? d.slice(0, 18) + '...' : d
 
@@ -66,10 +51,10 @@ function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, x
       {(format !== 'number' && data) && (
         data.map((d, i) => (
           <text
-            key={keyAccessor(d, i)}
+            key={keyAxisAccessor(d, i)}
             className="Axis__tick"
             font-size={d3.min([d3.max([Math.floor((dimensions.boundedWidth / data.length) / 2), 6]), 10])}
-            transform={`translate(${callAccessor(xAccessor, d, i) + (d3.max([callAccessor(widthAccessor, d, i), 0]) / 2)}, 8) rotate(-35)`}
+            transform={`translate(${callAccessor(xAxisAccessor, d, i) + (d3.max([callAccessor(widthAccessor, d, i), 0]) / 2)}, 8) rotate(-35)`}
           >
             {formatter(d[0])}
           </text>
