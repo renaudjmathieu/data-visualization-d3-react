@@ -1,5 +1,4 @@
 import React, { createContext, useContext } from "react"
-import { dimensionsPropsType } from "./utils"
 
 import "./Chart.css"
 
@@ -15,13 +14,5 @@ const Chart = ({ dimensions, children }) => (
     </svg>
   </ChartContext.Provider>
 )
-
-Chart.propTypes = {
-  dimensions: dimensionsPropsType
-}
-
-Chart.defaultProps = {
-  dimensions: {}
-}
 
 export default Chart

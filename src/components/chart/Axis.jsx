@@ -1,7 +1,6 @@
 import React from "react"
-import PropTypes from "prop-types"
 import * as d3 from 'd3'
-import { dimensionsPropsType, callAccessor } from "./utils";
+import { callAccessor } from "./utils";
 import { useChartDimensions } from "./Chart";
 
 const axisComponentsByDimension = {
@@ -19,20 +18,6 @@ const Axis = ({ dimension, ...props }) => {
       {...props}
     />
   )
-}
-
-Axis.propTypes = {
-  dimension: PropTypes.oneOf(["x", "y"]),
-  dimensions: dimensionsPropsType,
-  scale: PropTypes.func,
-  label: PropTypes.string,
-  format: PropTypes.string,
-}
-
-Axis.defaultProps = {
-  dimension: "x",
-  scale: null,
-  format: null,
 }
 
 export default Axis
