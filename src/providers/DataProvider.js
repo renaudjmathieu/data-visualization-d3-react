@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react'
 import * as d3 from "d3"
 import _ from "lodash"
 
-import data from '../../my_weather_data.json'
+import rawData from '../../my_weather_data.json'
 
 const DataContext = createContext()
 export const useDataContext = () => useContext(DataContext)
@@ -75,15 +75,15 @@ const typesAndFormats = [
   { id: 'apparentTemperatureMaxTime', format: "%s", type: 'time' },
 ]
 
-export const fieldsAvailable = Object.keys(data[0])
+export const fieldsAvailable = Object.keys(rawData[0])
   .filter(id => !typesAndFormats.find(f => f.id === id && f.type === 'time')) // todo - add time fields
   .map(id => (
       {
           id,
-          type: typeof data[0][id],
+          type: typeof rawData[0][id],
           name: id.charAt(0).toUpperCase() + id.slice(1).replace(/([A-Z])/g, ' $1'),
           ...(typesAndFormats.find(f => f.id === id) ? {
-              type: typesAndFormats.find(f => f.id === id).type ? typesAndFormats.find(f => f.id === id).type : typeof data[0][id],
+              type: typesAndFormats.find(f => f.id === id).type ? typesAndFormats.find(f => f.id === id).type : typeof rawData[0][id],
               format: typesAndFormats.find(f => f.id === id).format
           } : {})
       }
@@ -100,13 +100,12 @@ const initialState = {
   selectedItem2: null,
   selectedFormat1: null,
   selectedFormat2: null,
-  highlightedData: _.map(data, (d) => {
+  data: _.map(rawData, (d) => {
     return {
       ...d,
       highlighted: true
     }
-  }),
-  data: data
+  })
 }
 
 const reducer = (state, action) => {
@@ -123,7 +122,7 @@ const reducer = (state, action) => {
         selectedItem2: action.item2,
         selectedFormat1: action.format1,
         selectedFormat2: action.format2,
-        highlightedData: _.map(data, (d) => {
+        data: _.map(rawData, (d) => {
           return {
             ...d,
             highlighted:
@@ -157,7 +156,6 @@ const DataProvider = ({ children }) => {
     selectedItem2: state.selectedItem2,
     selectedFormat1: state.selectedFormat1,
     selectedFormat2: state.selectedFormat2,
-    highlightedData: state.highlightedData,
     data: state.data,
     setHighlightedData: (chartIndex, columnType, column1, column2, item1, item2, format1, format2) => { dispatch({ type: 'highlight', chartIndex, columnType, column1, column2, item1, item2, format1, format2 }) },
     setChosenChartIndex: (chosenChartIndex) => { dispatch({ type: 'choose', chosenChartIndex }) }

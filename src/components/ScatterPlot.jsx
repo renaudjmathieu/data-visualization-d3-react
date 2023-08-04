@@ -66,17 +66,6 @@ const ScatterPlot = (props) => {
           keyAxisAccessor={keyAxisAccessor}
           xAxisAccessor={xAxisAccessorScaled}
           yAxisAccessor={yAxisAccessorScaled}
-          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Title={currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue1Value={currentChart.xAxisAccessor}
-          tooltipValue2Value={currentChart.yAxisAccessor}
-          tooltipValue1ValueFormat={currentChart.xAxisType}
-          tooltipValue2ValueFormat={currentChart.yAxisType}
-          xValue={currentChart.xAxisAccessor}
-          yValue={currentChart.yAxisAccessor}
-          handleHighlightData={props.handleHighlightData}
-          xAxis={currentChart.xAxis}
-          yAxis={currentChart.yAxis}
           chartIndex={props.chartIndex}
         />
       </Chart>

@@ -17,7 +17,7 @@ import { useChartsContext } from "../../providers/ChartsProvider"
 
 const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData, fields }) => {
   const theme = useTheme();
-  const { selectedChartIndex, chosenChartIndex, highlightedData } = useDataContext()
+  const { selectedChartIndex, chosenChartIndex, data } = useDataContext()
   const { charts } = useChartsContext()
   const currentChart = charts[chartIndex]
 
@@ -34,7 +34,7 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChartIndex == chartIndex ? highlightedData : _.filter(highlightedData, { highlighted: true })}
+        data={selectedChartIndex == chartIndex ? data : _.filter(data, { highlighted: true })}
         handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
       />
@@ -42,7 +42,7 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={highlightedData}
+        data={data}
         handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
       />
@@ -50,7 +50,7 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChartIndex == chartIndex ? highlightedData : _.filter(highlightedData, { highlighted: true })}
+        data={selectedChartIndex == chartIndex ? data : _.filter(data, { highlighted: true })}
         handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
       />
@@ -58,7 +58,7 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChartIndex == chartIndex ? highlightedData : _.filter(highlightedData, { highlighted: true })}
+        data={selectedChartIndex == chartIndex ? data : _.filter(data, { highlighted: true })}
         handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
       />
