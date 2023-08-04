@@ -4,44 +4,43 @@ import { useTheme } from '@mui/material/styles';
 import { useDataContext } from "../../providers/DataProvider"
 import { useChartDimensions } from "./Chart";
 
-const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAccessorScaled, y0AccessorScaled, chartIndex, column, xScale, yScale, tooltipValue1Title, xAxisAccessor, tooltipValue2Title, yAxisAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, handleHighlightData, xAxisFormat, ...props }) => {
+const Polyline = (props) => {
   
   const theme = useTheme();
   const dimensions = useChartDimensions()
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1 } = useDataContext()
 
-  const tooltip = d3.select(`#tooltipD3${zoomed ? 'zoomed' : ''}`)
+  const tooltip = d3.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}`)
 
   const [clickedClosestDataPoint, setClickedClosestDataPoint] = React.useState(null)
 
   const interpolation = d3.curveLinear
   
   const handleMouseDown = (e, data) => {
-
     const bounds = d3.select(e.target.parentElement)
     const dot = bounds.selectAll(".yo-circle")
     const mousePosition = d3.pointer(e)
-    const hoveredDate = xScale.invert(mousePosition[0])
+    const hoveredDate = props.xScale.invert(mousePosition[0])
 
-    const getDistanceFromHoveredDate = d => Math.abs(xAxisAccessor(d) - hoveredDate)
-    const closestIndex = d3.leastIndex(data, (a, b) => (
+    const getDistanceFromHoveredDate = d => Math.abs(props.xAxisAccessor(d) - hoveredDate)
+    const closestIndex = d3.leastIndex(props.data, (a, b) => (
       getDistanceFromHoveredDate(a) - getDistanceFromHoveredDate(b)
     ))
-    const closestDataPoint = data[closestIndex]
+    const closestDataPoint = props.data[closestIndex]
 
-    const closestXValue = xAxisAccessor(closestDataPoint)
-    const closestYValue = yAxisAccessor(closestDataPoint)
+    const closestXValue = props.xAxisAccessor(closestDataPoint)
+    const closestYValue = props.yAxisAccessor(closestDataPoint)
 
-    const formatter = xAxisFormat ? d3.timeFormat(xAxisFormat) : null
+    const formatter = props.xAxisFormat ? d3.timeFormat(props.xAxisFormat) : null
 
-    if (selectedChartIndex === chartIndex && selectedColumnType === 'SingleValue' && selectedColumn1 === column && formatter(selectedItem1) === formatter(closestXValue)) {
-      handleHighlightData(e, null, null, null, null, null, null, null, null)
+    if (selectedChartIndex === props.chartIndex && selectedColumnType === 'SingleValue' && selectedColumn1 === props.column && formatter(selectedItem1) === formatter(closestXValue)) {
+      props.handleHighlightData(e, null, null, null, null, null, null, null, null)
     }
     else {
-      if (selectedChartIndex === chartIndex) {
+      if (selectedChartIndex === props.chartIndex) {
         dot
-          .attr("cx", xScale(closestXValue))
-          .attr("cy", yScale(closestYValue))
+          .attr("cx", props.xScale(closestXValue))
+          .attr("cy", props.yScale(closestYValue))
           .style("opacity", 1)
       }
       else {
@@ -50,7 +49,7 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAc
 
         setClickedClosestDataPoint(closestDataPoint)
       }
-      handleHighlightData(e, chartIndex, 'SingleValue', column, null, closestXValue, null, xAxisFormat, null)
+      props.handleHighlightData(e, props.chartIndex, 'SingleValue', props.column, null, closestXValue, null, props.xAxisFormat, null)
     }
 
   }
@@ -62,28 +61,28 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAc
     const tooltipLine = bounds.selectAll(".tooltip-line")
 
     const mousePosition = d3.pointer(e)
-    const hoveredDate = xScale.invert(mousePosition[0])
+    const hoveredDate = props.xScale.invert(mousePosition[0])
 
-    const getDistanceFromHoveredDate = d => Math.abs(xAxisAccessor(d) - hoveredDate)
-    const closestIndex = d3.leastIndex(data, (a, b) => (
+    const getDistanceFromHoveredDate = d => Math.abs(props.xAxisAccessor(d) - hoveredDate)
+    const closestIndex = d3.leastIndex(props.data, (a, b) => (
       getDistanceFromHoveredDate(a) - getDistanceFromHoveredDate(b)
     ))
-    const closestDataPoint = data[closestIndex]
+    const closestDataPoint = props.data[closestIndex]
 
-    const closestXValue = xAxisAccessor(closestDataPoint)
-    const closestYValue = yAxisAccessor(closestDataPoint)
+    const closestXValue = props.xAxisAccessor(closestDataPoint)
+    const closestYValue = props.yAxisAccessor(closestDataPoint)
 
-    const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
-    const tooltipValue2ValueFormatter = tooltipValue2ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue2ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+    const tooltipValue1ValueFormatter = props.tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : props.tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+    const tooltipValue2ValueFormatter = props.tooltipValue2ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : props.tooltipValue2ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
-    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
-      .text(tooltipValue1Title + ": " + tooltipValue1ValueFormatter(xAxisAccessor(closestDataPoint)))
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`)
+      .text(props.tooltipValue1Title + ": " + tooltipValue1ValueFormatter(props.xAxisAccessor(closestDataPoint)))
 
-    tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(tooltipValue2Title + ": " + tooltipValue2ValueFormatter(yAxisAccessor(closestDataPoint)))
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`)
+      .text(props.tooltipValue2Title + ": " + tooltipValue2ValueFormatter(props.yAxisAccessor(closestDataPoint)))
 
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)
+    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + props.xScale(closestXValue)
+    const y = dimensions.offsetTop + 8 + dimensions.marginTop + props.yScale(closestYValue)
 
     tooltip.style("transform", `translate(`
       + `calc( -50% + ${x}px),`
@@ -93,12 +92,12 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAc
     tooltip.style("opacity", 1)
 
     tooltipDot
-      .attr("cx", xScale(closestXValue))
-      .attr("cy", yScale(closestYValue))
+      .attr("cx", props.xScale(closestXValue))
+      .attr("cy", props.yScale(closestYValue))
       .style("opacity", 1)
 
     tooltipLine
-      .attr("x", xScale(closestXValue))
+      .attr("x", props.xScale(closestXValue))
       .style("opacity", 1)
   }
 
@@ -114,9 +113,9 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAc
 
   if (dimensions) {
     const delaunay = d3.Delaunay.from(
-      data,
-      xAxisAccessor,
-      yAxisAccessor,
+      props.data,
+      props.xAxisAccessor,
+      props.yAxisAccessor,
     )
     const voronoi = delaunay.voronoi()
     voronoi.xmax = dimensions.boundedWidth
@@ -124,32 +123,32 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAc
   }
 
 
-  const lineGenerator = d3[type === "circle" ? "line" : type]()
+  const lineGenerator = d3[props.type === "circle" ? "line" : props.type]()
     .curve(interpolation)
 
   lineGenerator
-    .x(xAxisAccessorScaled)
-    .y(yAxisAccessorScaled)
+    .x(props.xAxisAccessorScaled)
+    .y(props.yAxisAccessorScaled)
 
-  if (type === "area") {
+  if (props.type === "area") {
     lineGenerator
-      .y0(y0AccessorScaled)
-      .y1(yAxisAccessorScaled)
+      .y0(props.y0AccessorScaled)
+      .y1(props.yAxisAccessorScaled)
   }
 
-  if (selectedChartIndex !== chartIndex || selectedColumn1 !== column) {
+  if (selectedChartIndex !== props.chartIndex || selectedColumn1 !== props.column) {
     d3.selectAll(".yo-circle")
       .style("opacity", 0)
   }
 
   if (clickedClosestDataPoint) {
     const dot = d3.selectAll(".yo-circle")
-    const closestXValue = xAxisAccessor(clickedClosestDataPoint)
-    const closestYValue = yAxisAccessor(clickedClosestDataPoint)
+    const closestXValue = props.xAxisAccessor(clickedClosestDataPoint)
+    const closestYValue = props.yAxisAccessor(clickedClosestDataPoint)
 
     dot
-      .attr("cx", xScale(closestXValue))
-      .attr("cy", yScale(closestYValue))
+      .attr("cx", props.xScale(closestXValue))
+      .attr("cy", props.yScale(closestYValue))
       .style("opacity", 1)
 
     setClickedClosestDataPoint(null)
@@ -159,11 +158,11 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAc
 
     <path {...props}
       className={[
-        `Polyline Polyline--type-${type}`,
-        `Polyline Polyline--type-${type}--is-${selectedChartIndex === chartIndex && selectedColumn1 === column ? "next-to-selected" : "selected"
+        `Polyline Polyline--type-${props.type}`,
+        `Polyline Polyline--type-${props.type}--is-${selectedChartIndex === props.chartIndex && selectedColumn1 === props.column ? "next-to-selected" : "selected"
         }`
       ].join(" ")}
-      d={lineGenerator(data)}
+      d={lineGenerator(props.data)}
     />
 
     {dimensions && <>
@@ -190,9 +189,9 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAc
         className="listening-rect"
         width={dimensions.boundedWidth}
         height={dimensions.boundedHeight}
-        onMouseMove={!outOfFocus ? (e => handleMouseMove(e, data)) : null}
-        onMouseLeave={!outOfFocus ? handleMouseLeave : null}
-        onMouseDown={!outOfFocus ? (e => handleMouseDown(e, data)) : null}
+        onMouseMove={!props.outOfFocus ? (e => handleMouseMove(e, props.data)) : null}
+        onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+        onMouseDown={!props.outOfFocus ? (e => handleMouseDown(e, props.data)) : null}
       />
     </>
     }
