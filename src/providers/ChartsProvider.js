@@ -75,13 +75,13 @@ const reducer = (state, action) => {
     case 'add':
       return [...state, AddAdditionalFields(chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)])]
     case 'replace':
-      return state.map((c, i) => i === action.index ? { ...c, type: action.chartType } : c)
+      return state.map((c, i) => i === action.index ? AddAdditionalFields({ ...c, type: action.chartType }) : c)
     case 'remove':
       return state.filter((c, i) => i !== action.index)
     case 'removeLast':
       return state.slice(0, -1)
     case 'update':
-      return state.map((c, i) => i === action.index ? { ...c, [action.column]: action.value } : c)
+      return state.map((c, i) => i === action.index ? AddAdditionalFields({ ...c, [action.column]: action.value }) : c)
     default:
       return state
   }
