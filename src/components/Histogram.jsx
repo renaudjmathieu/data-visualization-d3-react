@@ -2,10 +2,10 @@ import React from "react"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
-import { useChartDimensions } from "./chart/utils"
+import { useChartDimensions, callAccessor } from "./chart/utils"
 import { useChartsContext } from "../providers/ChartsProvider"
+import { useDataContext } from "../providers/DataProvider"
 
-import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
 
 const Histogram = (props) => {
@@ -13,6 +13,7 @@ const Histogram = (props) => {
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
+  const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1, selectedItem2 } = useDataContext()
   const { charts } = useChartsContext()
   const currentChart = charts[props.chartIndex]
 
@@ -120,6 +121,44 @@ const Histogram = (props) => {
 
   const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization
 
+
+
+  const tooltip = d3.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}`)
+
+  const xAxisTypeter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
+
+  const handleMouseEnter = (e, d, i) => {
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`)
+      .text(currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + [
+        xAxisTypeter(d.x0),
+        xAxisTypeter(d.x1)
+      ].join(" - "))
+
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`)
+      .text(yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)))
+
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value3`)
+      .text('Highlighted' + ": " + yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)))
+
+    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2)
+    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
+
+    tooltip.style("transform", `translate(`
+      + `calc(-50% + ${x}px),`
+      + `calc(-100% + ${y}px)`
+      + `)`)
+
+    tooltip.style("opacity", 1)
+  }
+
+  const handleMouseLeave = () => {
+    tooltip.style("opacity", 0)
+  }
+
+  const isLastBin = (d, i) => {
+    return i === items.length - 2
+  }
+
   return (
     <div className={`Chart__rectangle ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
@@ -140,49 +179,38 @@ const Histogram = (props) => {
           scale={yScale}
           label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
         />
-        {currentChart.xAxis && <Rectangles
-          zoomed={props.zoomed}
-          active={props.active}
-          data={items}
-          dimensions={dimensions}
-          keyAxisAccessor={keyAxisAccessor}
-          xAxisAccessor={xAxisAccessorScaled}
-          yAxisAccessor={yAxisAccessorScaledMarked}
-          widthAccessor={widthAccessorScaled}
-          heightAccessor={heightAccessorScaledMarked}
-          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAxisType={currentChart.xAxisType}
-          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Value={yAxisAccessorSummarization}
-          tooltipValue2ValueFormat={yAxisAccessorSummarizationFormatter}
-          tooltipValue3Value={null}
-          outOfFocus={props.outOfFocus}
-          handleHighlightData={props.handleHighlightData}
-          column={currentChart.xAxis}
-          chartIndex={props.chartIndex}
-          color={'red'}
-        />}
-        {currentChart.xAxis && <Rectangles
-          zoomed={props.zoomed}
-          active={props.active}
-          data={items}
-          dimensions={dimensions}
-          keyAxisAccessor={keyAxisAccessor}
-          xAxisAccessor={xAxisAccessorScaled}
-          yAxisAccessor={yAxisAccessorScaled}
-          widthAccessor={widthAccessorScaled}
-          heightAccessor={heightAccessorScaled}
-          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAxisType={currentChart.xAxisType}
-          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Value={yAxisAccessorSummarization}
-          tooltipValue2ValueFormat={yAxisAccessorSummarizationFormatter}
-          tooltipValue3Value={yAxisAccessorSummarizationMarked}
-          outOfFocus={props.outOfFocus}
-          handleHighlightData={props.handleHighlightData}
-          column={currentChart.xAxis}
-          chartIndex={props.chartIndex}
-        />}
+        {currentChart.xAxis && items.map((d, i) => (
+          <rect
+            className="Rectangles__rect Rectangles__marked"
+            key={keyAxisAccessor(d, i)}
+            x={callAccessor(xAxisAccessorScaled, d, i)}
+            y={callAccessor(yAxisAccessorScaledMarked, d, i)}
+            width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
+            height={d3.max([callAccessor(heightAccessorScaledMarked, d, i), 0])}
+            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
+            onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+            onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
+          />
+        ))}
+        {currentChart.xAxis && items.map((d, i) => (
+          <rect
+            className={
+              ["Rectangles__rect Rectangles__unmarked",
+                `Rectangles__rect--is-${selectedChartIndex == props.chartIndex && currentChart.xAxisType === 'number' && d.x0 == selectedItem1 && d.x1 == selectedItem2 ? "selected" :
+                  selectedChartIndex == props.chartIndex && currentChart.xAxisType !== 'number' && d[0] == selectedItem1 ? "selected" :
+                    selectedChartIndex == props.chartIndex && selectedItem1 ? "next-to-selected" : "not-selected"
+                }`
+              ].join(" ")}
+            key={keyAxisAccessor(d, i)}
+            x={callAccessor(xAxisAccessorScaled, d, i)}
+            y={callAccessor(yAxisAccessorScaled, d, i)}
+            width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
+            height={d3.max([callAccessor(heightAccessorScaled, d, i), 0])}
+            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
+            onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+            onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
+          />
+        ))}
       </Chart>
     </div>
   )
