@@ -4,43 +4,39 @@ import _ from "lodash"
 
 import { useChartDimensions } from "../chart/utils"
 import { useDataContext } from "../../providers/DataProvider"
+import { useChartsContext } from "../../providers/ChartsProvider"
 
 import "./List.css"
 
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
-const List = ({ zoomed, active, outOfFocus, data, handleHighlightData, category1, category2, category3, value, category1Parser, category2Parser, category3Parser, valueParser, category1Type, category2Type, category3Type, valueType, valueSummarization, chartIndex }) => {
+const List = (props) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
-
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()
+  const { charts } = useChartsContext()
+  const currentChart = charts[props.chartIndex]
 
-  const numberOfCategories = 1 + category2 ? 1 : 0 + category3 ? 1 : 0
-
-  const category1Accessor = d => d[category1]
-  const category2Accessor = d => d[category2]
-  const category3Accessor = d => d[category3]
-  const valueAccessor = d => d[value]
-
-  const dataByCategory = Array.from(numberOfCategories === 1 ? d3.group(data, category1Accessor) : d3.flatGroup(data, category1Accessor, category2Accessor, category3Accessor))
+  const numberOfCategories = 1 + currentChart.category2 ? 1 : 0 + currentChart.category3 ? 1 : 0
+  const dataByCategory = Array.from(numberOfCategories === 1 ? d3.group(props.data, currentChart.category1Accessor) : d3.flatGroup(props.data, currentChart.category1Accessor, currentChart.category2Accessor, currentChart.category3Accessor))
 
   dataByCategory.forEach(categoryData => {
-    switch (valueSummarization) {
-      case "sum": categoryData[numberOfCategories][valueSummarization] = d3.sum(categoryData[numberOfCategories], valueAccessor); break;
-      case "average": categoryData[numberOfCategories][valueSummarization] = d3.sum(d3.rollup(categoryData[numberOfCategories], v => d3.sum(v, valueAccessor), valueAccessor).values()) / categoryData[numberOfCategories].length; break;
-      case "min": categoryData[numberOfCategories][valueSummarization] = d3.min(categoryData[numberOfCategories], valueAccessor); break;
-      case "max": categoryData[numberOfCategories][valueSummarization] = d3.max(categoryData[numberOfCategories], valueAccessor); break;
-      case "distinct": categoryData[numberOfCategories][valueSummarization] = d3.group(categoryData[numberOfCategories], valueAccessor).size; break;
-      case "count": categoryData[numberOfCategories][valueSummarization] = categoryData[numberOfCategories].length; break;
-      case "median": categoryData[numberOfCategories][valueSummarization] = d3.median(categoryData[numberOfCategories], valueAccessor); break;
+    switch (currentChart.valueSummarization) {
+      case "sum": categoryData[numberOfCategories][currentChart.valueSummarization] = d3.sum(categoryData[numberOfCategories], currentChart.valueAccessor); break;
+      case "average": categoryData[numberOfCategories][currentChart.valueSummarization] = d3.sum(d3.rollup(categoryData[numberOfCategories], v => d3.sum(v, currentChart.valueAccessor), currentChart.valueAccessor).values()) / categoryData[numberOfCategories].length; break;
+      case "min": categoryData[numberOfCategories][currentChart.valueSummarization] = d3.min(categoryData[numberOfCategories], currentChart.valueAccessor); break;
+      case "max": categoryData[numberOfCategories][currentChart.valueSummarization] = d3.max(categoryData[numberOfCategories], currentChart.valueAccessor); break;
+      case "distinct": categoryData[numberOfCategories][currentChart.valueSummarization] = d3.group(categoryData[numberOfCategories], currentChart.valueAccessor).size; break;
+      case "count": categoryData[numberOfCategories][currentChart.valueSummarization] = categoryData[numberOfCategories].length; break;
+      case "median": categoryData[numberOfCategories][currentChart.valueSummarization] = d3.median(categoryData[numberOfCategories], currentChart.valueAccessor); break;
       default: null;
     }
   })
 
-  const valueSummarizationAccessor = ([key, values]) => values[valueSummarization]
+  const valueSummarizationAccessor = ([key, values]) => values[currentChart.valueSummarization]
 
   const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
 
@@ -48,11 +44,11 @@ const List = ({ zoomed, active, outOfFocus, data, handleHighlightData, category1
   const total = _.sumBy(items, valueSummarizationAccessor)
 
   return (
-    <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__square ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <div className="SelectableList">
         <div className="SelectableList__column-headers">
           <div className="SelectableList__column-header">
-            {valueSummarization}
+            {currentChart.valueSummarization}
           </div>
           <div className="SelectableList__column-header">
             %GT
@@ -63,13 +59,13 @@ const List = ({ zoomed, active, outOfFocus, data, handleHighlightData, category1
             <div
               className={[
                 "SelectableList__item",
-                `SelectableList__item--is-${selectedChartIndex == chartIndex && item[0] == selectedItem1 ? "selected" :
-                  selectedChartIndex == chartIndex && selectedItem1 ? "next-to-selected" :
+                `SelectableList__item--is-${selectedChartIndex == props.chartIndex && item[0] == selectedItem1 ? "selected" :
+                  selectedChartIndex == props.chartIndex && selectedItem1 ? "next-to-selected" :
                     "not-selected"
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={!outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == category1 && selectedItem1 == item[0]) ? (e) => handleHighlightData(e, null, null, null, null, null, null) : (e) => handleHighlightData(e, chartIndex, 'SingleValue', category1, null, item[0], null)) : null}>
+              onMouseDown={!props.outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == currentChart.category1 && selectedItem1 == item[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.category1, null, item[0], null)) : null}>
 
               <div className="SelectableList__item__left">
 
@@ -94,13 +90,13 @@ const List = ({ zoomed, active, outOfFocus, data, handleHighlightData, category1
               <div className="SelectableList__item__right">
 
                 <div className="SelectableList__item__bar" style={{
-                  width: `${item[numberOfCategories][valueSummarization] * 100 / items[0][numberOfCategories][valueSummarization]}%`,
+                  width: `${item[numberOfCategories][currentChart.valueSummarization] * 100 / items[0][numberOfCategories][currentChart.valueSummarization]}%`,
                 }} />
                 <div className="SelectableList__item__value">
-                  {formatNumber(item[numberOfCategories][valueSummarization])}
+                  {formatNumber(item[numberOfCategories][currentChart.valueSummarization])}
                 </div>
                 <div className="SelectableList__item__value">
-                  {formatPercent(item[numberOfCategories][valueSummarization] / total)}
+                  {formatPercent(item[numberOfCategories][currentChart.valueSummarization] / total)}
                 </div>
 
               </div>

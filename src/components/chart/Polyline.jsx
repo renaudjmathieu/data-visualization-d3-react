@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { useDataContext } from "../../providers/DataProvider"
 import { useChartDimensions } from "./Chart";
 
-const Polyline = ({ outOfFocus, type, zoomed, data, xAccessorScaled, yAccessorScaled, y0AccessorScaled, chartIndex, column, xScale, yScale, tooltipValue1Title, xAccessor, tooltipValue2Title, yAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, handleHighlightData, xAxisFormat, ...props }) => {
+const Polyline = ({ outOfFocus, type, zoomed, data, xAxisAccessorScaled, yAxisAccessorScaled, y0AccessorScaled, chartIndex, column, xScale, yScale, tooltipValue1Title, xAxisAccessor, tooltipValue2Title, yAxisAccessor, tooltipValue1ValueFormat, tooltipValue2ValueFormat, handleHighlightData, xAxisFormat, ...props }) => {
   
   const theme = useTheme();
   const dimensions = useChartDimensions()
@@ -23,14 +23,14 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAccessorScaled, yAccessorSc
     const mousePosition = d3.pointer(e)
     const hoveredDate = xScale.invert(mousePosition[0])
 
-    const getDistanceFromHoveredDate = d => Math.abs(xAccessor(d) - hoveredDate)
+    const getDistanceFromHoveredDate = d => Math.abs(xAxisAccessor(d) - hoveredDate)
     const closestIndex = d3.leastIndex(data, (a, b) => (
       getDistanceFromHoveredDate(a) - getDistanceFromHoveredDate(b)
     ))
     const closestDataPoint = data[closestIndex]
 
-    const closestXValue = xAccessor(closestDataPoint)
-    const closestYValue = yAccessor(closestDataPoint)
+    const closestXValue = xAxisAccessor(closestDataPoint)
+    const closestYValue = yAxisAccessor(closestDataPoint)
 
     const formatter = xAxisFormat ? d3.timeFormat(xAxisFormat) : null
 
@@ -64,23 +64,23 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAccessorScaled, yAccessorSc
     const mousePosition = d3.pointer(e)
     const hoveredDate = xScale.invert(mousePosition[0])
 
-    const getDistanceFromHoveredDate = d => Math.abs(xAccessor(d) - hoveredDate)
+    const getDistanceFromHoveredDate = d => Math.abs(xAxisAccessor(d) - hoveredDate)
     const closestIndex = d3.leastIndex(data, (a, b) => (
       getDistanceFromHoveredDate(a) - getDistanceFromHoveredDate(b)
     ))
     const closestDataPoint = data[closestIndex]
 
-    const closestXValue = xAccessor(closestDataPoint)
-    const closestYValue = yAccessor(closestDataPoint)
+    const closestXValue = xAxisAccessor(closestDataPoint)
+    const closestYValue = yAxisAccessor(closestDataPoint)
 
     const tooltipValue1ValueFormatter = tooltipValue1ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue1ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
     const tooltipValue2ValueFormatter = tooltipValue2ValueFormat === 'date' ? d3.timeFormat("%B %d, %Y") : tooltipValue2ValueFormat === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value1`)
-      .text(tooltipValue1Title + ": " + tooltipValue1ValueFormatter(xAccessor(closestDataPoint)))
+      .text(tooltipValue1Title + ": " + tooltipValue1ValueFormatter(xAxisAccessor(closestDataPoint)))
 
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
-      .text(tooltipValue2Title + ": " + tooltipValue2ValueFormatter(yAccessor(closestDataPoint)))
+      .text(tooltipValue2Title + ": " + tooltipValue2ValueFormatter(yAxisAccessor(closestDataPoint)))
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)
@@ -115,8 +115,8 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAccessorScaled, yAccessorSc
   if (dimensions) {
     const delaunay = d3.Delaunay.from(
       data,
-      xAccessor,
-      yAccessor,
+      xAxisAccessor,
+      yAxisAccessor,
     )
     const voronoi = delaunay.voronoi()
     voronoi.xmax = dimensions.boundedWidth
@@ -128,13 +128,13 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAccessorScaled, yAccessorSc
     .curve(interpolation)
 
   lineGenerator
-    .x(xAccessorScaled)
-    .y(yAccessorScaled)
+    .x(xAxisAccessorScaled)
+    .y(yAxisAccessorScaled)
 
   if (type === "area") {
     lineGenerator
       .y0(y0AccessorScaled)
-      .y1(yAccessorScaled)
+      .y1(yAxisAccessorScaled)
   }
 
   if (selectedChartIndex !== chartIndex || selectedColumn1 !== column) {
@@ -144,8 +144,8 @@ const Polyline = ({ outOfFocus, type, zoomed, data, xAccessorScaled, yAccessorSc
 
   if (clickedClosestDataPoint) {
     const dot = d3.selectAll(".yo-circle")
-    const closestXValue = xAccessor(clickedClosestDataPoint)
-    const closestYValue = yAccessor(clickedClosestDataPoint)
+    const closestXValue = xAxisAccessor(clickedClosestDataPoint)
+    const closestYValue = yAxisAccessor(clickedClosestDataPoint)
 
     dot
       .attr("cx", xScale(closestXValue))

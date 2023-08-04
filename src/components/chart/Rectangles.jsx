@@ -7,7 +7,7 @@ import { useChartDimensions } from "./Chart";
 
 import { useDataContext } from "../../providers/DataProvider"
 
-const Rectangles = ({ zoomed, active, data, keyAccessor, xAccessor, yAccessor, widthAccessor, heightAccessor, tooltipValue1Title, xAxisType, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, tooltipValue3Value, style, outOfFocus, handleHighlightData, column, chartIndex, color, ...props }) => {
+const Rectangles = ({ zoomed, active, data, keyAxisAccessor, xAxisAccessor, yAxisAccessor, widthAccessor, heightAccessor, tooltipValue1Title, xAxisType, tooltipValue2Title, tooltipValue2Value, tooltipValue2ValueFormat, tooltipValue3Value, style, outOfFocus, handleHighlightData, column, chartIndex, color, ...props }) => {
   const dimensions = useChartDimensions()
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1, selectedItem2 } = useDataContext()
 
@@ -28,8 +28,8 @@ const Rectangles = ({ zoomed, active, data, keyAccessor, xAccessor, yAccessor, w
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value3`)
       .text('Highlighted' + ": " + tooltipValue2ValueFormat(tooltipValue3Value(d)))
 
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i) + (callAccessor(widthAccessor, d, i) / 2)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
+    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessor, d, i) + (callAccessor(widthAccessor, d, i) / 2)
+    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessor, d, i)
 
     tooltip.style("transform", `translate(`
       + `calc(-50% + ${x}px),`
@@ -58,9 +58,9 @@ const Rectangles = ({ zoomed, active, data, keyAccessor, xAccessor, yAccessor, w
                 selectedChartIndex == chartIndex && selectedItem1 ? "next-to-selected" : "not-selected"
             }`
           ].join(" ")}
-        key={keyAccessor(d, i)}
-        x={callAccessor(xAccessor, d, i)}
-        y={callAccessor(yAccessor, d, i)}
+        key={keyAxisAccessor(d, i)}
+        x={callAccessor(xAxisAccessor, d, i)}
+        y={callAccessor(yAxisAccessor, d, i)}
         width={d3.max([callAccessor(widthAccessor, d, i), 0])}
         height={d3.max([callAccessor(heightAccessor, d, i), 0])}
         onMouseEnter={!outOfFocus ? e => handleMouseEnter(e, d, i) : null}

@@ -2,84 +2,77 @@ import React from "react"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
+import { useChartDimensions } from "./chart/utils"
+import { useChartsContext } from "../providers/ChartsProvider"
+
 import Axis from "./chart/Axis"
 import Polyline from "./chart/Polyline";
-import { useChartDimensions } from "./chart/utils"
 
-const Timeline = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisFormat, xAxisParser, yAxisParser, xAxisType, yAxisType, handleHighlightData, chartIndex }) => {
+const Timeline = (props) => {
 
   const [ref, dimensions] = useChartDimensions()
-
-  let xAccessor = d => d[xAxis]
-  let yAccessor = d => d[yAxis]
-
-  if (xAxisParser) {
-    xAccessor = d => xAxisParser(d[xAxis])
-  }
-
-  if (yAxisParser) {
-    yAccessor = d => yAxisParser(d[yAxis])
-  }
+  const { charts } = useChartsContext()
+  const currentChart = charts[props.chartIndex]
 
   const xScale = d3.scaleTime()
-    .domain(d3.extent(data, xAccessor))
+    .domain(d3.extent(props.data, currentChart.xAxisAccessor))
     .range([0, dimensions.boundedWidth])
 
   const yScale = d3.scaleLinear()
-    .domain(d3.extent(data, yAccessor))
+    .domain(d3.extent(props.data, currentChart.yAxisAccessor))
     .range([dimensions.boundedHeight, 0])
     .nice()
 
-  const xAccessorScaled = d => xScale(xAccessor(d))
-  const yAccessorScaled = d => yScale(yAccessor(d))
+  const xAxisAccessorScaled = d => xScale(currentChart.xAxisAccessor(d))
+  const yAxisAccessorScaled = d => yScale(currentChart.yAxisAccessor(d))
   const y0AccessorScaled = yScale(yScale.domain()[0])
 
   return (
-    <div className={`Chart__rectangle__large ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__rectangle__large ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimension="x"
           scale={xScale}
-          format={xAxisType}
+          format={currentChart.xAxisType}
         />
         <Axis
           dimension="y"
           scale={yScale}
-          label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={yAxisType}
+          label={currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={currentChart.yAxisType}
         />
         <Polyline
-          outOfFocus={outOfFocus}
+          outOfFocus={props.outOfFocus}
           type="area"
-          data={data}
-          xAccessorScaled={xAccessorScaled}
-          yAccessorScaled={yAccessorScaled}
+          data={props.data}
+          xAxisAccessorScaled={xAxisAccessorScaled}
+          yAxisAccessorScaled={yAxisAccessorScaled}
           y0AccessorScaled={y0AccessorScaled}
-          chartIndex={chartIndex}
-          column={xAxis}
+          chartIndex={props.chartIndex}
+          column={currentChart.xAxis}
         />
         <Polyline
-          outOfFocus={outOfFocus}
-          type={data.length === 1 ? "circle" : "line"}
-          data={data}
-          xAccessorScaled={xAccessorScaled}
-          yAccessorScaled={yAccessorScaled}
+          outOfFocus={props.outOfFocus}
+          type={props.data.length === 1 ? "circle" : "line"}
+          data={props.data}
+          xAxisAccessorScaled={xAxisAccessorScaled}
+          yAxisAccessorScaled={yAxisAccessorScaled}
           y0AccessorScaled={null}
-          chartIndex={chartIndex}
-          column={xAxis}
+          chartIndex={props.chartIndex}
+          column={currentChart.xAxis}
 
           dimensions={dimensions}
-          zoomed={zoomed}
+          zoomed={props.zoomed}
           xScale={xScale}
           yScale={yScale}
-          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAccessor={xAccessor}
-          yAccessor={yAccessor}
-          tooltipValue1ValueFormat={xAxisType}
-          tooltipValue2ValueFormat={yAxisType}
-          handleHighlightData={handleHighlightData}
-          xAxisFormat={xAxisFormat}
+          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          xAxisAccessor={currentChart.xAxisAccessor}
+          yAxisAccessor={currentChart.yAxisAccessor}
+          tooltipValue1ValueFormat={currentChart.xAxisType}
+          tooltipValue2ValueFormat={currentChart.yAxisType}
+          handleHighlightData={props.handleHighlightData}
+          xAxisFormat={currentChart.xAxisFormat}
         />
       </Chart>
     </div>

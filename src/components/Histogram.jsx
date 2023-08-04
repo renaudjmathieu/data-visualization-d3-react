@@ -2,80 +2,82 @@ import React from "react"
 import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
+import { useChartDimensions } from "./chart/utils"
+import { useChartsContext } from "../providers/ChartsProvider"
+
 import Rectangles from "./chart/Rectangles"
 import Axis from "./chart/Axis"
-import { useChartDimensions } from "./chart/utils"
 
-const Histogram = ({ zoomed, active, outOfFocus, data, handleHighlightData, xAxis, yAxis, xAccessor, yAccessor, xAxisParser, xAxisType, yAxisSummarization, chartIndex }) => {
+const Histogram = (props) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77,
   })
+  const { charts } = useChartsContext()
+  const currentChart = charts[props.chartIndex]
 
   const numberOfThresholds = 9
 
-  console.log('xAxisType', xAxisType)
-
-  const calculateXScale = (data, dataType, numberOfThresholds) => {
-    switch (dataType) {
+  const calculateXScale = (numberOfThresholds) => {
+    switch (currentChart.xAxisType) {
       case "number":
         return d3.scaleLinear()
-          .domain(d3.extent(data, xAccessor))
+          .domain(d3.extent(props.data, currentChart.xAxisAccessor))
           .range([0, dimensions.boundedWidth])
           .nice(numberOfThresholds)
       default:
         return d3.scaleBand()
-          .domain(Array.from(d3.group(data, xAccessor)).map(([key, values]) => key))
+          .domain(Array.from(d3.group(props.data, currentChart.xAxisAccessor)).map(([key, values]) => key))
           .range([0, dimensions.boundedWidth])
           .padding(0.1)
     }
   }
 
-  const calculateItems = (data, dataType, xScale, numberOfThresholds) => {
-    switch (dataType) {
+  const calculateItems = (xScale, numberOfThresholds) => {
+    switch (currentChart.xAxisType) {
       case "number":
         const binsGenerator = d3.bin()
           .domain(xScale.domain())
-          .value(xAccessor)
+          .value(currentChart.xAxisAccessor)
           .thresholds(xScale.ticks(numberOfThresholds))
 
-        return binsGenerator(data)
+        return binsGenerator(props.data)
       default:
-        return Array.from(d3.group(data, xAccessor))
+        return Array.from(d3.group(props.data, currentChart.xAxisAccessor))
     }
   }
 
-  const calculateYAxisSummarization = (items, dataType, summarization) => {
+  const calculateYAxisSummarization = (items) => {
     items.forEach(item => {
-      const currentItem = dataType === "number" ? item : item[1]
-      switch (yAxisSummarization) {
+      const currentItem = currentChart.xAxisType === "number" ? item : item[1]
+      switch (currentChart.yAxisSummarization) {
         case "sum":
-          currentItem['-summarization-'] = d3.sum(currentItem, yAccessor);
-          currentItem['-highlighted summarization-'] = d3.sum(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.sum(currentItem, currentChart.yAxisAccessor);
+          currentItem['-highlighted summarization-'] = d3.sum(_.filter(currentItem, ['highlighted', true]), currentChart.yAxisAccessor);
           break;
         case "average":
-          currentItem['-summarization-'] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, yAccessor), yAccessor).values()) / currentItem.length;
-          currentItem['-highlighted summarization-'] = d3.sum(d3.rollup(_.filter(currentItem, ['highlighted', true]), v => d3.sum(v, yAccessor), yAccessor).values()) / _.filter(currentItem, ['highlighted', true]).length;
+          currentItem['-summarization-'] = d3.sum(d3.rollup(currentItem, v => d3.sum(v, currentChart.yAxisAccessor), currentChart.yAxisAccessor).values()) / currentItem.length;
+          currentItem['-highlighted summarization-'] = d3.sum(d3.rollup(_.filter(currentItem, ['highlighted', true]), v => d3.sum(v, currentChart.yAxisAccessor), currentChart.yAxisAccessor).values()) / _.filter(currentItem, ['highlighted', true]).length;
           break;
         case "min":
-          currentItem['-summarization-'] = d3.min(currentItem, yAccessor);
-          currentItem['-highlighted summarization-'] = d3.min(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.min(currentItem, currentChart.yAxisAccessor);
+          currentItem['-highlighted summarization-'] = d3.min(_.filter(currentItem, ['highlighted', true]), currentChart.yAxisAccessor);
           break;
         case "max":
-          currentItem['-summarization-'] = d3.max(currentItem, yAccessor);
-          currentItem['-highlighted summarization-'] = d3.max(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.max(currentItem, currentChart.yAxisAccessor);
+          currentItem['-highlighted summarization-'] = d3.max(_.filter(currentItem, ['highlighted', true]), currentChart.yAxisAccessor);
           break;
         case "distinct":
-          currentItem['-summarization-'] = d3.group(currentItem, yAccessor).size;
-          currentItem['-highlighted summarization-'] = d3.group(_.filter(currentItem, ['highlighted', true]), yAccessor).size;
+          currentItem['-summarization-'] = d3.group(currentItem, currentChart.yAxisAccessor).size;
+          currentItem['-highlighted summarization-'] = d3.group(_.filter(currentItem, ['highlighted', true]), currentChart.yAxisAccessor).size;
           break;
         case "count":
           currentItem['-summarization-'] = currentItem.length;
           currentItem['-highlighted summarization-'] = _.filter(currentItem, ['highlighted', true]).length;
           break;
         case "median":
-          currentItem['-summarization-'] = d3.median(currentItem, yAccessor);
-          currentItem['-highlighted summarization-'] = d3.median(_.filter(currentItem, ['highlighted', true]), yAccessor);
+          currentItem['-summarization-'] = d3.median(currentItem, currentChart.yAxisAccessor);
+          currentItem['-highlighted summarization-'] = d3.median(_.filter(currentItem, ['highlighted', true]), currentChart.yAxisAccessor);
           break;
         default: null;
       }
@@ -83,103 +85,103 @@ const Histogram = ({ zoomed, active, outOfFocus, data, handleHighlightData, xAxi
     return items
   }
 
-  const xScale = calculateXScale(data, xAxisType, numberOfThresholds)
-  const items = calculateYAxisSummarization(calculateItems(data, xAxisType, xScale, numberOfThresholds), xAxisType, yAxisSummarization)
+  const xScale = calculateXScale(numberOfThresholds)
+  const items = calculateYAxisSummarization(calculateItems(xScale, numberOfThresholds))
 
-  let yAccessorSummarizationFormatter = null
-  switch (yAxisSummarization) {
-    case "sum": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
-    case "average": yAccessorSummarizationFormatter = d3.format(",.2f"); break;
-    case "min": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
-    case "max": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
-    case "distinct": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
-    case "count": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
-    case "median": yAccessorSummarizationFormatter = d3.format(",.0f"); break;
-    default: yAccessorSummarizationFormatter = d3.format(",");
+  let yAxisAccessorSummarizationFormatter = null
+  switch (currentChart.yAxisSummarization) {
+    case "sum": yAxisAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "average": yAxisAccessorSummarizationFormatter = d3.format(",.2f"); break;
+    case "min": yAxisAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "max": yAxisAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "distinct": yAxisAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "count": yAxisAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    case "median": yAxisAccessorSummarizationFormatter = d3.format(",.0f"); break;
+    default: yAxisAccessorSummarizationFormatter = d3.format(",");
   }
 
-  const yAccessorSummarization = (xAxisType === "number") ? d => d['-summarization-'] : d => d[1]['-summarization-']
-  const yAccessorSummarizationMarked = (xAxisType === "number") ? d => d['-highlighted summarization-'] : d => d[1]['-highlighted summarization-']
+  const yAxisAccessorSummarization = (currentChart.xAxisType === "number") ? d => d['-summarization-'] : d => d[1]['-summarization-']
+  const yAxisAccessorSummarizationMarked = (currentChart.xAxisType === "number") ? d => d['-highlighted summarization-'] : d => d[1]['-highlighted summarization-']
 
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(items, yAccessorSummarization)])
+    .domain([0, d3.max(items, yAxisAccessorSummarization)])
     .range([dimensions.boundedHeight, 0])
     .nice()
 
   const barPadding = 2
 
-  const xAccessorScaled = xAxisType === "number" ? d => xScale(d.x0) + barPadding : d => xScale(d[0])
-  const yAccessorScaled = d => yScale(yAccessorSummarization(d))
-  const yAccessorScaledMarked = d => yScale(yAccessorSummarizationMarked(d))
-  const widthAccessorScaled = xAxisType === "number" ? d => xScale(d.x1) - xScale(d.x0) - barPadding : d => xScale.bandwidth()
-  const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAccessorSummarization(d))
-  const heightAccessorScaledMarked = d => dimensions.boundedHeight - yScale(yAccessorSummarizationMarked(d))
-  const keyAccessor = (d, i) => i
+  const xAxisAccessorScaled = currentChart.xAxisType === "number" ? d => xScale(d.x0) + barPadding : d => xScale(d[0])
+  const yAxisAccessorScaled = d => yScale(yAxisAccessorSummarization(d))
+  const yAxisAccessorScaledMarked = d => yScale(yAxisAccessorSummarizationMarked(d))
+  const widthAccessorScaled = currentChart.xAxisType === "number" ? d => xScale(d.x1) - xScale(d.x0) - barPadding : d => xScale.bandwidth()
+  const heightAccessorScaled = d => dimensions.boundedHeight - yScale(yAxisAccessorSummarization(d))
+  const heightAccessorScaledMarked = d => dimensions.boundedHeight - yScale(yAxisAccessorSummarizationMarked(d))
+  const keyAxisAccessor = (d, i) => i
 
-  const yAxisSummarizationLabel = yAxisSummarization === 'distinct' ? 'count' : yAxisSummarization
+  const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization
 
   return (
-    <div className={`Chart__rectangle ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__rectangle ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={xAxisType}
+          label={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={currentChart.xAxisType}
           data={items}
-          keyAccessor={keyAccessor}
-          xAccessor={xAccessorScaled}
+          keyAxisAccessor={keyAxisAccessor}
+          xAxisAccessor={xAxisAccessorScaled}
           widthAccessor={widthAccessorScaled}
         />
         <Axis
           dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          label={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
         />
-        {xAxis && <Rectangles
-          zoomed={zoomed}
-          active={active}
+        {currentChart.xAxis && <Rectangles
+          zoomed={props.zoomed}
+          active={props.active}
           data={items}
           dimensions={dimensions}
-          keyAccessor={keyAccessor}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaledMarked}
+          keyAxisAccessor={keyAxisAccessor}
+          xAxisAccessor={xAxisAccessorScaled}
+          yAxisAccessor={yAxisAccessorScaledMarked}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaledMarked}
-          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAxisType={xAxisType}
-          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Value={yAccessorSummarization}
-          tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
+          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          xAxisType={currentChart.xAxisType}
+          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Value={yAxisAccessorSummarization}
+          tooltipValue2ValueFormat={yAxisAccessorSummarizationFormatter}
           tooltipValue3Value={null}
-          outOfFocus={outOfFocus}
-          handleHighlightData={handleHighlightData}
-          column={xAxis}
-          chartIndex={chartIndex}
+          outOfFocus={props.outOfFocus}
+          handleHighlightData={props.handleHighlightData}
+          column={currentChart.xAxis}
+          chartIndex={props.chartIndex}
           color={'red'}
         />}
-        {xAxis && <Rectangles
-          zoomed={zoomed}
-          active={active}
+        {currentChart.xAxis && <Rectangles
+          zoomed={props.zoomed}
+          active={props.active}
           data={items}
           dimensions={dimensions}
-          keyAccessor={keyAccessor}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
+          keyAxisAccessor={keyAxisAccessor}
+          xAxisAccessor={xAxisAccessorScaled}
+          yAxisAccessor={yAxisAccessorScaled}
           widthAccessor={widthAccessorScaled}
           heightAccessor={heightAccessorScaled}
-          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          xAxisType={xAxisType}
-          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Value={yAccessorSummarization}
-          tooltipValue2ValueFormat={yAccessorSummarizationFormatter}
-          tooltipValue3Value={yAccessorSummarizationMarked}
-          outOfFocus={outOfFocus}
-          handleHighlightData={handleHighlightData}
-          column={xAxis}
-          chartIndex={chartIndex}
+          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          xAxisType={currentChart.xAxisType}
+          tooltipValue2Title={yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Value={yAxisAccessorSummarization}
+          tooltipValue2ValueFormat={yAxisAccessorSummarizationFormatter}
+          tooltipValue3Value={yAxisAccessorSummarizationMarked}
+          outOfFocus={props.outOfFocus}
+          handleHighlightData={props.handleHighlightData}
+          column={currentChart.xAxis}
+          chartIndex={props.chartIndex}
         />}
       </Chart>
     </div>

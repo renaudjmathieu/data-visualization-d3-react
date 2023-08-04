@@ -6,7 +6,7 @@ import { dimensionsPropsType } from "./utils";
 import { useTheme } from '@mui/material/styles';
 import { useChartDimensions } from "./Chart";
 
-const Voronoi = ({ outOfFocus, zoomed, data, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
+const Voronoi = ({ outOfFocus, zoomed, data, xAxisAccessor, yAxisAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat }) => {
   const theme = useTheme();
   const dimensions = useChartDimensions()
 
@@ -17,8 +17,8 @@ const Voronoi = ({ outOfFocus, zoomed, data, xAccessor, yAccessor, tooltipValue1
 
     const dayDot = bounds.append("circle")
       .attr("class", "tooltipDot")
-      .attr("cx", callAccessor(xAccessor, d, i))
-      .attr("cy", callAccessor(yAccessor, d, i))
+      .attr("cx", callAccessor(xAxisAccessor, d, i))
+      .attr("cy", callAccessor(yAxisAccessor, d, i))
       .attr("r", 5)
       .style("fill", theme.vars.palette.primary.main)
       .style("pointer-events", "none")
@@ -32,8 +32,8 @@ const Voronoi = ({ outOfFocus, zoomed, data, xAccessor, yAccessor, tooltipValue1
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
       .text(tooltipValue2Title + ": " + tooltipValue1ValueFormatter(tooltipValue2Value(d)))
 
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
+    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessor, d, i)
+    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessor, d, i)
 
     tooltip.style("transform", `translate(`
       + `calc(-50% + ${x}px),`
@@ -52,8 +52,8 @@ const Voronoi = ({ outOfFocus, zoomed, data, xAccessor, yAccessor, tooltipValue1
 
   const delaunay = d3.Delaunay.from(
     data,
-    xAccessor,
-    yAccessor,
+    xAxisAccessor,
+    yAxisAccessor,
   )
   const voronoi = delaunay.voronoi()
   voronoi.xmax = dimensions.boundedWidth

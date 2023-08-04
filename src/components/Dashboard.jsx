@@ -99,7 +99,6 @@ const Dashboard = (props, ref) => {
                             opened={props.opened}
                             onClick1={(e) => handleClick1(e, chart, index)}
                             onClick2={(e) => handleClick2(e, chart, index)}
-                            chart={chart}
                             chartIndex={index}
                             handleHighlightData={handleHighlightData}
                             fields={props.fields}

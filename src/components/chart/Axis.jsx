@@ -37,7 +37,7 @@ Axis.defaultProps = {
 
 export default Axis
 
-function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, xAccessor, widthAccessor, ...props }) {
+function AxisHorizontal({ dimensions, scale, label, format, data, keyAxisAccessor, xAxisAccessor, widthAccessor, ...props }) {
   const numberOfTicks = dimensions.boundedWidth < 600
     ? dimensions.boundedWidth / 100
     : dimensions.boundedWidth / 250
@@ -66,10 +66,10 @@ function AxisHorizontal({ dimensions, scale, label, format, data, keyAccessor, x
       {(format !== 'number' && data) && (
         data.map((d, i) => (
           <text
-            key={keyAccessor(d, i)}
+            key={keyAxisAccessor(d, i)}
             className="Axis__tick"
             font-size={d3.min([d3.max([Math.floor((dimensions.boundedWidth / data.length) / 2), 6]), 10])}
-            transform={`translate(${callAccessor(xAccessor, d, i) + (d3.max([callAccessor(widthAccessor, d, i), 0]) / 2)}, 8) rotate(-35)`}
+            transform={`translate(${callAccessor(xAxisAccessor, d, i) + (d3.max([callAccessor(widthAccessor, d, i), 0]) / 2)}, 8) rotate(-35)`}
           >
             {formatter(d[0])}
           </text>

@@ -3,93 +3,81 @@ import * as d3 from "d3"
 
 import Chart from "./chart/Chart"
 import { useChartDimensions } from "./chart/utils"
+import { useChartsContext } from "../providers/ChartsProvider"
 
 import Circles from "./chart/Circles"
 import Voronoi from "./chart/Voronoi"
 import Axis from "./chart/Axis"
 
-const ScatterPlot = ({ zoomed, active, outOfFocus, data, xAxis, yAxis, xAxisParser, yAxisParser, xAxisType, yAxisType, handleHighlightData, chartIndex }) => {
+const ScatterPlot = (props) => {
 
   const [ref, dimensions] = useChartDimensions({
     marginBottom: 77
   })
-
-  let xAccessor = d => d[xAxis]
-  let yAccessor = d => d[yAxis]
-
-  if (xAxisParser) {
-    xAccessor = d => xAxisParser(d[xAxis])
-  }
-
-  if (yAxisParser) {
-    yAccessor = d => yAxisParser(d[yAxis])
-  }
+  const { charts } = useChartsContext()
+  const currentChart = charts[props.chartIndex]
 
   const xScale = d3.scaleLinear()
-    .domain(d3.extent(data, xAccessor))
+    .domain(d3.extent(props.data, currentChart.xAxisAccessor))
     .range([0, dimensions.boundedWidth])
     .nice()
 
   const yScale = d3.scaleLinear()
-    .domain(d3.extent(data, yAccessor))
+    .domain(d3.extent(props.data, currentChart.yAxisAccessor))
     .range([dimensions.boundedHeight, 0])
     .nice()
 
-  const xAccessorScaled = d => xScale(xAccessor(d))
-  const yAccessorScaled = d => yScale(yAccessor(d))
-  const keyAccessor = (d, i) => i
+  const xAxisAccessorScaled = d => xScale(currentChart.xAxisAccessor(d))
+  const yAxisAccessorScaled = d => yScale(currentChart.yAxisAccessor(d))
+  const keyAxisAccessor = (d, i) => i
 
   return (
-    <div className={`Chart__square ${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__square ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
-          dimensions={dimensions}
           dimension="x"
           scale={xScale}
-          label={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={xAxisType}
+          label={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={currentChart.xAxisType}
         />
         <Axis
-          dimensions={dimensions}
           dimension="y"
           scale={yScale}
-          label={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          format={yAxisType}
+          label={currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          format={currentChart.yAxisType}
         />
-        {!outOfFocus && <Voronoi
-          outOfFocus={outOfFocus}
-          zoomed={zoomed}
-          data={data}
-          dimensions={dimensions}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
-          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue1Value={xAccessor}
-          tooltipValue2Value={yAccessor}
-          tooltipValue1ValueFormat={xAxisType}
-          tooltipValue2ValueFormat={yAxisType}
+        {!props.outOfFocus && <Voronoi
+          outOfFocus={props.outOfFocus}
+          zoomed={props.zoomed}
+          data={props.data}
+          xAxisAccessor={xAxisAccessorScaled}
+          yAxisAccessor={yAxisAccessorScaled}
+          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1Value={currentChart.xAxisAccessor}
+          tooltipValue2Value={currentChart.yAxisAccessor}
+          tooltipValue1ValueFormat={currentChart.xAxisType}
+          tooltipValue2ValueFormat={currentChart.yAxisType}
         />}
         <Circles
-          outOfFocus={outOfFocus}
-          zoomed={zoomed}
-          data={data}
-          dimensions={dimensions}
-          keyAccessor={keyAccessor}
-          xAccessor={xAccessorScaled}
-          yAccessor={yAccessorScaled}
-          tooltipValue1Title={xAxis.charAt(0).toUpperCase() + xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue2Title={yAxis.charAt(0).toUpperCase() + yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
-          tooltipValue1Value={xAccessor}
-          tooltipValue2Value={yAccessor}
-          tooltipValue1ValueFormat={xAxisType}
-          tooltipValue2ValueFormat={yAxisType}
-          xValue={xAccessor}
-          yValue={yAccessor}
-          handleHighlightData={handleHighlightData}
-          xAxis={xAxis}
-          yAxis={yAxis}
-          chartIndex={chartIndex}
+          outOfFocus={props.outOfFocus}
+          zoomed={props.zoomed}
+          data={props.data}
+          keyAxisAccessor={keyAxisAccessor}
+          xAxisAccessor={xAxisAccessorScaled}
+          yAxisAccessor={yAxisAccessorScaled}
+          tooltipValue1Title={currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue2Title={currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
+          tooltipValue1Value={currentChart.xAxisAccessor}
+          tooltipValue2Value={currentChart.yAxisAccessor}
+          tooltipValue1ValueFormat={currentChart.xAxisType}
+          tooltipValue2ValueFormat={currentChart.yAxisType}
+          xValue={currentChart.xAxisAccessor}
+          yValue={currentChart.yAxisAccessor}
+          handleHighlightData={props.handleHighlightData}
+          xAxis={currentChart.xAxis}
+          yAxis={currentChart.yAxis}
+          chartIndex={props.chartIndex}
         />
       </Chart>
     </div>

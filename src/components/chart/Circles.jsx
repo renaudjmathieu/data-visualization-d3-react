@@ -1,4 +1,5 @@
 import React from "react"
+
 import PropTypes from "prop-types"
 import * as d3 from "d3"
 import { accessorPropsType, callAccessor } from "./utils";
@@ -7,8 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { useDataContext } from "../../providers/DataProvider"
 import { useChartDimensions } from "./Chart";
 
-const Circles = ({ outOfFocus, zoomed, type, data, keyAccessor, xAccessor, yAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, handleHighlightData, xAxis, yAxis, chartIndex, radius }) => {
-
+const Circles = ({ outOfFocus, zoomed, type, data, keyAxisAccessor, xAxisAccessor, yAxisAccessor, tooltipValue1Title, tooltipValue1Value, tooltipValue2Title, tooltipValue2Value, tooltipValue1ValueFormat, tooltipValue2ValueFormat, xValue, yValue, handleHighlightData, xAxis, yAxis, chartIndex, radius }) => {
   const theme = useTheme();
   const dimensions = useChartDimensions()
   const { selectedChartIndex, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()
@@ -20,8 +20,8 @@ const Circles = ({ outOfFocus, zoomed, type, data, keyAccessor, xAccessor, yAcce
 
     const dayDot = bounds.append("circle")
       .attr("class", "tooltipDot")
-      .attr("cx", callAccessor(xAccessor, d, i))
-      .attr("cy", callAccessor(yAccessor, d, i))
+      .attr("cx", callAccessor(xAxisAccessor, d, i))
+      .attr("cy", callAccessor(yAxisAccessor, d, i))
       .attr("r", 5)
       .style("fill", theme.vars.palette.primary.main)
       .style("pointer-events", "none")
@@ -35,8 +35,8 @@ const Circles = ({ outOfFocus, zoomed, type, data, keyAccessor, xAccessor, yAcce
     tooltip.select(`#tooltipD3${zoomed ? 'zoomed' : ''}-value2`)
       .text(tooltipValue2Title + ": " + tooltipValue1ValueFormatter(tooltipValue2Value(d)))
 
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAccessor, d, i)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAccessor, d, i)
+    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessor, d, i)
+    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessor, d, i)
 
     tooltip.style("transform", `translate(`
       + `calc(-50% + ${x}px),`
@@ -64,9 +64,9 @@ const Circles = ({ outOfFocus, zoomed, type, data, keyAccessor, xAccessor, yAcce
                 "not-selected"
             }`
           ].join(" ")}
-          key={keyAccessor(d, i)}
-          cx={typeof xAccessor == "function" ? xAccessor(d, i) : xAccessor}
-          cy={typeof yAccessor == "function" ? yAccessor(d, i) : yAccessor}
+          key={keyAxisAccessor(d, i)}
+          cx={typeof xAxisAccessor == "function" ? xAxisAccessor(d, i) : xAxisAccessor}
+          cy={typeof yAxisAccessor == "function" ? yAxisAccessor(d, i) : yAxisAccessor}
           r={typeof radius == "function" ? radius(d, i) : radius}
           onMouseDown={!outOfFocus ? (selectedColumn1 == xAxis && selectedItem1 == xValue(d, i) && selectedColumn2 == yAxis && selectedItem2 == yValue(d, i) ? (e) => handleHighlightData(e, null, null, null, null, null, null) : (e) => handleHighlightData(e, chartIndex, 'MultipleValues', xAxis, yAxis, xValue(d, i), yValue(d, i))) : null}
           onMouseEnter={!outOfFocus ? (e => handleMouseEnter(e, d, i)) : null}
@@ -80,9 +80,9 @@ const Circles = ({ outOfFocus, zoomed, type, data, keyAccessor, xAccessor, yAcce
 Circles.propTypes = {
   type: PropTypes.oneOf(["circle", "ring"]),
   data: PropTypes.array,
-  keyAccessor: accessorPropsType,
-  xAccessor: accessorPropsType,
-  yAccessor: accessorPropsType,
+  keyAxisAccessor: accessorPropsType,
+  xAxisAccessor: accessorPropsType,
+  yAxisAccessor: accessorPropsType,
   radius: accessorPropsType,
 }
 
