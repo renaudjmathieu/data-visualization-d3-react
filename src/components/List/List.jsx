@@ -2,7 +2,7 @@ import React from "react"
 import * as d3 from "d3"
 import _ from "lodash"
 
-import { useChartDimensions } from "../chart/utils"
+import { useNewChartDimensions } from "../../providers/ChartDimensionsProvider"
 import { useDataContext } from "../../providers/DataProvider"
 import { useChartsContext } from "../../providers/ChartsProvider"
 
@@ -13,7 +13,7 @@ const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
 const List = (props) => {
 
-  const [ref, dimensions] = useChartDimensions({
+  const [ref, dimensions] = useNewChartDimensions({
     marginBottom: 77,
   })
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()

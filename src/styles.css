@@ -142,6 +142,7 @@ h1 {
 }
 
 .Rectangles__rect {
+    transition: all 0.3s ease-out;
     fill: var(--mui-palette-primary-main);
 }
 
@@ -425,4 +426,53 @@ h1 {
 
 .tooltip-line {
     fill: #292e31;
+}
+
+.Chart {
+    overflow: visible;
+}
+
+.Polyline {
+    transition: all 0.3s ease-out;
+}
+
+.Polyline--type-line {
+    fill: none;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.Polyline--type-circle {
+    fill: none;
+    stroke-width: 8px;
+    stroke-linecap: round;
+}
+
+.Polyline--type-area {
+    stroke-width: 0;
+}
+
+.Axis__label {
+    text-anchor: middle;
+    font-size: 0.8em;
+    letter-spacing: 0.01em;
+    fill: #000 !important;
+}
+
+.Axis__tick {
+    text-align: right;
+    transition: all 0.3s ease-out;
+}
+
+.AxisHorizontal .Axis__tick {
+    text-anchor: end;
+}
+
+.AxisVertical .Axis__tick {
+    dominant-baseline: middle;
+    text-anchor: end;
+}
+
+.Circles {
+    transition: all 0.3s ease-out;
 }

@@ -1,14 +1,14 @@
 import React from "react"
 import * as d3 from 'd3'
 import { callAccessor } from "./utils";
-import { useChartDimensions } from "./Chart";
+import { useChartDimensionsContext } from "../../providers/ChartDimensionsProvider";
 
 const axisComponentsByDimension = {
   x: AxisHorizontal,
   y: AxisVertical,
 }
 const Axis = ({ dimension, ...props }) => {
-  const dimensions = useChartDimensions()
+  const dimensions = useChartDimensionsContext()
   const Component = axisComponentsByDimension[dimension]
   if (!Component) return null
 

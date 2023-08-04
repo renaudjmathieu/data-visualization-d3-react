@@ -2,8 +2,7 @@ import React from "react"
 import * as d3 from "d3"
 
 import { useTheme } from '@mui/material/styles';
-import Chart from "./chart/Chart"
-import { useChartDimensions } from "./chart/utils"
+import { useNewChartDimensions, Chart } from "../providers/ChartDimensionsProvider"
 import { useChartsContext } from "../providers/ChartsProvider"
 import { useDataContext } from "../providers/DataProvider"
 
@@ -12,7 +11,7 @@ import Axis from "./chart/Axis"
 const Timeline = (props) => {
 
   const theme = useTheme();
-  const [ref, dimensions] = useChartDimensions()
+  const [ref, dimensions] = useNewChartDimensions()
   const { charts } = useChartsContext()
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1 } = useDataContext()
   const currentChart = charts[props.chartIndex]
