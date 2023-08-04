@@ -6,7 +6,7 @@ import * as d3 from 'd3'
 const ChartsContext = createContext()
 export const useChartsContext = () => useContext(ChartsContext)
 
-const CalculateChartAdditionalFields = (chart) => {
+const AddAdditionalFields = (chart) => {
   const xAxisType = chart.xAxis ? fieldsAvailable.find(field => field.id === chart.xAxis).type : null
   const yAxisType = chart.yAxis ? fieldsAvailable.find(field => field.id === chart.yAxis).type : null
   const category1Type = chart.category1 ? fieldsAvailable.find(field => field.id === chart.category1).type : null
@@ -36,6 +36,7 @@ const CalculateChartAdditionalFields = (chart) => {
   const valueAccessor = valueParser ? d => valueParser(d[chart.value]) : d => d[chart.value]
 
   return {
+    ...chart,
     xAxisType,
     yAxisType,
     category1Type,
@@ -65,15 +66,14 @@ const CalculateChartAdditionalFields = (chart) => {
 
 const initialState = chartsAvailable.filter(chart => ['scatter', 'histogram', 'timeline', 'list'].includes(chart.type)).map((chart) => {
   return {
-    ...chart,
-    ...CalculateChartAdditionalFields(chart)
+    ...AddAdditionalFields(chart)
   }
 })
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'add':
-      return [...state, chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)]]
+      return [...state, AddAdditionalFields(chartsAvailable[Math.floor(Math.random() * chartsAvailable.length)])]
     case 'replace':
       return state.map((c, i) => i === action.index ? { ...c, type: action.chartType } : c)
     case 'remove':

@@ -171,8 +171,6 @@ const App = (props) => {
         setChosenChartIndex(null)
     }
 
-    const dashboardRef = React.useRef(null)
-
     const handleRemoveSelectedChart = () => {
         setSelectedChartType(null)
         removeChart(selectedChartIndex)
@@ -221,9 +219,8 @@ const App = (props) => {
                             </Grid>
                         </Grid>
                     </Box>
-                    <Dashboard ref={dashboardRef}
+                    <Dashboard
                         opened={open}
-                        fields={fieldsAvailable}
                         handleDrawerOpen={handleDrawerOpen}
                         handleDrawerClose={handleDrawerClose} />
                 </Main>

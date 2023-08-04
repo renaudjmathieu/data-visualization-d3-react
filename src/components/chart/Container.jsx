@@ -15,7 +15,7 @@ import List from "../List/List"
 import { useDataContext } from "../../providers/DataProvider"
 import { useChartsContext } from "../../providers/ChartsProvider"
 
-const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData, fields }) => {
+const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData }) => {
   const theme = useTheme();
   const { selectedChartIndex, chosenChartIndex, data } = useDataContext()
   const { charts } = useChartsContext()

@@ -5,9 +5,7 @@ import { useDataContext } from "../providers/DataProvider"
 
 import Container from "./chart/Container"
 
-import * as d3 from 'd3'
-
-const Dashboard = (props, ref) => {
+const Dashboard = (props) => {
 
     const { charts } = useChartsContext()
     const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, setHighlightedData, setChosenChartIndex } = useDataContext()
@@ -101,7 +99,6 @@ const Dashboard = (props, ref) => {
                             onClick2={(e) => handleClick2(e, chart, index)}
                             chartIndex={index}
                             handleHighlightData={handleHighlightData}
-                            fields={props.fields}
                         />
                     }
                     )}
@@ -110,4 +107,4 @@ const Dashboard = (props, ref) => {
     )
 }
 
-export default React.forwardRef(Dashboard)
+export default Dashboard
