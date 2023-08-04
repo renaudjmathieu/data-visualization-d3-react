@@ -3,7 +3,7 @@ import React from "react"
 import { useChartsContext } from "../providers/ChartsProvider"
 import { useDataContext } from "../providers/DataProvider"
 
-import Container from "./chart/Container"
+import Container from "./Container"
 
 const Dashboard = (props) => {
 

@@ -3,11 +3,11 @@ import * as d3 from "d3"
 
 import { useTheme } from '@mui/material/styles';
 import { useNewChartDimensions, Chart } from "../providers/ChartDimensionsProvider"
-import { callAccessor } from "./chart/utils"
+import { callAccessor } from "./utils"
 import { useChartsContext } from "../providers/ChartsProvider"
 import { useDataContext } from "../providers/DataProvider"
 
-import Axis from "./chart/Axis"
+import Axis from "./Axis"
 
 const ScatterPlot = (props) => {
 

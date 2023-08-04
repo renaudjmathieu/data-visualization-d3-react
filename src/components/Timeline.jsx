@@ -6,7 +6,7 @@ import { useNewChartDimensions, Chart } from "../providers/ChartDimensionsProvid
 import { useChartsContext } from "../providers/ChartsProvider"
 import { useDataContext } from "../providers/DataProvider"
 
-import Axis from "./chart/Axis"
+import Axis from "./Axis"
 
 const Timeline = (props) => {
 
