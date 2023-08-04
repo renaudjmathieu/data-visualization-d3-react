@@ -19,7 +19,7 @@ const Histogram = (props) => {
 
   const numberOfThresholds = 9
 
-  const calculateXScale = (numberOfThresholds) => {
+  const CalculateXScale = (numberOfThresholds) => {
     switch (currentChart.xAxisType) {
       case "number":
         return d3.scaleLinear()
@@ -86,7 +86,7 @@ const Histogram = (props) => {
     return items
   }
 
-  const xScale = calculateXScale(numberOfThresholds)
+  const xScale = CalculateXScale(numberOfThresholds)
   const items = calculateYAxisSummarization(calculateItems(xScale, numberOfThresholds))
 
   let yAxisAccessorSummarizationFormatter = null
@@ -119,7 +119,7 @@ const Histogram = (props) => {
   const heightAccessorScaledMarked = d => dimensions.boundedHeight - yScale(yAxisAccessorSummarizationMarked(d))
   const keyAxisAccessor = (d, i) => i
 
-  const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization
+  const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization ? currentChart.yAxisSummarization : ''
 
 
 
