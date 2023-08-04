@@ -1,6 +1,6 @@
 import React from "react"
 import * as d3 from 'd3'
-import { callAccessor } from "./utils";
+import { callAccessor } from "../utils";
 import { useChartDimensionsContext } from "../providers/ChartDimensionsProvider";
 
 const axisComponentsByDimension = {

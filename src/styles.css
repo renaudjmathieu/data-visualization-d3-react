@@ -476,3 +476,158 @@ h1 {
 .Circles {
     transition: all 0.3s ease-out;
 }
+
+
+.SelectableList {
+    position: relative;
+    flex: 1;
+    font-size: 1.2em;
+}
+
+@media (max-width: 1500px) {
+    .SelectableList {
+        font-size: 1.1em;
+    }
+}
+
+.SelectableList__column-headers {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    right: 0;
+    top: 0.2em;
+    padding-bottom: 10px;
+    border-bottom-color: var(--mui-palette-primary-main);
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+.outOfFocus .SelectableList__column-headers {
+    border-bottom-color: var(--mui-palette-background-primary);
+}
+
+.SelectableList__column-header {
+    width: 5.9em;
+    padding: 0.3em 3.3em 0 0;
+    font-size: 0.7em;
+}
+
+.SelectableList__items {
+    height: 295px;
+    overflow: auto;
+}
+
+div.SelectableList__items>div:nth-of-type(odd) {
+    background: white;
+}
+div.SelectableList__items>div:nth-of-type(even) {
+    background: whitesmoke;
+}
+
+/* width */
+.outOfFocus .SelectableList__items::-webkit-scrollbar {
+    display: none;
+}
+
+.inFocus .SelectableList__items::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+.inFocus .SelectableList__items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+/* Handle */
+.inFocus .SelectableList__items::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+.inFocus .SelectableList__items::-webkit-scrollbar-thumb:hover {
+    background: red;
+}
+
+.inFocus .SelectableList__item:hover {
+    background: gray;
+}
+
+.SelectableList__item--is-selected {
+    font-weight: 900;
+}
+
+.SelectableList__item--is-next-to-selected {
+    opacity: 0.4;
+}
+
+.SelectableList__item {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 0.3em 0.6em;
+    transition: all 0.3s ease-out;
+    font-size: 0.8em;
+    border: 1px solid transparent;
+    max-width: 100%;
+}
+
+.SelectableList__item__left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.SelectableList__item__right {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding: 0.3em 0;
+    width: 200px;
+    transition: all 0.3s ease-out;
+    font-size: 0.8em;
+    border: 1px solid transparent;
+    max-width: 100%; 
+}
+
+.inFocus .SelectableList__item__right,
+.inFocus .SelectableList__item {
+    overflow: hidden;  
+    cursor: pointer;
+}
+
+
+
+.SelectableList__item__bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -0.2em;
+    background: var(--mui-palette-primary-main);
+    z-index: 0;
+    transition: all 0.3s ease-out;
+}
+
+.outOfFocus .SelectableList__item__bar {
+    background: var(--mui-palette-background-primary);
+}
+
+.SelectableList__item__label {
+    flex: 1;
+    height: 1.5em;
+    line-height: 1.5em;
+    z-index: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.SelectableList__item__value {
+    flex: 0 0 4em;
+    z-index: 2;
+    margin-left: auto;
+    text-align: right;
+}
