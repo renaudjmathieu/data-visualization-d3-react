@@ -4,6 +4,7 @@ import { useChartsContext } from "../providers/ChartsProvider"
 import { useDataContext } from "../providers/DataProvider"
 
 import Container from "./Container"
+import Tooltip from "./Tooltip"
 
 const Dashboard = (props) => {
 
@@ -79,17 +80,9 @@ const Dashboard = (props) => {
         <div className="App__charts__dashboard" onClick={handleOutsideClick1}>
             <div className="App__charts__config">
             </div>
-            <div id="tooltipD3" className="tooltipD3">
-                <div className="tooltipD3-value1">
-                    <span id="tooltipD3-value1"></span>
-                </div>
-                <div className="tooltipD3-value2">
-                    <span id="tooltipD3-value2"></span>
-                </div>
-                <div className="tooltipD3-value3">
-                    <span id="tooltipD3-value3"></span>
-                </div>
-            </div>
+            <Tooltip
+                zoomed={false}
+            />
             <div className="App__charts">
                 {charts
                     .map((chart, index) => {

@@ -11,6 +11,7 @@ import Histogram from "./Histogram"
 import ScatterPlot from "./ScatterPlot"
 import Timeline from "./Timeline"
 import List from "./List"
+import Tooltip from "./Tooltip"
 
 import { useDataContext } from "../providers/DataProvider"
 import { useChartsContext } from "../providers/ChartsProvider"
@@ -113,17 +114,9 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <div id="tooltipD3zoomed" className="tooltipD3">
-            <div className="tooltipD3-value1">
-              <span id="tooltipD3zoomed-value1"></span>
-            </div>
-            <div className="tooltipD3-value2">
-              <span id="tooltipD3zoomed-value2"></span>
-            </div>
-            <div className="tooltipD3-value3">
-              <span id="tooltipD3zoomed-value3"></span>
-            </div>
-          </div>
+          <Tooltip
+            zoomed={true}
+          />
           {renderChart(true)}
         </Box>
       </Modal>
