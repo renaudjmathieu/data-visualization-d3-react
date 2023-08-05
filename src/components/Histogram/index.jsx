@@ -1,12 +1,14 @@
 import React from "react"
 import * as d3 from "d3"
 
-import { useNewChartDimensions, Chart } from "../providers/ChartDimensionsProvider"
-import { callAccessor } from "../utils"
-import { useChartsContext } from "../providers/ChartsProvider"
-import { useDataContext } from "../providers/DataProvider"
+import { useNewChartDimensions, Chart } from "../../providers/ChartDimensionsProvider"
+import { callAccessor } from "../../utils"
+import { useChartsContext } from "../../providers/ChartsProvider"
+import { useDataContext } from "../../providers/DataProvider"
 
-import Axis from "./Axis"
+import Axis from "../Axis"
+
+import "./style.css"
 
 const Histogram = (props) => {
 

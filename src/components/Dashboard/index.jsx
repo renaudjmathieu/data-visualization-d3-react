@@ -1,10 +1,12 @@
 import React from "react"
 
-import { useChartsContext } from "../providers/ChartsProvider"
-import { useDataContext } from "../providers/DataProvider"
+import { useChartsContext } from "../../providers/ChartsProvider"
+import { useDataContext } from "../../providers/DataProvider"
 
-import Container from "./Container"
-import Tooltip from "./Tooltip"
+import Container from "../Container"
+import Tooltip from "../Tooltip"
+
+import "./style.css"
 
 const Dashboard = (props) => {
 

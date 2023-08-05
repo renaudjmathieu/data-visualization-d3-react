@@ -7,14 +7,16 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-import Histogram from "./Histogram"
-import ScatterPlot from "./ScatterPlot"
-import Timeline from "./Timeline"
-import List from "./List"
-import Tooltip from "./Tooltip"
+import Histogram from "../Histogram"
+import ScatterPlot from "../Scatterplot"
+import Timeline from "../Timeline"
+import List from "../List"
+import Tooltip from "../Tooltip"
 
-import { useDataContext } from "../providers/DataProvider"
-import { useChartsContext } from "../providers/ChartsProvider"
+import { useDataContext } from "../../providers/DataProvider"
+import { useChartsContext } from "../../providers/ChartsProvider"
+
+import "./style.css"
 
 const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData }) => {
   const theme = useTheme();
