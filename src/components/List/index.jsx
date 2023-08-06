@@ -2,9 +2,11 @@ import React from "react"
 import * as d3 from "d3"
 import _ from "lodash"
 
-import { useNewChartDimensions } from "../providers/ChartDimensionsProvider"
-import { useDataContext } from "../providers/DataProvider"
-import { useChartsContext } from "../providers/ChartsProvider"
+import { useNewChartDimensions } from "../../providers/ChartDimensionsProvider"
+import { useDataContext } from "../../providers/DataProvider"
+import { useChartsContext } from "../../providers/ChartsProvider"
+
+import "./style.css"
 
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"

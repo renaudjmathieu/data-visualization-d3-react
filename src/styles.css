@@ -17,11 +17,6 @@ h1 {
     margin: 0.4em 0 0.6em;
 }
 
-/* placeholders */
-.placeholder {
-    background: #ecf0f1;
-}
-
 .App__charts {
     display: flex;
     align-items: center;
@@ -124,79 +119,6 @@ h1 {
     background: #fff
 }
 
-.Circle--type-circle {
-    fill: var(--mui-palette-primary-main);
-}
-
-.Circle--type-circle--is-next-to-selected {
-    fill: var(--mui-palette-primary-main);
-    opacity: 0.4;
-}
-
-.Rectangles__marked {
-    opacity: 1;
-}
-
-.Rectangles__unmarked {
-    opacity: 0.4;
-}
-
-.Rectangles__rect {
-    transition: all 0.3s ease-out;
-    fill: var(--mui-palette-primary-main);
-}
-
-.Rectangles__rect--is-next-to-selected {
-    opacity: 0.4;
-}
-
-.Polyline--type-line,
-.Polyline--type-circle {
-    stroke: var(--mui-palette-primary-main);
-}
-
-.Polyline--type-area {
-    fill: var(--mui-palette-primary-main);
-    opacity: 0.6;
-}
-
-.Polyline--type-line--is-next-to-selected,
-.Polyline--type-circle--is-next-to-selected {
-    stroke: var(--mui-palette-primary-main);
-    opacity: 0.4;
-}
-
-.Polyline--type-area--is-next-to-selected {
-    fill: var(--mui-palette-primary-main);
-    opacity: 0.2;
-}
-
-
-.Axis__line {
-    stroke: #bdc3c7;
-}
-
-.Chart text {
-    fill: #95a5a6;
-}
-
-.domain line {
-    stroke: #dadada;
-}
-
-.tick line {
-    stroke: #dadada;
-}
-
-.formOnDesktop {
-    margin-top: 5px !important;
-    margin-bottom: 15px !important;
-}
-
-.formOnMobile {
-    margin-top: 30px !important;
-}
-
 .gridOnDesktop__left,
 .gridOnDesktop__right {
     padding-bottom: 15px !important;
@@ -209,6 +131,14 @@ h1 {
 
 .gridOnDesktop__right div {
     text-align: right;
+}
+
+.Chart {
+    overflow: visible;
+}
+
+.Chart text {
+    fill: #95a5a6;
 }
 
 .Chart__rectangle__large.active,
@@ -229,12 +159,6 @@ h1 {
     fill: var(--mui-palette-background-primary);
 }
 
-.Chart__rectangle__large.outOfFocus .Rectangles__rect,
-.Chart__rectangle.outOfFocus .Rectangles__rect,
-.Chart__square.outOfFocus .Rectangles__rect {
-    fill: var(--mui-palette-background-primary);
-}
-
 .Chart__rectangle__large.outOfFocus .Polyline--type-line,
 .Chart__rectangle.outOfFocus .Polyline--type-line,
 .Chart__square.outOfFocus .Polyline--type-line {
@@ -245,14 +169,6 @@ h1 {
 .Chart__rectangle.outOfFocus .Polyline--type-circle,
 .Chart__square.outOfFocus .Polyline--type-circle {
     stroke: var(--mui-palette-background-primary);
-}
-
-.yo-circle {
-    fill: var(--mui-palette-primary-main);
-}
-
-.outOfFocus .yo-circle {
-    fill: var(--mui-palette-background-primary);
 }
 
 .Chart__rectangle__large.outOfFocus .Polyline--type-area,
@@ -329,305 +245,4 @@ h1 {
 
 .headerSvg:hover [fill='#123456'] {
     fill: #eceff1;
-}
-
-/*
-.inFocus .Rectangles__rect:hover {
-    fill: var(--mui-palette-primary-complementaryColor) !important;
-}
-*/
-
-.tooltipD3 {
-    opacity: 0;
-    position: absolute;
-    top: -12px;
-    left: 0;
-    padding: 0.6em 1em;
-    background: #fff;
-    text-align: center;
-    border: 1px solid #ddd;
-    z-index: 10;
-    transition: all 0.2s ease-out;
-    pointer-events: none;
-}
-
-.tooltipD3:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 12px;
-    height: 12px;
-    background: white;
-    border: 1px solid #ddd;
-    border-top-color: transparent;
-    border-left-color: transparent;
-    transform: translate(-50%, 50%) rotate(45deg);
-    transform-origin: center center;
-    z-index: 10;
-}
-
-.tooltipD3-value1 {
-    margin-bottom: 0.2em;
-    /*
-    font-weight: 600;
-    */
-}
-
-.voronoi {
-    fill: transparent;
-}
-
-.listening-rect {
-    fill: transparent;
-}
-
-.ChartIconsContainer {
-    position: relative;
-}
-
-@media screen and (min-width: 764px) {
-
-    .Chart__container.inFocus:hover .ChartIcons {
-        visibility: visible;
-    }
-
-    .Chart__container.active .ChartIcons {
-        visibility: visible;
-    }
-}
-
-.ChartIcons {
-    visibility: hidden;
-    position: absolute;
-    top: -40px;
-    right: 0px;
-}
-
-.ChartIcon {
-    display: inline-block;
-    background: #fff;
-    border:#fff solid 1px;
-}
-
-.active .ChartIcon {
-    border-left-color: var(--mui-palette-primary-main);
-    border-top-color: var(--mui-palette-primary-main);
-    border-right-color: var(--mui-palette-primary-main);
-}
-
-.ChartIconRight {
-    margin-left: 5px;
-}
-
-.ChartIcon button:hover {
-    background: #fff;
-}
-
-.tooltip-line {
-    fill: #292e31;
-}
-
-.Chart {
-    overflow: visible;
-}
-
-.Polyline {
-    transition: all 0.3s ease-out;
-}
-
-.Polyline--type-line {
-    fill: none;
-    stroke-width: 3px;
-    stroke-linecap: round;
-}
-
-.Polyline--type-circle {
-    fill: none;
-    stroke-width: 8px;
-    stroke-linecap: round;
-}
-
-.Polyline--type-area {
-    stroke-width: 0;
-}
-
-.Axis__label {
-    text-anchor: middle;
-    font-size: 0.8em;
-    letter-spacing: 0.01em;
-    fill: #000 !important;
-}
-
-.Axis__tick {
-    text-align: right;
-    transition: all 0.3s ease-out;
-}
-
-.AxisHorizontal .Axis__tick {
-    text-anchor: end;
-}
-
-.AxisVertical .Axis__tick {
-    dominant-baseline: middle;
-    text-anchor: end;
-}
-
-.Circles {
-    transition: all 0.3s ease-out;
-}
-
-
-.SelectableList {
-    position: relative;
-    flex: 1;
-    font-size: 1.2em;
-}
-
-@media (max-width: 1500px) {
-    .SelectableList {
-        font-size: 1.1em;
-    }
-}
-
-.SelectableList__column-headers {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    right: 0;
-    top: 0.2em;
-    padding-bottom: 10px;
-    border-bottom-color: var(--mui-palette-primary-main);
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-}
-
-.outOfFocus .SelectableList__column-headers {
-    border-bottom-color: var(--mui-palette-background-primary);
-}
-
-.SelectableList__column-header {
-    width: 5.9em;
-    padding: 0.3em 3.3em 0 0;
-    font-size: 0.7em;
-}
-
-.SelectableList__items {
-    height: 295px;
-    overflow: auto;
-}
-
-div.SelectableList__items>div:nth-of-type(odd) {
-    background: white;
-}
-div.SelectableList__items>div:nth-of-type(even) {
-    background: whitesmoke;
-}
-
-/* width */
-.outOfFocus .SelectableList__items::-webkit-scrollbar {
-    display: none;
-}
-
-.inFocus .SelectableList__items::-webkit-scrollbar {
-    width: 5px;
-}
-
-/* Track */
-.inFocus .SelectableList__items::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 5px;
-}
-
-/* Handle */
-.inFocus .SelectableList__items::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 5px;
-}
-
-/* Handle on hover */
-.inFocus .SelectableList__items::-webkit-scrollbar-thumb:hover {
-    background: red;
-}
-
-.inFocus .SelectableList__item:hover {
-    background: gray;
-}
-
-.SelectableList__item--is-selected {
-    font-weight: 900;
-}
-
-.SelectableList__item--is-next-to-selected {
-    opacity: 0.4;
-}
-
-.SelectableList__item {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    padding: 0.3em 0.6em;
-    transition: all 0.3s ease-out;
-    font-size: 0.8em;
-    border: 1px solid transparent;
-    max-width: 100%;
-}
-
-.SelectableList__item__left {
-    display: flex;
-    align-items: center;
-    flex: 1;
-}
-
-.SelectableList__item__right {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    position: relative;
-    padding: 0.3em 0;
-    width: 200px;
-    transition: all 0.3s ease-out;
-    font-size: 0.8em;
-    border: 1px solid transparent;
-    max-width: 100%; 
-}
-
-.inFocus .SelectableList__item__right,
-.inFocus .SelectableList__item {
-    overflow: hidden;  
-    cursor: pointer;
-}
-
-
-
-.SelectableList__item__bar {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -0.2em;
-    background: var(--mui-palette-primary-main);
-    z-index: 0;
-    transition: all 0.3s ease-out;
-}
-
-.outOfFocus .SelectableList__item__bar {
-    background: var(--mui-palette-background-primary);
-}
-
-.SelectableList__item__label {
-    flex: 1;
-    height: 1.5em;
-    line-height: 1.5em;
-    z-index: 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.SelectableList__item__value {
-    flex: 0 0 4em;
-    z-index: 2;
-    margin-left: auto;
-    text-align: right;
 }

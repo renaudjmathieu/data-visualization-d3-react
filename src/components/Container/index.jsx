@@ -7,13 +7,16 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
-import Histogram from "./Histogram"
-import ScatterPlot from "./ScatterPlot"
-import Timeline from "./Timeline"
-import List from "./List"
+import Histogram from "../Histogram"
+import ScatterPlot from "../Scatterplot"
+import Timeline from "../Timeline"
+import List from "../List"
+import Tooltip from "../Tooltip"
 
-import { useDataContext } from "../providers/DataProvider"
-import { useChartsContext } from "../providers/ChartsProvider"
+import { useDataContext } from "../../providers/DataProvider"
+import { useChartsContext } from "../../providers/ChartsProvider"
+
+import "./style.css"
 
 const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData }) => {
   const theme = useTheme();
@@ -113,17 +116,9 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <div id="tooltipD3zoomed" className="tooltipD3">
-            <div className="tooltipD3-value1">
-              <span id="tooltipD3zoomed-value1"></span>
-            </div>
-            <div className="tooltipD3-value2">
-              <span id="tooltipD3zoomed-value2"></span>
-            </div>
-            <div className="tooltipD3-value3">
-              <span id="tooltipD3zoomed-value3"></span>
-            </div>
-          </div>
+          <Tooltip
+            zoomed={true}
+          />
           {renderChart(true)}
         </Box>
       </Modal>

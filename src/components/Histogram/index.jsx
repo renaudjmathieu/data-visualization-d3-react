@@ -1,12 +1,14 @@
 import React from "react"
 import * as d3 from "d3"
 
-import { useNewChartDimensions, Chart } from "../providers/ChartDimensionsProvider"
-import { callAccessor } from "../utils"
-import { useChartsContext } from "../providers/ChartsProvider"
-import { useDataContext } from "../providers/DataProvider"
+import { useNewChartDimensions, Chart } from "../../providers/ChartDimensionsProvider"
+import { callAccessor } from "../../utils"
+import { useChartsContext } from "../../providers/ChartsProvider"
+import { useDataContext } from "../../providers/DataProvider"
 
-import Axis from "./Axis"
+import Axis from "../Axis"
+
+import "./style.css"
 
 const Histogram = (props) => {
 
@@ -19,7 +21,7 @@ const Histogram = (props) => {
 
   const numberOfThresholds = 9
 
-  const calculateXScale = (numberOfThresholds) => {
+  const CalculateXScale = (numberOfThresholds) => {
     switch (currentChart.xAxisType) {
       case "number":
         return d3.scaleLinear()
@@ -86,7 +88,7 @@ const Histogram = (props) => {
     return items
   }
 
-  const xScale = calculateXScale(numberOfThresholds)
+  const xScale = CalculateXScale(numberOfThresholds)
   const items = calculateYAxisSummarization(calculateItems(xScale, numberOfThresholds))
 
   let yAxisAccessorSummarizationFormatter = null
@@ -119,7 +121,7 @@ const Histogram = (props) => {
   const heightAccessorScaledMarked = d => dimensions.boundedHeight - yScale(yAxisAccessorSummarizationMarked(d))
   const keyAxisAccessor = (d, i) => i
 
-  const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization
+  const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization ? currentChart.yAxisSummarization : ''
 
 
 

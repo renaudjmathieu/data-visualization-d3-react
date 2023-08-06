@@ -1,0 +1,42 @@
+
+.ChartIconsContainer {
+    position: relative;
+}
+
+@media screen and (min-width: 764px) {
+
+    .Chart__container.inFocus:hover .ChartIcons {
+        visibility: visible;
+    }
+
+    .Chart__container.active .ChartIcons {
+        visibility: visible;
+    }
+}
+
+.ChartIcons {
+    visibility: hidden;
+    position: absolute;
+    top: -40px;
+    right: 0px;
+}
+
+.ChartIcon {
+    display: inline-block;
+    background: #fff;
+    border:#fff solid 1px;
+}
+
+.active .ChartIcon {
+    border-left-color: var(--mui-palette-primary-main);
+    border-top-color: var(--mui-palette-primary-main);
+    border-right-color: var(--mui-palette-primary-main);
+}
+
+.ChartIconRight {
+    margin-left: 5px;
+}
+
+.ChartIcon button:hover {
+    background: #fff;
+}

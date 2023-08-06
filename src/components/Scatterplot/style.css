@@ -1,0 +1,19 @@
+
+
+
+.Circles {
+    transition: all 0.3s ease-out;
+}
+
+.Circle--type-circle {
+    fill: var(--mui-palette-primary-main);
+}
+
+.Circle--type-circle--is-next-to-selected {
+    fill: var(--mui-palette-primary-main);
+    opacity: 0.4;
+}
+
+.voronoi {
+    fill: transparent;
+}
