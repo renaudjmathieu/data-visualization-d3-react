@@ -136,7 +136,7 @@ const getThemeExtender = (color) => {
 const App = (props) => {
     const { charts, addChart, replaceChart, removeChart, removeLastChart, updateChart } = useChartsContext()
     const { setChosenChartIndex } = useDataContext()
-    const [theme, setTheme] = React.useState(getThemeExtender(getRandomColor()))
+    const [theme, setTheme] = React.useState(getThemeExtender(getFixColor()))
 
     const handleThemeChange = () => {
         let resizeTimer
