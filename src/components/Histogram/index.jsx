@@ -130,17 +130,28 @@ const Histogram = (props) => {
   const xAxisTypeter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
   const handleMouseEnter = (e, d, i) => {
+
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-label1`)
+      .text(currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'))
+
     tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`)
-      .text(currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + [
+      .text([
         xAxisTypeter(d.x0),
         xAxisTypeter(d.x1)
       ].join(" - "))
 
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-label2`)
+      .text(yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'))
+
     tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`)
-      .text(yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)))
+      .text(yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)))
+
+    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-label3`)
+      .text('Highlighted')
 
     tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value3`)
-      .text('Highlighted' + ": " + yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)))
+      .text(yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)))
+
 
     const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2)
     const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
