@@ -7,6 +7,16 @@ import rawData from '../../my_weather_data.json'
 const DataContext = createContext()
 export const useDataContext = () => useContext(DataContext)
 
+export const summarizationAvailable = [
+  { id: 'sum', name: 'Sum', numberOnly: true },
+  { id: 'average', name: 'Average', numberOnly: true },
+  { id: 'min', name: 'Min', numberOnly: true },
+  { id: 'max', name: 'Max', numberOnly: true },
+  { id: 'distinct', name: 'Count (Distinct)', numberOnly: false },
+  { id: 'count', name: 'Count', numberOnly: false },
+  { id: 'median', name: 'Median', numberOnly: true },
+]
+
 export const chartsAvailable = [
   {
     type: 'scatter',

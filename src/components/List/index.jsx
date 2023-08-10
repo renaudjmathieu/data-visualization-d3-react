@@ -3,12 +3,12 @@ import * as d3 from "d3"
 import _ from "lodash"
 
 import { useNewChartDimensions } from "../../providers/ChartDimensionsProvider"
-import { useDataContext } from "../../providers/DataProvider"
+import { useDataContext, summarizationAvailable } from "../../providers/DataProvider"
 import { useChartsContext } from "../../providers/ChartsProvider"
 
 import "./style.css"
 
-const formatAverage = d => _.isFinite(d) ? d3.format(".3f")(d) : "-"
+const formatAverage = d => _.isFinite(d) ? d3.format(".2f")(d) : "-"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
@@ -39,19 +39,28 @@ const List = (props) => {
 
   const valueSummarizationAccessor = ([key, values]) => values[currentChart.valueSummarization]
 
-  const orderedDataByCategory = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
+  const items = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
 
-  const items = orderedDataByCategory
-  const total = _.sumBy(items, valueSummarizationAccessor)
+  let total = 0
+  switch (currentChart.valueSummarization) {
+    case "sum": total = d3.sum(props.data, currentChart.valueAccessor); break;
+    case "average": total = d3.sum(d3.rollup(props.data, v => d3.sum(v, currentChart.valueAccessor), currentChart.valueAccessor).values()) / props.data.length; break;
+    case "min": total = d3.min(props.data, currentChart.valueAccessor); break;
+    case "max": total = d3.max(props.data, currentChart.valueAccessor); break;
+    case "distinct": total = d3.group(props.data, currentChart.valueAccessor).size; break;
+    case "count": total = props.data.length; break;
+    case "median": total = d3.median(props.data, currentChart.valueAccessor); break;
+    default: null;
+  }
 
   return (
     <div className={`Chart__square ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <div className="SelectableList">
         <div className="SelectableList__column-headers">
-          <div className="SelectableList__column-header">
-            {currentChart.valueSummarization}
+          <div className="SelectableList__column-header-middle">
+            {summarizationAvailable.find(summarization => summarization.id === currentChart.valueSummarization).name}
           </div>
-          <div className="SelectableList__column-header">
+          <div className="SelectableList__column-header-right">
             %GT
           </div>
         </div>
@@ -101,6 +110,19 @@ const List = (props) => {
             </div>
           ))}
         </div>
+
+        <div className="SelectableList__column-footers">
+          <div className="SelectableList__column-footer-left">
+            Total
+          </div>
+          <div className="SelectableList__column-footer-middle">
+            {total % 1 !== 0 ? formatAverage(total) : formatNumber(total)}
+          </div>
+          <div className="SelectableList__column-footer-right">
+            100.00%
+          </div>
+        </div>
+
       </div>
     </div>
   )

@@ -1,7 +1,6 @@
 import React from "react"
 import * as d3 from "d3"
 
-import { useTheme } from '@mui/material/styles';
 import { useNewChartDimensions, Chart } from "../../providers/ChartDimensionsProvider"
 import { callAccessor } from "../../utils"
 import { useChartsContext } from "../../providers/ChartsProvider"
@@ -13,13 +12,16 @@ import "./style.css"
 
 const ScatterPlot = (props) => {
 
-  const theme = useTheme();
   const { selectedChartIndex, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2 } = useDataContext()
-  const [ref, dimensions] = useNewChartDimensions({
-    marginBottom: 77
-  })
   const { charts } = useChartsContext()
   const currentChart = charts[props.chartIndex]
+
+  const [ref, dimensions] = useNewChartDimensions({
+    marginBottom: 67 - (currentChart.xAxisType == 'number' ? 30 : 0) - (props.zoomed ? 20 : 0),
+    marginLeft: 38 - (props.zoomed ? 20 : 0),
+    marginRight: 10 - (props.zoomed ? 20 : 0),
+    marginTop: 20 - (props.zoomed ? 20 : 0),
+  })
 
   const xScale = d3.scaleLinear()
     .domain(d3.extent(props.data, currentChart.xAxisAccessor))
