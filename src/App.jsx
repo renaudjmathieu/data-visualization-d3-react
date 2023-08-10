@@ -31,7 +31,7 @@ import Dashboard from "./components/Dashboard"
 import "./styles.css"
 
 import { useChartsContext } from "./providers/ChartsProvider"
-import { useDataContext, chartsAvailable, fieldsAvailable } from "./providers/DataProvider"
+import { useDataContext, chartsAvailable, fieldsAvailable, summarizationAvailable } from "./providers/DataProvider"
 
 
 const drawerWidth = 240;
@@ -80,16 +80,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
 }));
-
-const summarizationAvailable = [
-    { id: 'sum', name: 'Sum', numberOnly: true },
-    { id: 'average', name: 'Average', numberOnly: true },
-    { id: 'min', name: 'Min', numberOnly: true },
-    { id: 'max', name: 'Max', numberOnly: true },
-    { id: 'distinct', name: 'Count (Distinct)', numberOnly: false },
-    { id: 'count', name: 'Count', numberOnly: false },
-    { id: 'median', name: 'Median', numberOnly: true },
-]
 
 const getRandomColor = () => {
     let h = Math.floor(Math.random() * 360)
