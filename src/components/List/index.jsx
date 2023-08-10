@@ -40,7 +40,7 @@ const List = (props) => {
   const valueSummarizationAccessor = ([key, values]) => values[currentChart.valueSummarization]
 
   const items = _.orderBy(dataByCategory, valueSummarizationAccessor, "desc")
-  
+
   let total = 0
   switch (currentChart.valueSummarization) {
     case "sum": total = d3.sum(props.data, currentChart.valueAccessor); break;
@@ -57,7 +57,7 @@ const List = (props) => {
     <div className={`Chart__square ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
       <div className="SelectableList">
         <div className="SelectableList__column-headers">
-          <div className="SelectableList__column-header-left">
+          <div className="SelectableList__column-header-middle">
             {summarizationAvailable.find(summarization => summarization.id === currentChart.valueSummarization).name}
           </div>
           <div className="SelectableList__column-header-right">
@@ -113,13 +113,16 @@ const List = (props) => {
 
         <div className="SelectableList__column-footers">
           <div className="SelectableList__column-footer-left">
-          {total % 1 !== 0 ? formatAverage(total) : formatNumber(total)}
+            Total
+          </div>
+          <div className="SelectableList__column-footer-middle">
+            {total % 1 !== 0 ? formatAverage(total) : formatNumber(total)}
           </div>
           <div className="SelectableList__column-footer-right">
             100.00%
           </div>
         </div>
-        
+
       </div>
     </div>
   )

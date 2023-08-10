@@ -30,7 +30,7 @@
     border-bottom-color: var(--mui-palette-background-primary);
 }
 
-.SelectableList__column-header-left {
+.SelectableList__column-header-middle {
     padding: 0.3em 1em 0 0;
     width: 10em;
     font-size: 0.7em;
@@ -62,6 +62,15 @@
 }
 
 .SelectableList__column-footer-left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding: 0.3em 0 0 0.6em;
+    width: 10em;
+    font-size: 0.7em;
+    font-weight: 900;   
+}
+.SelectableList__column-footer-middle {
     padding: 0.3em 0.8em 0 0;
     width: 10em;
     font-size: 0.7em;
