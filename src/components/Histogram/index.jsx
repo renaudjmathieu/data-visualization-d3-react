@@ -123,42 +123,38 @@ const Histogram = (props) => {
 
   const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization ? currentChart.yAxisSummarization : ''
 
-
-
-  const tooltip = d3.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}`)
-
   const xAxisTypeter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
-
-  const handleMouseEnter = (e, d, i) => {
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`)
-      .text(currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + [
-        xAxisTypeter(d.x0),
-        xAxisTypeter(d.x1)
-      ].join(" - "))
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`)
-      .text(yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)))
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value3`)
-      .text('Highlighted' + ": " + yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)))
-
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
-
-    tooltip.style("transform", `translate(`
-      + `calc(-50% + ${x}px),`
-      + `calc(-100% + ${y}px)`
-      + `)`)
-
-    tooltip.style("opacity", 1)
-  }
-
-  const handleMouseLeave = () => {
-    tooltip.style("opacity", 0)
-  }
 
   const isLastBin = (d, i) => {
     return i === items.length - 2
+  }
+
+  const handleMouseEnter = (e, d, i) => {
+    const tooltipData = [
+      {
+        label: currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+        value: [
+          xAxisTypeter(d.x0),
+          xAxisTypeter(d.x1)
+        ].join(" - "),
+      },
+      {
+        label: yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+        value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)),
+      }
+    ]
+
+    if (yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)) !== yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d))) {
+      tooltipData.push({
+        label: 'Highlighted',
+        value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)),
+      })
+    }
+
+    props.handleShowTooltip(e, tooltipData,
+      dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2),
+      dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
+    )
   }
 
   return (
@@ -190,7 +186,7 @@ const Histogram = (props) => {
             width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
             height={d3.max([callAccessor(heightAccessorScaledMarked, d, i), 0])}
             onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
-            onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+            onMouseLeave={!props.outOfFocus ? props.handleHideTooltip : null}
             onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
           />
         ))}
@@ -209,7 +205,7 @@ const Histogram = (props) => {
             width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
             height={d3.max([callAccessor(heightAccessorScaled, d, i), 0])}
             onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
-            onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+            onMouseLeave={!props.outOfFocus ? props.handleHideTooltip : null}
             onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
           />
         ))}

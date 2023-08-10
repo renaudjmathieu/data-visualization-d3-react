@@ -44,8 +44,6 @@ const ScatterPlot = (props) => {
   voronoi.xmax = dimensions.boundedWidth
   voronoi.ymax = dimensions.boundedHeight
 
-  const tooltip = d3.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}`)
-
   const handleMouseEnter = (e, d, i) => {
     const bounds = d3.select(e.target.parentElement)
 
@@ -60,31 +58,19 @@ const ScatterPlot = (props) => {
     const tooltipValue1ValueFormatter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
     const tooltipValue2ValueFormatter = currentChart.yAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.yAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`)
-      .text(currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + tooltipValue1ValueFormatter(currentChart.xAxisAccessor(d)))
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`)
-      .text(currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + tooltipValue1ValueFormatter(currentChart.yAxisAccessor(d)))
-
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
-
-    tooltip.style("transform", `translate(`
-      + `calc(-50% + ${x}px),`
-      + `calc(-100% + ${y}px)`
-      + `)`)
-
-    tooltip.style("opacity", 1)
-  }
-
-  const handleMouseLeave = () => {
-    d3.selectAll(".tooltipDot")
-      .remove()
-    tooltip.style("opacity", 0)
-
-    d3.selectAll(".tooltipDot")
-      .remove()
-    tooltip.style("opacity", 0)
+    props.handleShowTooltip(e, [
+      {
+        label: currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+        value: tooltipValue1ValueFormatter(currentChart.xAxisAccessor(d))
+      },
+      {
+        label: currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+        value: tooltipValue2ValueFormatter(currentChart.yAxisAccessor(d)),
+      },
+    ],
+      dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i),
+      dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
+    )
   }
 
   return (
@@ -106,8 +92,8 @@ const ScatterPlot = (props) => {
           <path
             className="voronoi"
             d={voronoi.renderCell(i)}
-            onMouseEnter={(e => handleMouseEnter(e, d, i))}
-            onMouseLeave={handleMouseLeave}
+            onMouseEnter={e => handleMouseEnter(e, d, i)}
+            onMouseLeave={props.handleHideTooltip}
           />
         ))}
         {props.data.map((d, i) => (
@@ -124,8 +110,8 @@ const ScatterPlot = (props) => {
             cy={callAccessor(yAxisAccessorScaled(d, i))}
             r={5}
             onMouseDown={!props.outOfFocus ? (selectedColumn1 == currentChart.xAxis && selectedItem1 == currentChart.xAxisAccessor(d, i) && selectedColumn2 == currentChart.yAxis && selectedItem2 == currentChart.yAxisAccessor(d, i) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'MultipleValues', currentChart.xAxis, currentChart.yAxis, currentChart.xAxisAccessor(d, i), currentChart.yAxisAccessor(d, i))) : null}
-            onMouseEnter={!props.outOfFocus ? (e => handleMouseEnter(e, d, i)) : null}
-            onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
+            onMouseLeave={!props.outOfFocus ? props.handleHideTooltip : null}
           />
         ))}
       </Chart>

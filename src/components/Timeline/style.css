@@ -52,3 +52,8 @@
 .outOfFocus .yo-circle {
     fill: var(--mui-palette-background-primary);
 }
+
+.tooltip-line {
+    fill: #292e31;
+    opacity: 0.95;
+}

@@ -3,17 +3,28 @@ import React from "react"
 import "./style.css"
 
 const Tooltip = (props) => {
-
+  
   return (
-    <div id={`tooltipD3${props.zoomed ? 'zoomed' : ''}`} className="tooltipD3">
-      <div className="tooltipD3-value1">
-        <span id={`tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`}></span>
-      </div>
-      <div className="tooltipD3-value2">
-        <span id={`tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`}></span>
-      </div>
-      <div className="tooltipD3-value3">
-        <span id={`tooltipD3${props.zoomed ? 'zoomed' : ''}-value3`}></span>
+    <div
+      className="DogBreedsTooltip"
+      style={props.style} >
+      <div className="DogBreedsTooltip__breeds">
+        <div className="DogBreedsTooltip__breed">
+          <div className="DogBreedsTooltip__breed__label">
+            {_.map(props.lines, line => _.isObject(line) && (
+              <div>
+                {line.label}
+              </div>
+            ))}
+          </div>
+          <div className="DogBreedsTooltip__breed__value">
+            {_.map(props.lines, line => _.isObject(line) && (
+              <div>
+                {line.value}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ import { useChartsContext } from "../../providers/ChartsProvider"
 
 import "./style.css"
 
+const formatAverage = d => _.isFinite(d) ? d3.format(".3f")(d) : "-"
 const formatNumber = d => _.isFinite(d) ? d3.format(",")(d) : "-"
 const formatPercent = d => _.isFinite(d) ? d3.format(".2%")(d) : "-"
 
@@ -68,23 +69,19 @@ const List = (props) => {
               onMouseDown={!props.outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == currentChart.category1 && selectedItem1 == item[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.category1, null, item[0], null)) : null}>
 
               <div className="SelectableList__item__left">
-
                 <div className="SelectableList__item__label">
                   {item[0]}
                 </div>
-
                 {numberOfCategories >= 2 &&
                   <div className="SelectableList__item__label">
                     {item[1]}
                   </div>
                 }
-
                 {numberOfCategories === 3 &&
                   <div className="SelectableList__item__label">
                     {item[2]}
                   </div>
                 }
-
               </div>
 
               <div className="SelectableList__item__right">
@@ -93,7 +90,7 @@ const List = (props) => {
                   width: `${item[numberOfCategories][currentChart.valueSummarization] * 100 / items[0][numberOfCategories][currentChart.valueSummarization]}%`,
                 }} />
                 <div className="SelectableList__item__value">
-                  {formatNumber(item[numberOfCategories][currentChart.valueSummarization])}
+                  {item[numberOfCategories][currentChart.valueSummarization] % 1 !== 0 ? formatAverage(item[numberOfCategories][currentChart.valueSummarization]) : formatNumber(item[numberOfCategories][currentChart.valueSummarization])}
                 </div>
                 <div className="SelectableList__item__value">
                   {formatPercent(item[numberOfCategories][currentChart.valueSummarization] / total)}

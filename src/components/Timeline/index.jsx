@@ -92,22 +92,6 @@ const Timeline = (props) => {
     const tooltipValue1ValueFormatter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
     const tooltipValue2ValueFormatter = currentChart.yAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.yAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`)
-      .text(currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + tooltipValue1ValueFormatter(currentChart.xAxisAccessor(closestDataPoint)))
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`)
-      .text(currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1') + ": " + tooltipValue2ValueFormatter(currentChart.yAxisAccessor(closestDataPoint)))
-
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)
-
-    tooltip.style("transform", `translate(`
-      + `calc( -50% + ${x}px),`
-      + `calc(-100% + ${y}px)`
-      + `)`)
-
-    tooltip.style("opacity", 1)
-
     tooltipDot
       .attr("cx", xScale(closestXValue))
       .attr("cy", yScale(closestYValue))
@@ -116,10 +100,25 @@ const Timeline = (props) => {
     tooltipLine
       .attr("x", xScale(closestXValue))
       .style("opacity", 1)
+
+    props.handleShowTooltip(e, [
+      {
+        label: currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+        value: tooltipValue1ValueFormatter(currentChart.xAxisAccessor(closestDataPoint))
+      },
+      {
+        label: currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+        value: tooltipValue2ValueFormatter(currentChart.yAxisAccessor(closestDataPoint)),
+      },
+    ],
+      dimensions.offsetLeft + 16 + dimensions.marginLeft + xScale(closestXValue),
+      dimensions.offsetTop + 8 + dimensions.marginTop + yScale(closestYValue)
+    )
   }
 
   const handleMouseLeave = () => {
-    tooltip.style("opacity", 0)
+
+    props.handleHideTooltip()
 
     d3.selectAll(".tooltip-circle")
       .style("opacity", 0)

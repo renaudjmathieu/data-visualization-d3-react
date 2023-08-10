@@ -9,6 +9,8 @@ import Tooltip from "../Tooltip"
 import "./style.css"
 
 const Dashboard = (props) => {
+    const [tooltipInfo, setTooltipInfo] = React.useState(null)
+    const [zoomedOpen, setZoomedOpen] = React.useState(false);
 
     const { charts } = useChartsContext()
     const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, setHighlightedData, setChosenChartIndex } = useDataContext()
@@ -74,6 +76,27 @@ const Dashboard = (props) => {
         setHighlightedData(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
     }
 
+    const handleShowTooltip = (e, lines, x, y) => {
+        const tooltipInfo = {
+            lines,
+            x,
+            y,
+        }
+        setTooltipInfo(tooltipInfo)
+    }
+
+    const handleHideTooltip = () => {
+        setTooltipInfo(null)
+    }
+
+    const handleZoomedOpen = () => {
+        setZoomedOpen(true)
+    }
+
+    const handleZoomedClose = () => {
+        setZoomedOpen(false)
+    }
+
     React.useEffect(() => {
         setHighlightedData(selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
     }, [])
@@ -82,9 +105,15 @@ const Dashboard = (props) => {
         <div className="App__charts__dashboard" onClick={handleOutsideClick1}>
             <div className="App__charts__config">
             </div>
-            <Tooltip
-                zoomed={false}
-            />
+
+            {!zoomedOpen && tooltipInfo && (
+                <Tooltip
+                    zoomed={false}
+                    style={{ transform: `translate(calc(-50% + ${tooltipInfo.x}px), calc(-100% + ${tooltipInfo.y}px))` }}
+                    {...tooltipInfo}
+                />
+            )}
+
             <div className="App__charts">
                 {charts
                     .map((chart, index) => {
@@ -94,6 +123,12 @@ const Dashboard = (props) => {
                             onClick2={(e) => handleClick2(e, chart, index)}
                             chartIndex={index}
                             handleHighlightData={handleHighlightData}
+                            handleShowTooltip={handleShowTooltip}
+                            handleHideTooltip={handleHideTooltip}
+                            tooltipInfo={tooltipInfo}
+                            handleZoomedOpen={handleZoomedOpen}
+                            handleZoomedClose={handleZoomedClose}
+                            zoomedOpen={zoomedOpen}
                         />
                     }
                     )}

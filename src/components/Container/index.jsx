@@ -18,18 +18,25 @@ import { useChartsContext } from "../../providers/ChartsProvider"
 
 import "./style.css"
 
-const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData }) => {
+const Container = (props) => {
   const theme = useTheme();
   const { selectedChartIndex, chosenChartIndex, data } = useDataContext()
   const { charts } = useChartsContext()
-  const currentChart = charts[chartIndex]
+  const currentChart = charts[props.chartIndex]
 
-  const outOfFocus = chosenChartIndex !== null && chartIndex !== chosenChartIndex
-  const active = chartIndex === chosenChartIndex
+  const outOfFocus = chosenChartIndex !== null && props.chartIndex !== chosenChartIndex
+  const active = props.chartIndex === chosenChartIndex
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [zoomedOpen, setZoomedOpen] = React.useState(false);
+  const handleZoomedOpen = () => {
+    setZoomedOpen(true)
+    props.handleZoomedOpen()
+  }
+
+  const handleZoomedClose = () => {
+    setZoomedOpen(false)
+    props.handleZoomedClose()
+  }
 
   const renderChart = (zoomed) => {
     switch (currentChart.type) {
@@ -37,33 +44,39 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChartIndex == chartIndex ? data : _.filter(data, { highlighted: true })}
-        handleHighlightData={handleHighlightData}
-        chartIndex={chartIndex}
+        data={selectedChartIndex == props.chartIndex ? data : _.filter(data, { highlighted: true })}
+        handleHighlightData={props.handleHighlightData}
+        handleShowTooltip={props.handleShowTooltip}
+        handleHideTooltip={props.handleHideTooltip}
+        chartIndex={props.chartIndex}
       />
       case "histogram": return <Histogram
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
         data={data}
-        handleHighlightData={handleHighlightData}
-        chartIndex={chartIndex}
+        handleHighlightData={props.handleHighlightData}
+        handleShowTooltip={props.handleShowTooltip}
+        handleHideTooltip={props.handleHideTooltip}
+        chartIndex={props.chartIndex}
       />
       case "timeline": return <Timeline
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChartIndex == chartIndex ? data : _.filter(data, { highlighted: true })}
-        handleHighlightData={handleHighlightData}
-        chartIndex={chartIndex}
+        data={selectedChartIndex == props.chartIndex ? data : _.filter(data, { highlighted: true })}
+        handleHighlightData={props.handleHighlightData}
+        handleShowTooltip={props.handleShowTooltip}
+        handleHideTooltip={props.handleHideTooltip}
+        chartIndex={props.chartIndex}
       />
       case "list": return <List
         zoomed={zoomed}
         active={active}
         outOfFocus={outOfFocus}
-        data={selectedChartIndex == chartIndex ? data : _.filter(data, { highlighted: true })}
-        handleHighlightData={handleHighlightData}
-        chartIndex={chartIndex}
+        data={selectedChartIndex == props.chartIndex ? data : _.filter(data, { highlighted: true })}
+        handleHighlightData={props.handleHighlightData}
+        chartIndex={props.chartIndex}
       />
       default: return null;
     }
@@ -93,16 +106,16 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
   };
 
   return (
-    <div onClick={opened ? onClick1 : onClick2} className={`Chart__container ${active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
+    <div onClick={props.opened ? props.onClick1 : props.onClick2} className={`Chart__container ${active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'} ${getChartClass()}`}>
       <div className="ChartIconsContainer">
         <div className="ChartIcons">
           <div className="ChartIcon">
-            <IconButton onClick={onClick1}>
+            <IconButton onClick={props.onClick1}>
               <SettingsIcon style={{ color: theme.vars.palette.primary.main }} />
             </IconButton>
           </div>
           <div className="ChartIcon ChartIconRight">
-            <IconButton onClick={handleOpen}>
+            <IconButton onClick={handleZoomedOpen}>
               <ZoomOutMapIcon style={{ color: theme.vars.palette.primary.main }} />
             </IconButton>
           </div>
@@ -110,15 +123,19 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
       </div>
 
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={zoomedOpen}
+        onClose={handleZoomedClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <Tooltip
-            zoomed={true}
-          />
+          {zoomedOpen && props.tooltipInfo && (
+            <Tooltip
+              zoomed={true}
+              style={{ transform: `translate(calc(-50% + ${props.tooltipInfo.x}px), calc(-100% + ${props.tooltipInfo.y}px))` }}
+              {...props.tooltipInfo}
+            />
+          )}
           {renderChart(true)}
         </Box>
       </Modal>
