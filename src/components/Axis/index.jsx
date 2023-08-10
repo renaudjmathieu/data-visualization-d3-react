@@ -44,7 +44,8 @@ function AxisHorizontal({ dimensions, scale, label, format, data, keyAxisAccesso
           <text
             key={tick}
             className="Axis__tick"
-            transform={`translate(${scale(tick)}, 30) rotate(-90)`}
+            font-size={d3.min([d3.max([Math.floor((dimensions.boundedWidth / ticks.length)), 10]), 13])}
+            transform={`translate(${scale(tick)}, 20)`}
           >
             {formatter(tick)}
           </text>
@@ -66,7 +67,7 @@ function AxisHorizontal({ dimensions, scale, label, format, data, keyAxisAccesso
       {label && (
         <text
           className="Axis__label"
-          transform={`translate(${dimensions.boundedWidth / 2}, 79)`}
+          transform={`translate(${dimensions.boundedWidth / 2}, ${format !== 'number' ? '68' : '38'})`}
         >
           {label}
         </text>
@@ -92,7 +93,8 @@ function AxisVertical({ dimensions, scale, label, format, ...props }) {
         <text
           key={tick}
           className="Axis__tick"
-          transform={`translate(-16, ${scale(tick)})`}
+          fontSize={d3.min([d3.max([Math.floor((dimensions.boundedHeight / ticks.length)), 10]), 13])}
+          transform={`translate(-10, ${scale(tick)})`}
         >
           {formatter(tick)}
         </text>
@@ -102,7 +104,7 @@ function AxisVertical({ dimensions, scale, label, format, ...props }) {
         <text
           className="Axis__label"
           style={{
-            transform: `translate(-74px, ${dimensions.boundedHeight / 2}px) rotate(-90deg)`
+            transform: `translate(-36px, ${dimensions.boundedHeight / 2}px) rotate(-90deg)`
           }}
         >
           {label}

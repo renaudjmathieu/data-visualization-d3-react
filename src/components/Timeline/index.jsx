@@ -13,7 +13,13 @@ import "./style.css"
 const Timeline = (props) => {
 
   const theme = useTheme();
-  const [ref, dimensions] = useNewChartDimensions()
+  const [ref, dimensions] = useNewChartDimensions({
+    marginBottom: 10 - (props.zoomed ? 20 : 0),
+    marginLeft: 38 - (props.zoomed ? 20 : 0),
+    marginRight: 10 - (props.zoomed ? 20 : 0),
+    marginTop: 20 - (props.zoomed ? 20 : 0),
+  })
+
   const { charts } = useChartsContext()
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1 } = useDataContext()
   const currentChart = charts[props.chartIndex]
@@ -99,7 +105,7 @@ const Timeline = (props) => {
 
     tooltipLine
       .attr("x", xScale(closestXValue))
-      .style("opacity", 1)
+      .style("opacity", 0.95)
 
     props.handleShowTooltip(e, [
       {

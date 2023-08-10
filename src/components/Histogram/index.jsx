@@ -12,13 +12,17 @@ import "./style.css"
 
 const Histogram = (props) => {
 
-  const [ref, dimensions] = useNewChartDimensions({
-    marginBottom: 77,
-  })
   const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedItem1, selectedItem2 } = useDataContext()
   const { charts } = useChartsContext()
   const currentChart = charts[props.chartIndex]
 
+  const [ref, dimensions] = useNewChartDimensions({
+    marginBottom: 67 - (currentChart.xAxisType == 'number' ? 30 : 0) - (props.zoomed ? 20 : 0),
+    marginLeft: 38 - (props.zoomed ? 20 : 0),
+    marginRight: 10 - (props.zoomed ? 20 : 0),
+    marginTop: 20 - (props.zoomed ? 20 : 0),
+  })
+  
   const numberOfThresholds = 9
 
   const CalculateXScale = (numberOfThresholds) => {
