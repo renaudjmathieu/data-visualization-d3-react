@@ -45,16 +45,6 @@ const ScatterPlot = (props) => {
   voronoi.ymax = dimensions.boundedHeight
 
   const handleMouseEnter = (e, d, i) => {
-    const bounds = d3.select(e.target.parentElement)
-
-    const dayDot = bounds.append("circle")
-      .attr("class", "tooltipDot")
-      .attr("cx", callAccessor(xAxisAccessorScaled, d, i))
-      .attr("cy", callAccessor(yAxisAccessorScaled, d, i))
-      .attr("r", 5)
-      .style("fill", theme.vars.palette.primary.main)
-      .style("pointer-events", "none")
-
     const tooltipValue1ValueFormatter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
     const tooltipValue2ValueFormatter = currentChart.yAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.yAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
