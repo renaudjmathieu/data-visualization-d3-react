@@ -18,7 +18,7 @@ import { useChartsContext } from "../../providers/ChartsProvider"
 
 import "./style.css"
 
-const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData }) => {
+const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData, handleMouseEnter, handleMouseLeave }) => {
   const theme = useTheme();
   const { selectedChartIndex, chosenChartIndex, data } = useDataContext()
   const { charts } = useChartsContext()
@@ -48,6 +48,8 @@ const Container = ({ opened, onClick1, onClick2, chartIndex, handleHighlightData
         data={data}
         handleHighlightData={handleHighlightData}
         chartIndex={chartIndex}
+        handleMouseEnter={handleMouseEnter}
+        handleMouseLeave={handleMouseLeave}
       />
       case "timeline": return <Timeline
         zoomed={zoomed}

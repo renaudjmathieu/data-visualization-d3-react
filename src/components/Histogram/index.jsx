@@ -21,8 +21,6 @@ const Histogram = (props) => {
 
   const numberOfThresholds = 9
 
-  const [tooltipInfo, setTooltipInfo] = React.useState(null)
-
   const CalculateXScale = (numberOfThresholds) => {
     switch (currentChart.xAxisType) {
       case "number":
@@ -127,39 +125,6 @@ const Histogram = (props) => {
 
   const xAxisTypeter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
-  const handleMouseEnter = (e, d, i) => {
-
-    const tooltipInfo = {
-      lines: [
-        {
-          label: currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'),
-          value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)),
-        },
-        {
-          label: [
-            xAxisTypeter(d.x0),
-            xAxisTypeter(d.x1)
-          ].join(" - "),
-          value: 'Highlighted',
-        },
-        {
-          label: yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'),
-          value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)),
-        },
-      ],
-      y: dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i),
-      x: dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2)
-    }
-
-    console.log('handleMouseEnter')
-    setTooltipInfo(tooltipInfo)
-  }
-
-  const handleMouseLeave = () => {
-    console.log('handleMouseLeave')
-    setTooltipInfo(null)
-  }
-
   const isLastBin = (d, i) => {
     return i === items.length - 2
   }
@@ -192,8 +157,27 @@ const Histogram = (props) => {
             y={callAccessor(yAxisAccessorScaledMarked, d, i)}
             width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
             height={d3.max([callAccessor(heightAccessorScaledMarked, d, i), 0])}
-            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
-            onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+            onMouseEnter={!props.outOfFocus ? e => props.handleMouseEnter(e, [
+              {
+                label: currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+                value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)),
+              },
+              {
+                label: [
+                  xAxisTypeter(d.x0),
+                  xAxisTypeter(d.x1)
+                ].join(" - "),
+                value: 'Highlighted',
+              },
+              {
+                label: yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+                value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)),
+              },
+            ],
+              dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2),
+              dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
+            ) : null}
+            onMouseLeave={!props.outOfFocus ? props.handleMouseLeave : null}
             onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
           />
         ))}
@@ -211,8 +195,27 @@ const Histogram = (props) => {
             y={callAccessor(yAxisAccessorScaled, d, i)}
             width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
             height={d3.max([callAccessor(heightAccessorScaled, d, i), 0])}
-            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
-            onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
+            onMouseEnter={!props.outOfFocus ? e => props.handleMouseEnter(e, [
+              {
+                label: currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+                value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)),
+              },
+              {
+                label: [
+                  xAxisTypeter(d.x0),
+                  xAxisTypeter(d.x1)
+                ].join(" - "),
+                value: 'Highlighted',
+              },
+              {
+                label: yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+                value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)),
+              },
+            ],
+              dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2),
+              dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
+            ) : null}
+            onMouseLeave={!props.outOfFocus ? props.handleMouseLeave : null}
             onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
           />
         ))}

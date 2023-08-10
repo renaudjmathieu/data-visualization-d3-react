@@ -8,7 +8,10 @@ const Tooltip = (props) => {
   ))
 
   return (
-    <div id={`tooltipD3${props.zoomed ? 'zoomed' : ''}`} className="DogBreedsTooltip">
+    <div
+      id={`tooltipD3${props.zoomed ? 'zoomed' : ''}`}
+      className="DogBreedsTooltip"
+      style={props.style} >
       <div className="DogBreedsTooltip__breeds">
         <div className="DogBreedsTooltip__breed">
           <div className="DogBreedsTooltip__breed__label">

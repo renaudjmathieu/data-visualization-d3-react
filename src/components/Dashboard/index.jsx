@@ -10,6 +10,10 @@ import "./style.css"
 
 const Dashboard = (props) => {
 
+
+    const [tooltipInfo, setTooltipInfo] = React.useState(null)
+
+
     const { charts } = useChartsContext()
     const { selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2, setHighlightedData, setChosenChartIndex } = useDataContext()
 
@@ -74,6 +78,24 @@ const Dashboard = (props) => {
         setHighlightedData(chartIndex, columnType, column1, column2, item1, item2, format1, format2)
     }
 
+    const handleMouseEnter = (e, lines, x, y) => {
+        const tooltipInfo = {
+            lines,
+            x,
+            y,
+        }
+
+        console.log('handleMouseEnter')
+        console.log('x', x)
+        console.log('y', y)
+        setTooltipInfo(tooltipInfo)
+    }
+
+    const handleMouseLeave = () => {
+        console.log('handleMouseLeave')
+        //setTooltipInfo(null)
+    }
+
     React.useEffect(() => {
         setHighlightedData(selectedChartIndex, selectedColumnType, selectedColumn1, selectedColumn2, selectedItem1, selectedItem2, selectedFormat1, selectedFormat2)
     }, [])
@@ -100,6 +122,8 @@ const Dashboard = (props) => {
                             onClick2={(e) => handleClick2(e, chart, index)}
                             chartIndex={index}
                             handleHighlightData={handleHighlightData}
+                            handleMouseEnter={handleMouseEnter}
+                            handleMouseLeave={handleMouseLeave}
                         />
                     }
                     )}
