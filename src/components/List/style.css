@@ -3,6 +3,9 @@
     position: relative;
     flex: 1;
     font-size: 1.2em;
+
+    height: 100% ;
+    overflow: hidden;
 }
 
 @media (max-width: 1500px) {
@@ -14,7 +17,7 @@
 .SelectableList__column-headers {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: right;
     right: 0;
     top: 0.2em;
     padding-bottom: 10px;
@@ -28,13 +31,14 @@
 }
 
 .SelectableList__column-header {
-    width: 5.9em;
-    padding: 0.3em 3.3em 0 0;
+    padding: 0.3em 1em 0 0;
+    width: 100px;
     font-size: 0.7em;
+    text-align: right;
 }
 
 .SelectableList__items {
-    height: 295px;
+    max-height: 90%;
     overflow: auto;
 }
 
@@ -68,11 +72,11 @@ div.SelectableList__items>div:nth-of-type(even) {
 
 /* Handle on hover */
 .inFocus .SelectableList__items::-webkit-scrollbar-thumb:hover {
-    background: red;
+    background: #888;
 }
 
 .inFocus .SelectableList__item:hover {
-    background: gray;
+    background: #d3d3d3;
 }
 
 .SelectableList__item--is-selected {
@@ -88,9 +92,9 @@ div.SelectableList__items>div:nth-of-type(even) {
     justify-content: flex-start;
     align-items: center;
     position: relative;
-    padding: 0.3em 0.6em;
+    padding: 0.1em 0.6em;
     transition: all 0.3s ease-out;
-    font-size: 0.8em;
+    font-size: 0.7em;
     border: 1px solid transparent;
     max-width: 100%;
 }
@@ -106,10 +110,9 @@ div.SelectableList__items>div:nth-of-type(even) {
     justify-content: flex-start;
     align-items: center;
     position: relative;
-    padding: 0.3em 0;
+    padding: 0.1em 0;
     width: 200px;
     transition: all 0.3s ease-out;
-    font-size: 0.8em;
     border: 1px solid transparent;
     max-width: 100%; 
 }
@@ -119,8 +122,6 @@ div.SelectableList__items>div:nth-of-type(even) {
     overflow: hidden;  
     cursor: pointer;
 }
-
-
 
 .SelectableList__item__bar {
     position: absolute;
@@ -138,8 +139,8 @@ div.SelectableList__items>div:nth-of-type(even) {
 
 .SelectableList__item__label {
     flex: 1;
-    height: 1.5em;
-    line-height: 1.5em;
+    height: 1.2em;
+    line-height: 1.2em;
     z-index: 2;
     overflow: hidden;
     text-overflow: ellipsis;
