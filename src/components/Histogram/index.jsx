@@ -21,6 +21,8 @@ const Histogram = (props) => {
 
   const numberOfThresholds = 9
 
+  const [tooltipInfo, setTooltipInfo] = React.useState(null)
+
   const CalculateXScale = (numberOfThresholds) => {
     switch (currentChart.xAxisType) {
       case "number":
@@ -123,49 +125,39 @@ const Histogram = (props) => {
 
   const yAxisSummarizationLabel = currentChart.yAxisSummarization === 'distinct' ? 'count' : currentChart.yAxisSummarization ? currentChart.yAxisSummarization : ''
 
-
-
-  const tooltip = d3.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}`)
-
   const xAxisTypeter = currentChart.xAxisType === 'date' ? d3.timeFormat("%B %d, %Y") : currentChart.xAxisType === 'time' ? d3.timeFormat("%H:%M") : d3.format(".2f")
 
   const handleMouseEnter = (e, d, i) => {
 
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-label1`)
-      .text(currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'))
+    const tooltipInfo = {
+      lines: [
+        {
+          label: currentChart.xAxis.charAt(0).toUpperCase() + currentChart.xAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+          value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)),
+        },
+        {
+          label: [
+            xAxisTypeter(d.x0),
+            xAxisTypeter(d.x1)
+          ].join(" - "),
+          value: 'Highlighted',
+        },
+        {
+          label: yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'),
+          value: yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)),
+        },
+      ],
+      y: dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i),
+      x: dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2)
+    }
 
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value1`)
-      .text([
-        xAxisTypeter(d.x0),
-        xAxisTypeter(d.x1)
-      ].join(" - "))
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-label2`)
-      .text(yAxisSummarizationLabel.charAt(0).toUpperCase() + yAxisSummarizationLabel.slice(1).replace(/([A-Z])/g, ' $1') + " of " + currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1'))
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value2`)
-      .text(yAxisAccessorSummarizationFormatter(yAxisAccessorSummarization(d)))
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-label3`)
-      .text('Highlighted')
-
-    tooltip.select(`#tooltipD3${props.zoomed ? 'zoomed' : ''}-value3`)
-      .text(yAxisAccessorSummarizationFormatter(yAxisAccessorSummarizationMarked(d)))
-
-
-    const x = dimensions.offsetLeft + 16 + dimensions.marginLeft + callAccessor(xAxisAccessorScaled, d, i) + (callAccessor(widthAccessorScaled, d, i) / 2)
-    const y = dimensions.offsetTop + 8 + dimensions.marginTop + callAccessor(yAxisAccessorScaled, d, i)
-
-    tooltip.style("transform", `translate(`
-      + `calc(-50% + ${x}px),`
-      + `calc(-100% + ${y}px)`
-      + `)`)
-
-    tooltip.style("opacity", 1)
+    console.log('handleMouseEnter')
+    setTooltipInfo(tooltipInfo)
   }
 
   const handleMouseLeave = () => {
-    tooltip.style("opacity", 0)
+    console.log('handleMouseLeave')
+    setTooltipInfo(null)
   }
 
   const isLastBin = (d, i) => {

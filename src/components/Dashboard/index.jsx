@@ -82,9 +82,15 @@ const Dashboard = (props) => {
         <div className="App__charts__dashboard" onClick={handleOutsideClick1}>
             <div className="App__charts__config">
             </div>
-            <Tooltip
-                zoomed={false}
-            />
+
+            {tooltipInfo && (
+                <Tooltip
+                    zoomed={false}
+                    style={{ transform: `translate(calc(-50% + ${tooltipInfo.x}px), calc(-100% + ${tooltipInfo.y}px))` }}
+                    {...tooltipInfo}
+                />
+            )}
+
             <div className="App__charts">
                 {charts
                     .map((chart, index) => {
