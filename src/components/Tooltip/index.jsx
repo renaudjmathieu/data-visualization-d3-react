@@ -3,13 +3,9 @@ import React from "react"
 import "./style.css"
 
 const Tooltip = (props) => {
-  _.map(props.lines, line => _.isObject(line) && (
-    console.log(line)
-  ))
-
+  
   return (
     <div
-      id={`tooltipD3${props.zoomed ? 'zoomed' : ''}`}
       className="DogBreedsTooltip"
       style={props.style} >
       <div className="DogBreedsTooltip__breeds">
