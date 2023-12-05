@@ -17,10 +17,10 @@ const ScatterPlot = (props) => {
   const currentChart = charts[props.chartIndex]
 
   const [ref, dimensions] = useNewChartDimensions({
-    marginBottom: 67 - (currentChart.xAxisType == 'number' ? 30 : 0) - (props.zoomed ? 20 : 0),
-    marginLeft: 38 - (props.zoomed ? 20 : 0),
-    marginRight: 10 - (props.zoomed ? 20 : 0),
-    marginTop: 20 - (props.zoomed ? 20 : 0),
+    marginBottom: 67 - (currentChart.xAxisType == 'number' ? 30 : 0) - props.marginPadding,
+    marginLeft: 38 - props.marginPadding,
+    marginRight: 10 - props.marginPadding,
+    marginTop: 20 - props.marginPadding,
   })
 
   const xScale = d3.scaleLinear()
@@ -66,7 +66,7 @@ const ScatterPlot = (props) => {
   }
 
   return (
-    <div className={`Chart__square ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__square ${props.styleName}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimension="x"
@@ -80,7 +80,7 @@ const ScatterPlot = (props) => {
           label={currentChart.yAxis.charAt(0).toUpperCase() + currentChart.yAxis.slice(1).replace(/([A-Z])/g, ' $1')}
           format={currentChart.yAxisType}
         />
-        {!props.outOfFocus && props.data.map((d, i) => (
+        {props.interactable && props.data.map((d, i) => (
           <path
             className="voronoi"
             d={voronoi.renderCell(i)}
@@ -101,9 +101,9 @@ const ScatterPlot = (props) => {
             cx={callAccessor(xAxisAccessorScaled(d, i))}
             cy={callAccessor(yAxisAccessorScaled(d, i))}
             r={5}
-            onMouseDown={!props.outOfFocus ? (selectedColumn1 == currentChart.xAxis && selectedItem1 == currentChart.xAxisAccessor(d, i) && selectedColumn2 == currentChart.yAxis && selectedItem2 == currentChart.yAxisAccessor(d, i) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'MultipleValues', currentChart.xAxis, currentChart.yAxis, currentChart.xAxisAccessor(d, i), currentChart.yAxisAccessor(d, i))) : null}
-            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
-            onMouseLeave={!props.outOfFocus ? props.handleHideTooltip : null}
+            onMouseDown={props.interactable ? (selectedColumn1 == currentChart.xAxis && selectedItem1 == currentChart.xAxisAccessor(d, i) && selectedColumn2 == currentChart.yAxis && selectedItem2 == currentChart.yAxisAccessor(d, i) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'MultipleValues', currentChart.xAxis, currentChart.yAxis, currentChart.xAxisAccessor(d, i), currentChart.yAxisAccessor(d, i))) : null}
+            onMouseEnter={props.interactable ? e => handleMouseEnter(e, d, i) : null}
+            onMouseLeave={props.interactable ? props.handleHideTooltip : null}
           />
         ))}
       </Chart>

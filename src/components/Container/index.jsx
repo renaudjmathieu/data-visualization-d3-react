@@ -17,6 +17,7 @@ import { useDataContext } from "../../providers/DataProvider"
 import { useChartsContext } from "../../providers/ChartsProvider"
 
 import "./style.css"
+import { style } from "d3";
 
 const Container = (props) => {
   const theme = useTheme();
@@ -39,44 +40,47 @@ const Container = (props) => {
   }
 
   const renderChart = (zoomed) => {
+
+    const styleName = `${zoomed ? 'zoomed' : active ? 'active' : ''} ${outOfFocus ? 'outOfFocus' : 'inFocus'}`
+    const interactable = !outOfFocus
+
     switch (currentChart.type) {
       case "scatter": return <ScatterPlot
-        zoomed={zoomed}
-        active={active}
-        outOfFocus={outOfFocus}
         data={selectedChartIndex == props.chartIndex ? data : _.filter(data, { highlighted: true })}
         handleHighlightData={props.handleHighlightData}
         handleShowTooltip={props.handleShowTooltip}
         handleHideTooltip={props.handleHideTooltip}
         chartIndex={props.chartIndex}
+        styleName={styleName}
+        interactable={interactable}
+        marginPadding={zoomed ? 20 : 0}
       />
       case "histogram": return <Histogram
-        zoomed={zoomed}
-        active={active}
-        outOfFocus={outOfFocus}
         data={data}
         handleHighlightData={props.handleHighlightData}
         handleShowTooltip={props.handleShowTooltip}
         handleHideTooltip={props.handleHideTooltip}
         chartIndex={props.chartIndex}
+        styleName={styleName}
+        interactable={interactable}
+        marginPadding={zoomed ? 20 : 0}
       />
       case "timeline": return <Timeline
-        zoomed={zoomed}
-        active={active}
-        outOfFocus={outOfFocus}
         data={selectedChartIndex == props.chartIndex ? data : _.filter(data, { highlighted: true })}
         handleHighlightData={props.handleHighlightData}
         handleShowTooltip={props.handleShowTooltip}
         handleHideTooltip={props.handleHideTooltip}
         chartIndex={props.chartIndex}
+        styleName={styleName}
+        interactable={interactable}
+        marginPadding={zoomed ? 20 : 0}
       />
       case "list": return <List
-        zoomed={zoomed}
-        active={active}
-        outOfFocus={outOfFocus}
         data={selectedChartIndex == props.chartIndex ? data : _.filter(data, { highlighted: true })}
         handleHighlightData={props.handleHighlightData}
         chartIndex={props.chartIndex}
+        styleName={styleName}
+        interactable={interactable}
       />
       default: return null;
     }

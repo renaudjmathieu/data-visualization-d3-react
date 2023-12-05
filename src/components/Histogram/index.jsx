@@ -17,10 +17,10 @@ const Histogram = (props) => {
   const currentChart = charts[props.chartIndex]
 
   const [ref, dimensions] = useNewChartDimensions({
-    marginBottom: 67 - (currentChart.xAxisType == 'number' ? 30 : 0) - (props.zoomed ? 20 : 0),
-    marginLeft: 38 - (props.zoomed ? 20 : 0),
-    marginRight: 10 - (props.zoomed ? 20 : 0),
-    marginTop: 20 - (props.zoomed ? 20 : 0),
+    marginBottom: 67 - (currentChart.xAxisType == 'number' ? 30 : 0) - props.marginPadding,
+    marginLeft: 38 - props.marginPadding,
+    marginRight: 10 - props.marginPadding,
+    marginTop: 20 - props.marginPadding,
   })
   
   const numberOfThresholds = 9
@@ -162,7 +162,7 @@ const Histogram = (props) => {
   }
 
   return (
-    <div className={`Chart__rectangle ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__rectangle ${props.styleName}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimensions={dimensions}
@@ -189,9 +189,9 @@ const Histogram = (props) => {
             y={callAccessor(yAxisAccessorScaledMarked, d, i)}
             width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
             height={d3.max([callAccessor(heightAccessorScaledMarked, d, i), 0])}
-            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
-            onMouseLeave={!props.outOfFocus ? props.handleHideTooltip : null}
-            onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
+            onMouseEnter={props.interactable ? e => handleMouseEnter(e, d, i) : null}
+            onMouseLeave={props.interactable ? props.handleHideTooltip : null}
+            onMouseDown={props.interactable ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
           />
         ))}
         {currentChart.xAxis && items.map((d, i) => (
@@ -208,9 +208,9 @@ const Histogram = (props) => {
             y={callAccessor(yAxisAccessorScaled, d, i)}
             width={d3.max([callAccessor(widthAccessorScaled, d, i), 0])}
             height={d3.max([callAccessor(heightAccessorScaled, d, i), 0])}
-            onMouseEnter={!props.outOfFocus ? e => handleMouseEnter(e, d, i) : null}
-            onMouseLeave={!props.outOfFocus ? props.handleHideTooltip : null}
-            onMouseDown={!props.outOfFocus ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
+            onMouseEnter={props.interactable ? e => handleMouseEnter(e, d, i) : null}
+            onMouseLeave={props.interactable ? props.handleHideTooltip : null}
+            onMouseDown={props.interactable ? ((selectedColumnType === 'BinValues' || selectedColumnType === 'LastBinValues') && currentChart.xAxisType === 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d.x0 && selectedItem2 == d.x1) || (selectedColumnType == 'SingleValue' && currentChart.xAxisType !== 'number' && selectedColumn1 == currentChart.xAxis && selectedItem1 == d[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : currentChart.xAxisType === 'number' ? (e) => props.handleHighlightData(e, props.chartIndex, isLastBin(d, i) ? 'LastBinValues' : 'BinValues', currentChart.xAxis, null, d.x0, d.x1) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.xAxis, null, d[0], null) : null}
           />
         ))}
       </Chart>

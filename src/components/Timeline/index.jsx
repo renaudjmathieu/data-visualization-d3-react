@@ -14,10 +14,10 @@ const Timeline = (props) => {
 
   const theme = useTheme();
   const [ref, dimensions] = useNewChartDimensions({
-    marginBottom: 10 - (props.zoomed ? 20 : 0),
-    marginLeft: 38 - (props.zoomed ? 20 : 0),
-    marginRight: 10 - (props.zoomed ? 20 : 0),
-    marginTop: 20 - (props.zoomed ? 20 : 0),
+    marginBottom: 10 - props.marginPadding,
+    marginLeft: 38 - props.marginPadding,
+    marginRight: 10 - props.marginPadding,
+    marginTop: 20 - props.marginPadding,
   })
 
   const { charts } = useChartsContext()
@@ -167,9 +167,8 @@ const Timeline = (props) => {
     setClickedClosestDataPoint(null)
   }
 
-
   return (
-    <div className={`Chart__rectangle__large ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__rectangle__large ${props.styleName}`} ref={ref}>
       <Chart dimensions={dimensions}>
         <Axis
           dimension="x"
@@ -221,9 +220,9 @@ const Timeline = (props) => {
           className="listening-rect"
           width={dimensions.boundedWidth}
           height={dimensions.boundedHeight}
-          onMouseMove={!props.outOfFocus ? (e => handleMouseMove(e)) : null}
-          onMouseLeave={!props.outOfFocus ? handleMouseLeave : null}
-          onMouseDown={!props.outOfFocus ? (e => handleMouseDown(e)) : null}
+          onMouseMove={props.interactable ? (e => handleMouseMove(e)) : null}
+          onMouseLeave={props.interactable ? handleMouseLeave : null}
+          onMouseDown={props.interactable ? (e => handleMouseDown(e)) : null}
         />
       </Chart>
     </div>

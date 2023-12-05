@@ -54,7 +54,7 @@ const List = (props) => {
   }
 
   return (
-    <div className={`Chart__square ${props.zoomed ? 'zoomed' : props.active ? 'active' : ''} ${props.outOfFocus ? 'outOfFocus' : 'inFocus'}`} ref={ref}>
+    <div className={`Chart__square ${props.styleName}`} ref={ref}>
       <div className="SelectableList">
         <div className="SelectableList__column-headers">
           <div className="SelectableList__column-header-middle">
@@ -75,7 +75,7 @@ const List = (props) => {
                 }`
               ].join(" ")}
               key={i}
-              onMouseDown={!props.outOfFocus ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == currentChart.category1 && selectedItem1 == item[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.category1, null, item[0], null)) : null}>
+              onMouseDown={props.interactable ? ((selectedColumnType == 'SingleValue' && selectedColumn1 == currentChart.category1 && selectedItem1 == item[0]) ? (e) => props.handleHighlightData(e, null, null, null, null, null, null) : (e) => props.handleHighlightData(e, props.chartIndex, 'SingleValue', currentChart.category1, null, item[0], null)) : null}>
 
               <div className="SelectableList__item__left">
                 <div className="SelectableList__item__label">
